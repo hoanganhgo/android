@@ -1,0 +1,46 @@
+* Màu chủ đạo: Orange. Background sẽ mặt định màu trắng. Các control sẽ có màu cam hoặc các màu gần màu cam.
+* ID cho các control phải giống như quy định dưới đây.
+0. Màn hình logo (Tựa như khi đăng nhập facebook). - Loading data
+ - control load: loading.
+1. Màn hình đăng nhập.
+ - control input: inputUser, inputPass.
+ - control button: btn_login, btn_register.
+2. Màn hình đăng ký.
+ - control input: register_userName, register_passWord
+ - control button: btn_createAccount
+3. Màn hình hướng dẫn sử dụng.
+ - Button: btn_next, btn_skip
+4. Màn hình hiển thị các Circle mà người dùng đã tham gia, nút SOS, nút tin nhắn, nút vào trang cá nhân, nút log out.
+ - Control List: list_myCircle
+ - Button: btn_sos, btn_openMyMail, btn_personal, btn_logout
+5. Màn hình Circle gồm nút hiển thị các member, nút chat cho thành viên cụ thể và chat nhóm, nút rời khỏi Circle, nút invite thành viên,
+ nút xem vị trí của các thành viên, nút xem các Location đã được cài đặt.
+ - Button: btn_displayMembers, btn_chatCircle, btn_staticLocation, btn_inviteNewMember, btn_maps.
+6. Màn hình hiển thị các Static Location
+ - Label: circleName01
+ - Control List: list_staticLocation
+ - Label: checkin, checkout
+ - Button: btn_addLocation
+7. Màn hình thêm cài đặt static Location trong Circle.
+ - input: input_Location, input_checkin, input_checkout
+ - Button: btn_insertLocation.
+ - Label: circleName02
+8. Màn hình invite thành viên vào Circle.
+ - input: input_newMember
+ - Button: btn_addMember.
+9. Màn hiển thị danh sách các thành viên.
+ - List: list_member.
+ - Button: btn_goToMember01, btn_removeMember.
+10. Màn hình hiển thị bản đồ và vị trí của các members.
+ - Maps: maps
+ - Button: btn_goToMember02
+11. Màn hình hiển thị thông tin của member về pin và tốc độ khi click vào 1 members trên bản đồ.
+ - Label: memberName, memberBattery, memberSpeed.
+12. Màn hình hiển thị danh sách các tin nhắn.(Chỉ hiển thị những người hoặc Circle đã từng nhắn tin).
+ - List: list_message
+ - Button: btn_chatView
+13. Màn hình chat.
+ - Label: messager
+14. Màn hình trang cá nhân. (Thiết lập tên, privacy).
+ - Label: userName
+ - Button: share_myLocation, share_myBattery, share_mySpeed

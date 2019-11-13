@@ -1,0 +1,55 @@
+* Lưu ý: Mọi thông tin realtime từ các member phải luôn có tiến trình để cập nhật chúng từ server *
+
+Business
+ + Khởi tạo 1 User duy nhất khi đăng nhập thành công.
+ + logIn(): Người dùng nhập tài khoản và mật khẩu để xác minh thông tin.
+ + Khi người dùng login thì thông tin đăng nhập sẽ gửi lên server. Nếu trùng khớp thì sẽ được server trả về
+thông tin của User. Cho phép người dùng lưu mật khẩu để không phải xác nhận tiếp theo (Nếu có thể thì sử dụng hàm băm để bảo
+mật mật khẩu).
+ + Khi đăng nhập thành công máy chủ sẽ gửi về máy tất cả thông tin về các Circle mà user đã tham gia.
+ + setUser(): Thiết lập tên và privacy của user. Cập nhật lên máy chủ.
+ + getListCircle(): Trả về một mảng string tên cái Circle mà người dùng tham gia.
+ + Khi người dùng chọn vào 1 Circle cụ thể nào đó thì mới tiếp tục load data của các member về.
+ + Khi người dùng logOut() thì mọi thông tin của User được lưu trên máy sẽ bị xóa.
+ + Tên Circle và member không được trùng nhau.
+ + Khi tạo Location mới phải định nghĩa thời gian cho chúng.
+ + getStaticLocation(Circle): Đưa cho tần giao diện tất cả Static Location ứng với Circle.
+ + getMembers(Circle): Đưa cho tầng giao diện tất cả thông tin của các member trong 1 Circle (dynamic location, battery, speed).
+ + CheckMemberLocation(): Luôn cập nhật vị trí hiện tại người dùng(cứ 1s cập nhật chạy 1 lần). So sánh vị trị này với tất cả các
+Location thuộc các Circle mà người dùng tham gia. Nếu người dùng đi vào vùng Location thì hàm sẽ gửi thông báo lên Server.
+Lúc này Server sẽ gửi thông báo đến cho tất cả các member trong Circle.
+ + Hàm getMembers(Circle) sẽ đưa cho tầng gia diện tất cả thông tin về các member. Từ đó giúp cho người dùng có thể xem
+thông tin vị trí của các member trong cùng Circle. (Hàm này cũng đc gọi chạy liên tục).
+ + sosEvent(): Khi người dùng bấm SOS thì hàm này sẽ gửi thông tin lên Server vào yêu cầu Server gửi alert đến cho tất cả
+thành viên trong Circle.
+ + lowBatteryEvent() và overSpeedEvent() tương tự như sosEvent().
+ + loadMessages(Circle): load tất cả tin nhắn trong 1 Circle.
+ + loadMessages(member): load tất cả tin nhắn với 1 member.
+ + sender(Circle,Member) gửi tin nhắn đến 1 thành viên cụ thể. Sẽ không thể gửi tin nhắn cho 1 member nếu ko cùng Circle nào
+với member đó.
+ + sender(Circle) gửi tin nhắn cho Circle.
+ + receiver() luôn sẵn sàng nhận tin nhắn.
+ + inviteMember(): Phải có tên tài khoản người muốn invite, người dùng phải nằm trong Circle mới có quyền invite.
+ + RemoveMember(): Chỉ có người Admin Circle mới được quyền gọi.
+
+
+
+Member
+ + Không cần load tất cả tin nhắn, chỉ cần load được những tin nhắn gần đây.
+ + Member tạo circle sẽ được phong làm admin.
+ + Member khi khởi tạo sẽ có username duy nhất và không thể thay đổi.
+ + Các hàm update sẽ được gọi chạy liên tục với tần số nhất định.
+
+Location
+- CheckIn, CheckOut: Được sử dụng khi lưu vị trí vào Circle.
+- realTime: được sử dụng cho vị trí thời gian thực của người dùng. (Bắt buộc phải có để xác thực rằng người dùng có đúng ở
+vị trí (x,y) vào thời gian realTime hay ko? Nếu ko có realTime thì ko có cách nào để xác thực việc check in, check out).
+
+Message
+- Mỗi tin nhắn sẽ được gửi từ 1 sender.
+- Nếu tin nhắn gửi cho 1 cá nhân thì nơi nhận sẽ là receiver.
+- Nếu tin nhắn gửi cho 1 Circle thì nơi nhận sẽ là circleReceiver, tin nhắn loại này sẽ được mọi người trong Circle nhìn thấy.
+
+
+
+
