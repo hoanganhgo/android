@@ -12,4 +12,9 @@
     <string name="register">Register</string>
     <string name="re_type_password">Re-type Password</string>
     <string name="your_name">Full Name</string>
+    <string name="twitter">twitter</string>
+    <string name="instagram">instagram</string>
+    <string name="facebook">facebook</string>
+    <string name="user_nickname_here">User nickname here</string>
+    <string name="my_circle">My circle</string>
 </resources>

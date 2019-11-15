@@ -1,27 +1,25 @@
 package com.android.project;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 
-public class MainActivity extends Activity {
-
+public class signup extends Activity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-        Button btnRegistration = (Button) findViewById(R.id.btnReg);
-        btnRegistration.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.signup);
+        TextView tvLogin = (TextView) findViewById(R.id.tvLogin);
+        tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, signup.class);
+                Intent myIntent = new Intent(signup.this, MainActivity.class);
                 startActivity(myIntent);
             }
         });

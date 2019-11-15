@@ -2,12 +2,13 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/AppTheme.NoActionBar"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/gradient"
-    tools:context=".MainActivity">
+    android:background="@drawable/gradient">
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_Logo"
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/projectlogo"
-            app:srcCompat="@drawable/logo" />
+            android:src="@drawable/logo" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -109,7 +110,9 @@
             android:text="@string/register"/>
 
         <TextView
-            android:id="@+id/swipeLeft"
+            android:id="@+id/tvLogin"
+            android:onClick="onClick"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/have_account"

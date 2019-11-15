@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/gradient">
+    <FrameLayout
+        android:id="@+id/fl_mycircletoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/tv_mycircle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_action_back"
+            android:drawablePadding="20dp"
+            android:text="@string/my_circle"
+            android:textSize="25sp"
+            android:gravity="center_vertical"/>
+
+    </FrameLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:layout_below="@+id/fl_mycircletoolbar"
+        android:layout_marginTop="10dp" />
+</RelativeLayout>
