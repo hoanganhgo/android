@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Project</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="todo">TODO</string>\
+    <string name="register_here">No account yet? Register_here.</string>
+    <string name="login">Login</string>
+    <string name="projectlogo">projectlogo</string>
+    <string name="have_account">Already have an account? Sign in!</string>
+    <string name="e_mail">Email</string>
+    <string name="tag">Let\'s join us and \nBuild your relationship with others</string>
+    <string name="register">Register</string>
+    <string name="re_type_password">Re-type Password</string>
+    <string name="your_name">Full Name</string>
 </resources>
