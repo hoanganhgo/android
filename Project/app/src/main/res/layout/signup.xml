@@ -38,7 +38,7 @@
         android:layout_marginBottom="40dp"/>
 
     <EditText
-        android:id="@+id/et_name"
+        android:id="@+id/register_userName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/your_name"
@@ -52,7 +52,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/et_email"
+        android:id="@+id/register_mail"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/e_mail"
@@ -66,7 +66,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/register_passWord"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/password"
@@ -80,7 +80,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/et_repassword"
+        android:id="@+id/register_repassWord"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/re_type_password"
@@ -98,7 +98,7 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_createAccount"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"

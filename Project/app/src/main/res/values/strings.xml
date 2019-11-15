@@ -17,4 +17,8 @@
     <string name="facebook">facebook</string>
     <string name="user_nickname_here">User nickname here</string>
     <string name="my_circle">My circle</string>
+    <string name="avatar">avatar</string>
+    <string name="sos">Emergency</string>
+    <string name="join">Join</string>
+    <string name="create">Create</string>
 </resources>

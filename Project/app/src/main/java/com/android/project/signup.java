@@ -15,13 +15,6 @@ public class signup extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
-        TextView tvLogin = (TextView) findViewById(R.id.tvLogin);
-        tvLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(signup.this, MainActivity.class);
-                startActivity(myIntent);
-            }
-        });
     }
 }
+

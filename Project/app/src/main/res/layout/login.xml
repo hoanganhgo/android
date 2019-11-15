@@ -28,10 +28,10 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
-        android:id="@+id/ed_User"
+        android:id="@+id/inputUser"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:layout_above="@+id/ed_Pass"
+        android:layout_above="@+id/inputPass"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="35dp"
         android:background="#DCFFFFFF"
@@ -45,11 +45,11 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/ed_Pass"
+        android:id="@+id/inputPass"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:layout_alignStart="@+id/ed_User"
-        android:layout_alignBottom="@+id/cv_Login"
+        android:layout_alignStart="@+id/inputUser"
+        android:layout_alignBottom="@+id/btnLogin"
         android:layout_marginBottom="130dp"
         android:autofillHints=""
         android:background="#DCFFFFFF"
@@ -59,31 +59,18 @@
         android:inputType="textPassword"
         android:textColor="#000000" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_Login"
-        android:layout_width="300dp"
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_above="@+id/btnReg"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="31dp"
-        app:cardBackgroundColor="#A4F53030"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="10dp">
+        android:background="@drawable/bt_background"
+        android:text="@string/login">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/login"
-                android:textColor="#F25CFF2C"
-                android:textSize="18sp" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </Button>
 
     <Button
         android:id="@+id/btnReg"
