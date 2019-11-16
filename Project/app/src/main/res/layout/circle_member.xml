@@ -22,7 +22,7 @@
     </FrameLayout>
 
     <ListView
-        android:id="@+id/list_circleMember"
+        android:id="@+id/list_member"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fl_circleMembertoolbar"
@@ -33,7 +33,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/list_circleMember"
+        android:layout_below="@+id/list_member"
         android:drawableStart="@drawable/ic_action_plus"
         android:text="Invite new member into circle"
         android:textSize="25sp"

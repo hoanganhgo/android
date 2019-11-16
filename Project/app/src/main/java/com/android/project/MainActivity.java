@@ -15,8 +15,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.circle_member);
-        lv = (ListView) findViewById(R.id.list_circleMember);
+        getActionBar().hide();
+        setContentView(R.layout.login);
+   /*     setTitle("My Circle");
+        getActionBar().setIcon(R.drawable.ic_action_back);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);*/
+        /*lv = (ListView) findViewById(R.id.list_myCircle);
         array = new ArrayList<>();
         array.add("Ha Noi");
         array.add("TP HCM");
@@ -27,6 +32,6 @@ public class MainActivity extends Activity {
         array.add("Nghe An");
 
         ArrayAdapter adapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1, array);
-        lv.setAdapter(adapter);
+        lv.setAdapter(adapter);*/
     }
 }

@@ -12,9 +12,7 @@
     <string name="register">Register</string>
     <string name="re_type_password">Re-type Password</string>
     <string name="your_name">Full Name</string>
-<<<<<<< HEAD
     <string name="invite">Type username of the member you want to invite</string>
-=======
     <string name="twitter">twitter</string>
     <string name="instagram">instagram</string>
     <string name="facebook">facebook</string>
@@ -24,5 +22,4 @@
     <string name="sos">Emergency</string>
     <string name="join">Join</string>
     <string name="create">Create</string>
->>>>>>> 6e2cda970b3ad303656682064935d5265ac7daab
 </resources>
