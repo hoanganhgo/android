@@ -2,12 +2,13 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/AppTheme.NoActionBar"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/gradient"
-    tools:context=".MainActivity">
+    android:background="@drawable/gradient">
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_Logo"
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/projectlogo"
-            app:srcCompat="@drawable/logo" />
+            android:src="@drawable/logo" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -37,7 +38,7 @@
         android:layout_marginBottom="40dp"/>
 
     <EditText
-        android:id="@+id/et_name"
+        android:id="@+id/register_userName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/your_name"
@@ -51,7 +52,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/et_email"
+        android:id="@+id/register_mail"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/e_mail"
@@ -65,7 +66,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/register_passWord"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/password"
@@ -79,7 +80,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/et_repassword"
+        android:id="@+id/register_repassWord"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="@string/re_type_password"
@@ -97,7 +98,7 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_createAccount"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
@@ -109,7 +110,9 @@
             android:text="@string/register"/>
 
         <TextView
-            android:id="@+id/swipeLeft"
+            android:id="@+id/tvLogin"
+            android:onClick="onClick"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/have_account"
