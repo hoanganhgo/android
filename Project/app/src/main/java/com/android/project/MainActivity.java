@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     private GoogleMap mMap;
-
+    TextView abc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
