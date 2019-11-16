@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     private GoogleMap mMap;
-    TextView abc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
