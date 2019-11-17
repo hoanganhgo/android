@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbarThumbHorizontal="@drawable/gradient">
+
+    <FrameLayout
+        android:id="@+id/fl_profileToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:id="@+id/tv_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient"
+            android:drawableStart="@drawable/ic_action_back"
+            android:drawablePadding="20dp"
+            android:gravity="center_vertical"
+            android:text="Profile"
+            android:textColor="#000000"
+            android:textSize="25sp" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+
+        android:layout_gravity="center_horizontal"
+
+
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/avatar"
+        android:src="@mipmap/ic_launcher" />
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:background="@android:color/transparent"
+        android:text="nhoxtheanh"
+        android:textAlignment="center"
+        android:textSize="25sp" />
+
+    <Switch
+        android:id="@+id/share_myLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:text="Share my location" />
+
+    <Switch
+        android:id="@+id/share_myBattery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:text="Share my battery level" />
+
+    <Switch
+        android:id="@+id/share_mySpeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:text="Share my speed" />
+
+
+
+</LinearLayout>
