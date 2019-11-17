@@ -13,13 +13,13 @@ public class Member {
     private List<Message> mailBox;
 
     public Member(String userName, Dynamic_Location location, int battery, int speed, boolean shareLocation, boolean shareBattery, boolean shareSpeed) {
-        this.userName=userName;
-        this.location=location;
-        this.battery=battery;
-        this.speed=speed;
-        this.shareLocation=shareLocation;
-        this.shareBattery=shareBattery;
-        this.shareSpeed=shareSpeed;
+        this.userName = userName;
+        this.location = location;
+        this.battery = battery;
+        this.speed = speed;
+        this.shareLocation = shareLocation;
+        this.shareBattery = shareBattery;
+        this.shareSpeed = shareSpeed;
     }
 
     public String getUserName() {
