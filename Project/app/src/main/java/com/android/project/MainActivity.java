@@ -2,19 +2,15 @@ package com.android.project;
 
 
 import android.app.Activity;
-<<<<<<< HEAD
-import android.content.Intent;
-=======
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
->>>>>>> 466e0ce8bf0c42422b112cc394021cf4684284c4
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 
@@ -40,14 +36,15 @@ public class MainActivity extends Activity {
     private boolean isRememberMe;
     private String userName;
     private String passWord;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
+
         setContentView(R.layout.activity_main);
        // getActionBar().hide();
-=======
+
         getActionBar().hide();
         setContentView(R.layout.login);
 
@@ -58,9 +55,9 @@ public class MainActivity extends Activity {
         chkbxRememberMe=(CheckBox)findViewById(R.id.cb_rememberme);
 
         //Cập nhật lại trạng thái trước đó của ứng dụng
-        updateState();
+        this.updateState();
 
->>>>>>> 466e0ce8bf0c42422b112cc394021cf4684284c4
+
         //Khởi tạo lớp Bussiness
         //Kết nối cơ sở dữ liệu
         connectionHelper = new ConnectionHelper();
@@ -71,17 +68,18 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e(TAG_CIRCLE,"onStart");
+        Log.e(TAG_CIRCLE, "onStart");
 
-<<<<<<< HEAD
-    public void login_Click(View view) {
+    }
+    public void login_Click(View view){
+        this.view = view;
         EditText edit_user=(EditText)findViewById(R.id.inputUser);
         EditText edit_pass=(EditText)findViewById(R.id.inputPass);
         boolean loginStatus = Bussiness.login(edit_user.getText().toString(),edit_pass.getText().toString());
         if (loginStatus)
-=======
+
         if(isRememberMe == true)
->>>>>>> 466e0ce8bf0c42422b112cc394021cf4684284c4
+
         {
             chkbxRememberMe.setChecked(true);
             edUserName.setText(userName);
@@ -112,17 +110,6 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         Log.e(TAG_CIRCLE,"onDestroy");
-    }
-    public void login_Click(View view) {
-        boolean loginStatus = bussiness.login(edUserName.getText().toString(), edPassWord.getText().toString(), connection);
-        if (loginStatus == true) {
-            setContentView(R.layout.circle_home);
-            isLogin = true;
-        } else {
-            TextView login_status = (TextView) findViewById(R.id.loginStatus);
-            login_status.setText("Username or Password incorrect!");
-        }
-        Log.e(TAG_CIRCLE, "Cliked login");
     }
 
     private void saveState() {
