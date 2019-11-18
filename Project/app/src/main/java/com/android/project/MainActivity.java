@@ -10,10 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 
 public class MainActivity extends Activity {
@@ -28,6 +30,7 @@ public class MainActivity extends Activity {
     private EditText edUserName;
     private EditText edPassWord;
     private CheckBox chkbxRememberMe;
+    private TextView textStatus;
 
     private int countAccess;
     private boolean isLogin;
@@ -53,11 +56,11 @@ public class MainActivity extends Activity {
         edUserName = (EditText) findViewById(R.id.inputUser);
         edPassWord = (EditText) findViewById(R.id.inputPass);
         chkbxRememberMe = (CheckBox) findViewById(R.id.cb_rememberme);
+        textStatus=(TextView)findViewById(R.id.loginStatus);
 
         //Cập nhật lại trạng thái trước đó của ứng dụng
         this.updateState();
 
-        //Khởi tạo lớp Bussiness
         //Kết nối cơ sở dữ liệu
         connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
@@ -146,19 +149,17 @@ public class MainActivity extends Activity {
 
     public void login_Click(View view) {
         this.view = view;
-        Log.e(TAG_CIRCLE, "Clicked");
-
+     //   Log.e(TAG_CIRCLE, "Clicked");
         userName = edUserName.getText().toString();
         passWord = edPassWord.getText().toString();
+
+        if (connection==null)
+        {
+            textStatus.setText("Please check your connection!");
+            return;
+        }
+
         boolean loginStatus = Bussiness.login(userName, passWord);
-
-
-        /*Test
-        Circle circle = new Circle("Circletest", new Member(userName));
-        Bussiness.insertCircleToDatabase(circle);
-        Bussiness.deleteCircleToDatabase(circle);
-        Bussiness.getListCircleFromDatabase(userName);
-        */
 
         if (loginStatus) {
             Intent intent = new Intent(this, Home_Activity.class);
@@ -167,13 +168,18 @@ public class MainActivity extends Activity {
             bundle.putString("passWord", passWord);
             intent.putExtras(bundle);
             startActivity(intent);
-
         } else {
-            Log.e(TAG_CIRCLE, "Account not exits");
+            textStatus.setText("Username or Password is incorrect!");
         }
     }
 
     public void register_Click(View view) {
+        if (connection==null)
+        {
+            textStatus.setText("Please check your connection!");
+            return;
+        }
+
         Intent register = new Intent(this, Register_Activity.class);
         startActivity(register);
     }
