@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class MainActivity extends Activity {
@@ -160,6 +161,15 @@ public class MainActivity extends Activity {
         }
 
         boolean loginStatus = Bussiness.login(userName, passWord);
+        /*Test
+        Circle circle = new Circle("Circletest", new Member(userName));
+        Bussiness.insertCircleToDatabase(circle);
+        Bussiness.deleteCircleToDatabase(circle);*/
+        List<String> list = Bussiness.getListCircleFromDatabase(userName);
+
+        for(int i=0; i<list.size(); i++){
+            Log.e("CircleName: ", list.get(i));
+        }
 
         if (loginStatus) {
             Intent intent = new Intent(this, Home_Activity.class);
