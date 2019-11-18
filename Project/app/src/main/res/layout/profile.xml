@@ -75,6 +75,14 @@
         android:layout_marginRight="30dp"
         android:text="Share my speed" />
 
-
+    <Button
+        android:id="@+id/btn_signOut"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bt_background"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:text="Sign-out"/>
 
 </LinearLayout>

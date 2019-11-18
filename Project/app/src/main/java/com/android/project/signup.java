@@ -15,7 +15,6 @@ public class signup extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().hide();
-        setContentView(R.layout.signup);
     }
 }
 
