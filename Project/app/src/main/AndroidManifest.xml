@@ -40,6 +40,9 @@
         <activity
             android:name=".Home_Activity"
             android:label="Home" />
+        <activity
+            android:name=".ChatActivity"
+            android:label="Chat" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

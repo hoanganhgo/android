@@ -1,15 +1,20 @@
 package com.android.project;
 
 import android.app.Activity;
-import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 
 public class Home_Activity extends Activity{
+    ImageButton imgbtnIbMenu;
     ListView listView;
+
+    private String userName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,5 +24,24 @@ public class Home_Activity extends Activity{
 
         //ArrayAdapter<String> data = new ArrayAdapter<String>(t);
 
+        imgbtnIbMenu = (ImageButton) findViewById(R.id.ib_menu);
+        imgbtnIbMenu.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                // bắt gói Intent bundle từ MainActivity, lấy user name và gửi đến ChatActivity
+                Intent callingIntent = getIntent();
+                Bundle myBundle = callingIntent.getExtras();
+                userName = myBundle.getString("userName");
+
+                Bundle bundle = new Bundle();
+                bundle.putString("userName", userName);
+
+                Intent intent = new Intent(Home_Activity.this, ChatActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 }
