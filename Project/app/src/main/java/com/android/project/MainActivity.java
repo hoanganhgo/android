@@ -2,7 +2,6 @@ package com.android.project;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ public class MainActivity extends Activity {
 
     private GoogleMap mMap;
     private ConnectionHelper connectionHelper;
-    public static Connection connection=null;
+    public static Connection connection = null;
 
     private Button btnLogin;
     private EditText edUserName;
@@ -43,73 +42,60 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-       // getActionBar().hide();
 
         getActionBar().hide();
         setContentView(R.layout.login);
 
         //Kết nối với các thành phần giao diện
-        btnLogin = (Button)findViewById(R.id.btnLogin);
-        edUserName = (EditText)findViewById(R.id.inputUser);
-        edPassWord = (EditText)findViewById(R.id.inputPass);
-        chkbxRememberMe=(CheckBox)findViewById(R.id.cb_rememberme);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        edUserName = (EditText) findViewById(R.id.inputUser);
+        edPassWord = (EditText) findViewById(R.id.inputPass);
+        chkbxRememberMe = (CheckBox) findViewById(R.id.cb_rememberme);
 
         //Cập nhật lại trạng thái trước đó của ứng dụng
         this.updateState();
-
 
         //Khởi tạo lớp Bussiness
         //Kết nối cơ sở dữ liệu
         connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
-        setContentView(R.layout.login);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e(TAG_CIRCLE, "onStart");
-
-    }
-    public void login_Click(View view){
-        this.view = view;
-        EditText edit_user=(EditText)findViewById(R.id.inputUser);
-        EditText edit_pass=(EditText)findViewById(R.id.inputPass);
-        boolean loginStatus = Bussiness.login(edit_user.getText().toString(),edit_pass.getText().toString());
-        if (loginStatus)
-
-        if(isRememberMe == true)
-
-        {
+        if (isRememberMe == true) {
             chkbxRememberMe.setChecked(true);
             edUserName.setText(userName);
             edPassWord.setText(passWord);
         }
+        Log.e(TAG_CIRCLE, "onStart");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG_CIRCLE,"onResume");
+        Log.e(TAG_CIRCLE, "onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e(TAG_CIRCLE,"onPause");
+        Log.e(TAG_CIRCLE, "onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         saveState();
-        Log.e(TAG_CIRCLE,"onStop");
+        Log.e(TAG_CIRCLE, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(TAG_CIRCLE,"onDestroy");
+        Log.e(TAG_CIRCLE, "onDestroy");
     }
 
     private void saveState() {
@@ -157,8 +143,37 @@ public class MainActivity extends Activity {
         Log.e(TAG_CIRCLE, "update state!!");
     }
 
+    public void login_Click(View view) {
+        this.view = view;
+        Log.e(TAG_CIRCLE, "Clicked");
+
+        userName = edUserName.getText().toString();
+        passWord = edPassWord.getText().toString();
+        boolean loginStatus = Bussiness.login(userName, passWord);
+
+
+        /*Test
+        Circle circle = new Circle("Circletest", new Member(userName));
+        Bussiness.insertCircleToDatabase(circle);
+        Bussiness.deleteCircleToDatabase(circle);
+        Bussiness.getListCircleFromDatabase(userName);
+        */
+
+        if (loginStatus) {
+            Intent intent = new Intent(this, Home_Activity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("userName", userName);
+            bundle.putString("passWord", passWord);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+        } else {
+            Log.e(TAG_CIRCLE, "Account not exits");
+        }
+    }
+
     public void register_Click(View view) {
-        Intent register=new Intent(this,Register_Activity.class);
+        Intent register = new Intent(this, Register_Activity.class);
         startActivity(register);
     }
 }

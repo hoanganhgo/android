@@ -8,6 +8,13 @@ public class Circle {
     private Member admin;
     private Static_Location locations;
 
+    public Circle(String circleName, Member admin)
+    {
+        this.circleName = circleName;
+        this.admin = admin;
+
+    }
+
     public Circle(String circleName, List<Member> members, Member admin, Static_Location locations) {
         this.circleName = circleName;
         this.members = members;
