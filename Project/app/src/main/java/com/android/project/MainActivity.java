@@ -2,7 +2,6 @@ package com.android.project;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,7 +29,6 @@ public class MainActivity extends Activity {
     private EditText edPassWord;
     private CheckBox chkbxRememberMe;
 
-    private Context context;
     private int countAccess;
     private boolean isLogin;
     private boolean isRememberMe;
@@ -38,12 +36,16 @@ public class MainActivity extends Activity {
     private String passWord;
     private View view;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+<<<<<<< HEAD
         // getActionBar().hide();
+=======
+>>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
 
         getActionBar().hide();
         setContentView(R.layout.login);
@@ -57,15 +59,19 @@ public class MainActivity extends Activity {
         //Cập nhật lại trạng thái trước đó của ứng dụng
         this.updateState();
 
+<<<<<<< HEAD
+=======
+        //Khởi tạo lớp Bussiness
+>>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
         //Kết nối cơ sở dữ liệu
         connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
-        setContentView(R.layout.login);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+<<<<<<< HEAD
         Log.e(TAG_CIRCLE, "onStart");
 
     }
@@ -75,31 +81,40 @@ public class MainActivity extends Activity {
         EditText edit_pass=(EditText)findViewById(R.id.inputPass);
         boolean loginStatus = Bussiness.login(edit_user.getText().toString(),edit_pass.getText().toString());
         if (loginStatus);
+=======
+        if (isRememberMe == true) {
+            chkbxRememberMe.setChecked(true);
+            edUserName.setText(userName);
+            edPassWord.setText(passWord);
+        }
+        Log.e(TAG_CIRCLE, "onStart");
+
+>>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG_CIRCLE,"onResume");
+        Log.e(TAG_CIRCLE, "onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e(TAG_CIRCLE,"onPause");
+        Log.e(TAG_CIRCLE, "onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         saveState();
-        Log.e(TAG_CIRCLE,"onStop");
+        Log.e(TAG_CIRCLE, "onStop");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(TAG_CIRCLE,"onDestroy");
+        Log.e(TAG_CIRCLE, "onDestroy");
     }
 
     private void saveState() {
@@ -147,8 +162,37 @@ public class MainActivity extends Activity {
         Log.e(TAG_CIRCLE, "update state!!");
     }
 
+    public void login_Click(View view) {
+        this.view = view;
+        Log.e(TAG_CIRCLE, "Clicked");
+
+        userName = edUserName.getText().toString();
+        passWord = edPassWord.getText().toString();
+        boolean loginStatus = Bussiness.login(userName, passWord);
+
+
+        /*Test
+        Circle circle = new Circle("Circletest", new Member(userName));
+        Bussiness.insertCircleToDatabase(circle);
+        Bussiness.deleteCircleToDatabase(circle);
+        Bussiness.getListCircleFromDatabase(userName);
+        */
+
+        if (loginStatus) {
+            Intent intent = new Intent(this, Home_Activity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("userName", userName);
+            bundle.putString("passWord", passWord);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+        } else {
+            Log.e(TAG_CIRCLE, "Account not exits");
+        }
+    }
+
     public void register_Click(View view) {
-        Intent register=new Intent(this,Register_Activity.class);
+        Intent register = new Intent(this, Register_Activity.class);
         startActivity(register);
     }
 }

@@ -9,8 +9,13 @@ import android.os.BatteryManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+=======
+import java.util.ArrayList;
+import java.util.List;
+>>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
 
 public class Bussiness {
 
@@ -34,7 +39,11 @@ public class Bussiness {
         }
     }
 
+<<<<<<< HEAD
     public static boolean register(String userName, String passWord, int battery, MyLocation myLocation) {
+=======
+    public static boolean register(String userName, String passWord) {
+>>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
         try {
             //truy xuất cơ sở dữ liệu sql
             Statement statement = MainActivity.connection.createStatement();
@@ -42,6 +51,7 @@ public class Bussiness {
             ResultSet resultSet = statement.executeQuery("Select MAX(ID_Account) from Account");
             resultSet.next();
             int newID = resultSet.getInt(1) + 1;
+<<<<<<< HEAD
             //Khởi tạo thời gian hiện tại
             DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
             LocalDateTime now = LocalDateTime.now();
@@ -57,11 +67,79 @@ public class Bussiness {
             return true;
         } catch (SQLException e) {
            // Log.e("hoanganh", "Insert fail");
+=======
+            //Đưa dữ liệu lên Database
+            statement.executeUpdate("Insert into Account (ID_Account, UserName, PassWord, Coordinates_X, Coordinates_Y, RealTime, Battery, Speed, Share_Location, Share_Battery, Share_Speed) "
+                    + " values (" + newID + ", '" + userName + "', '" + passWord + "', 12.2, 106.78, '2019-11-17 23:00:00', 100, 120, 1 , 1, 1)");
+            // resultSet.next();
+            Log.e("Circle17", "Insert success!");
+            return true;
+        } catch (SQLException e) {
+            Log.e("Circle17", "Insert fail");
             e.printStackTrace();
             return false;
         }
     }
 
+    public static boolean insertCircleToDatabase(Circle circle) {
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+
+            //Chọn ID cho Circle mới
+            ResultSet resultSet = statement.executeQuery("Select MAX(ID_Circle) from Circle");
+            resultSet.next();
+            int newCircleID = resultSet.getInt(1) + 1;
+
+            Log.e("Circle17", "Circle ID: " + Integer.toString(newCircleID));
+            Log.e("Circle17", "UserName: " + circle.getAdmin().getUserName());
+
+            //Lấy ID của của Admin theo userName
+            resultSet = statement.executeQuery("Select ID_Account from Account where UserName = '" + circle.getAdmin().getUserName()+"'");
+            resultSet.next();
+            int ID_Admin = resultSet.getInt(1);
+
+            Log.e("Circle17", "Admin ID: " + Integer.toString(ID_Admin));
+
+            //Đưa dữ liệu lên Database
+            statement.executeUpdate("Insert into Circle (ID_Circle, CircleName, Admin) "
+                    + " values (" + newCircleID + ", '" + circle.getCircleName() + "', " + ID_Admin + ")");
+            //resultSet.next();
+            Log.e("hoanganh", "Insert success!");
+            return true;
+        } catch (SQLException e) {
+            Log.e("hoanganh", "Insert fail");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteCircleToDatabase(Circle circle) {
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+
+            ResultSet resultSet;
+            resultSet = statement.executeQuery("Select ID_Account from Account where UserName = '" + circle.getAdmin().getUserName()+"'");
+            resultSet.next();
+            int ID_Admin = resultSet.getInt(1);
+
+            //Đưa dữ liệu lên Database
+            statement.executeUpdate("delete from Circle where CircleName = '"
+                    + circle.getCircleName() + "' and Admin = "
+                    + ID_Admin);
+            //resultSet.next();
+            Log.e("Circle17", "delete success!");
+            return true;
+        } catch (SQLException e) {
+            Log.e("Circle17", "delete fail");
+>>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+<<<<<<< HEAD
     public static int getBatteryPercentage(Context context) {
 
         IntentFilter iFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -99,3 +177,43 @@ public class Bussiness {
         return locationListener;
     }
 }
+=======
+    public static List<String> getListCircleFromDatabase(String username) {
+        List<String> listNameCircle = new ArrayList<String>();
+
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+            ResultSet resultSet;
+            resultSet = statement.executeQuery("Select ID_Account from Account where UserName = '" + username + "'");
+            resultSet.next();
+            int ID_Account = resultSet.getInt(1);
+
+            Log.e("Circle17", "ID Account: " + Integer.toString(ID_Account));
+
+            resultSet = statement.executeQuery("Select ID_Circle from Joining");// where ID_Account = " + ID_Account);
+/*            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);*/
+            ResultSet cur;
+            int ID_Circle;
+            while(resultSet.next())
+            {
+
+                ID_Circle = resultSet.getInt(1);
+                Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
+                cur = statement.executeQuery("Select CircleName from Circle where ID_Circle = " + ID_Circle);
+                cur.next();
+                listNameCircle.add(cur.getString(1));
+                Log.e("Circle17", "Circle name: " + cur.getString(1));
+
+            }
+
+            Log.e("Circle17", "Query success!");
+        } catch (SQLException e) {
+            Log.e("Circle17", "Query fail");
+            e.printStackTrace();
+        }
+        return listNameCircle;
+    }
+}
+>>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583

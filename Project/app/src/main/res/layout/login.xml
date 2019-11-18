@@ -61,15 +61,6 @@
         android:inputType="textPassword"
         android:textColor="#000000" />
 
-    <TextView
-        android:id="@+id/loginStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_below="@+id/inputUser"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
-=======
     <CheckBox
         android:id="@+id/cb_rememberme"
         android:layout_width="wrap_content"
@@ -80,6 +71,16 @@
         android:layout_marginStart="10dp"
         android:textSize="15sp"
         android:text="@string/remember_me" />
+
+    <TextView
+
+        android:id="@+id/loginStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_below="@+id/cb_rememberme"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"/>
 
     <Button
         android:id="@+id/btnLogin"
