@@ -23,6 +23,7 @@
     <string name="join">Join</string>
     <string name="create">Create</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_home">Home</string>
     <string name="remember_me">Remember me?</string>
 
     <!-- TODO: Remove or change this placeholder text -->

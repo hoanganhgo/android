@@ -72,16 +72,6 @@
         android:textSize="15sp"
         android:text="@string/remember_me" />
 
-    <TextView
-
-        android:id="@+id/loginStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_below="@+id/cb_rememberme"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
-
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="100dp"
@@ -93,6 +83,16 @@
         android:background="@drawable/bt_background"
         android:text="@string/login"
         android:onClick="login_Click" />
+
+    <TextView
+        android:id="@+id/loginStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="#ffff0000"
+        android:layout_below="@+id/inputPass"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"/>
 
     <Button
         android:id="@+id/btnReg"

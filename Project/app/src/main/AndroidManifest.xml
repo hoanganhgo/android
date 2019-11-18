@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.project">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,8 +16,12 @@
         android:label="Circle 17"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+<<<<<<< HEAD
+        android:theme="@style/Theme.AppCompat">
 
+=======
+        android:theme="@style/AppTheme">
+>>>>>>> 3d9b823f4c7d15193138015b28506640205c8e34
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -32,10 +36,19 @@
 
         <activity
             android:name=".MapsActivity"
+<<<<<<< HEAD
+
             android:label="@string/title_activity_maps"></activity>
+=======
+            android:label="@string/title_activity_maps" />
+>>>>>>> 3d9b823f4c7d15193138015b28506640205c8e34
         <activity
             android:name=".Register_Activity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="Register"></activity>
+
+        <activity
+            android:name=".Home_Activity"
+            android:label="Home" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
