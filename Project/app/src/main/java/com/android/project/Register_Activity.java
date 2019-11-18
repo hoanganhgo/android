@@ -2,7 +2,6 @@ package com.android.project;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -15,7 +14,7 @@ public class Register_Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
-        Log.e("Go","Come here!");
+
         userName=(EditText)findViewById(R.id.register_userName);
         passWord=(EditText)findViewById(R.id.register_passWord);
         rePassWord=(EditText)findViewById(R.id.register_repassWord);
@@ -41,7 +40,15 @@ public class Register_Activity extends Activity {
         }
         else
         {
-            Bussiness.register(userName.getText().toString(),passWord.getText().toString());
+            //Lấy lượng pin
+            int level=Bussiness.getBatteryPercentage(Register_Activity.this);
+
+            //Lấy vị trí
+            MyLocation myLocation=null;
+           // MyLocation myLocation=Bussiness.getCurrentLocation(Register_Activity.this);
+           // Log.e("hoanganh","GPS: X="+myLocation.getX()+"  Y="+myLocation.getY());
+
+            Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level, myLocation);
         }
     }
 }

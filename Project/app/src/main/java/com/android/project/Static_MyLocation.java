@@ -2,7 +2,7 @@ package com.android.project;
 
 import java.sql.Time;
 
-public class Static_Location extends Location {
+public class Static_MyLocation extends MyLocation {
     private Time checkIn;
     private Time checkOut;
 
@@ -11,7 +11,7 @@ public class Static_Location extends Location {
     public Time getCheckOut(){return this.checkOut;}
     public void setCheckOut(Time checkOut){this.checkOut=checkOut;}
 
-    public Static_Location(float coordinates_X, float coordinates_Y, Time checkIn, Time checkOut)
+    public Static_MyLocation(float coordinates_X, float coordinates_Y, Time checkIn, Time checkOut)
     {
         super(coordinates_X,coordinates_Y);
         this.checkIn=checkIn;

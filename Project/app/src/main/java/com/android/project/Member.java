@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Member {
     private String userName;
-    private Dynamic_Location location;
+    private Dynamic_MyLocation location;
     private int battery;
     private int speed;
     private boolean shareLocation;
@@ -12,7 +12,7 @@ public class Member {
     private boolean shareSpeed;
     private List<Message> mailBox;
 
-    public Member(String userName, Dynamic_Location location, int battery, int speed, boolean shareLocation, boolean shareBattery, boolean shareSpeed) {
+    public Member(String userName, Dynamic_MyLocation location, int battery, int speed, boolean shareLocation, boolean shareBattery, boolean shareSpeed) {
         this.userName = userName;
         this.location = location;
         this.battery = battery;
@@ -30,11 +30,11 @@ public class Member {
         this.userName = userName;
     }
 
-    public Dynamic_Location getLocation() {
+    public Dynamic_MyLocation getLocation() {
         return location;
     }
 
-    public void setLocation(Dynamic_Location location) {
+    public void setLocation(Dynamic_MyLocation location) {
         this.location = location;
     }
 

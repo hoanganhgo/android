@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 
     private GoogleMap mMap;
     private ConnectionHelper connectionHelper;
-    public static Connection connection=null;
+    public static Connection connection = null;
 
     private Button btnLogin;
     private EditText edUserName;
@@ -43,22 +43,20 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-       // getActionBar().hide();
+        // getActionBar().hide();
 
         getActionBar().hide();
         setContentView(R.layout.login);
 
         //Kết nối với các thành phần giao diện
-        btnLogin = (Button)findViewById(R.id.btnLogin);
-        edUserName = (EditText)findViewById(R.id.inputUser);
-        edPassWord = (EditText)findViewById(R.id.inputPass);
-        chkbxRememberMe=(CheckBox)findViewById(R.id.cb_rememberme);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        edUserName = (EditText) findViewById(R.id.inputUser);
+        edPassWord = (EditText) findViewById(R.id.inputPass);
+        chkbxRememberMe = (CheckBox) findViewById(R.id.cb_rememberme);
 
         //Cập nhật lại trạng thái trước đó của ứng dụng
         this.updateState();
 
-
-        //Khởi tạo lớp Bussiness
         //Kết nối cơ sở dữ liệu
         connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
@@ -76,15 +74,7 @@ public class MainActivity extends Activity {
         EditText edit_user=(EditText)findViewById(R.id.inputUser);
         EditText edit_pass=(EditText)findViewById(R.id.inputPass);
         boolean loginStatus = Bussiness.login(edit_user.getText().toString(),edit_pass.getText().toString());
-        if (loginStatus)
-
-        if(isRememberMe == true)
-
-        {
-            chkbxRememberMe.setChecked(true);
-            edUserName.setText(userName);
-            edPassWord.setText(passWord);
-        }
+        if (loginStatus);
     }
 
     @Override
