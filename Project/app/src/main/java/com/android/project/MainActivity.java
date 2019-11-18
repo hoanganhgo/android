@@ -45,13 +45,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-<<<<<<< HEAD
-=======
-
-        // getActionBar().hide();
-
-        getActionBar().hide();
->>>>>>> 3d9b823f4c7d15193138015b28506640205c8e34
         setContentView(R.layout.login);
 
         //Kết nối với các thành phần giao diện

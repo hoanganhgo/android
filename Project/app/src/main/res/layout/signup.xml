@@ -112,8 +112,6 @@
             android:textColor="@android:color/white"
             android:text="@string/register"
             android:onClick="register_Click"/>
-
-<<<<<<< HEAD
         <TextView
             android:id="@+id/tvLogin"
             android:clickable="true"
@@ -124,9 +122,6 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp" />
-
-=======
->>>>>>> 3d9b823f4c7d15193138015b28506640205c8e34
     </RelativeLayout>
 
 </LinearLayout>

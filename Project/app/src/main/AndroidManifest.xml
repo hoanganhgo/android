@@ -16,12 +16,7 @@
         android:label="Circle 17"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-<<<<<<< HEAD
         android:theme="@style/Theme.AppCompat">
-
-=======
-        android:theme="@style/AppTheme">
->>>>>>> 3d9b823f4c7d15193138015b28506640205c8e34
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -36,12 +31,8 @@
 
         <activity
             android:name=".MapsActivity"
-<<<<<<< HEAD
 
             android:label="@string/title_activity_maps"></activity>
-=======
-            android:label="@string/title_activity_maps" />
->>>>>>> 3d9b823f4c7d15193138015b28506640205c8e34
         <activity
             android:name=".Register_Activity"
             android:label="Register"></activity>

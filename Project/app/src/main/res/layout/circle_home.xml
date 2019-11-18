@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
-<<<<<<< HEAD
     android:background="@drawable/gradient">
 
 
@@ -18,20 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-=======
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient"
-    tools:context=".Home_Activity">
 
-    <!--<com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/circle_home_bottom"
-        android:background="@drawable/gradient"
-        />-->
->>>>>>> 3d9b823f4c7d15193138015b28506640205c8e34
 
     <Spinner
         android:id="@+id/list_circleDropdown"
@@ -85,62 +70,4 @@
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--<LinearLayout
-        android:id="@+id/under_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp">
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_background2"
-            android:textColor="#49D517"
-            android:layout_marginEnd="5dp"
-            android:text="People"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_background1"
-            android:layout_marginEnd="5dp"
-            android:text="Places"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_background"
-            android:layout_marginEnd="5dp"
-            android:text="@string/sos"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_background1"
-            android:layout_marginEnd="5dp"
-            android:text="Invite"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bt_background2"
-            android:text="Leave"
-            android:textColor="#49D517"
-            android:textSize="20sp" />
-    </LinearLayout>
--->
+  
