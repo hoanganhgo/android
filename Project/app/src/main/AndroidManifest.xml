@@ -17,7 +17,6 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main2Activity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -35,15 +34,11 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".Register_Activity"
-<<<<<<< HEAD
             android:label="Register"></activity>
-=======
-            android:label="Register" />
 
         <activity
             android:name=".Home_Activity"
-            android:label="Register" />
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
+            android:label="Home" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

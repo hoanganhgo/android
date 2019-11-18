@@ -5,17 +5,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.os.BatteryManager;
+import android.util.Log;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-<<<<<<< HEAD
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-=======
+
 import java.util.ArrayList;
 import java.util.List;
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
+
 
 public class Bussiness {
 
@@ -39,11 +40,8 @@ public class Bussiness {
         }
     }
 
-<<<<<<< HEAD
+
     public static boolean register(String userName, String passWord, int battery, MyLocation myLocation) {
-=======
-    public static boolean register(String userName, String passWord) {
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
         try {
             //truy xuất cơ sở dữ liệu sql
             Statement statement = MainActivity.connection.createStatement();
@@ -51,7 +49,6 @@ public class Bussiness {
             ResultSet resultSet = statement.executeQuery("Select MAX(ID_Account) from Account");
             resultSet.next();
             int newID = resultSet.getInt(1) + 1;
-<<<<<<< HEAD
             //Khởi tạo thời gian hiện tại
             DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
             LocalDateTime now = LocalDateTime.now();
@@ -66,16 +63,7 @@ public class Bussiness {
             //Log.e("hoanganh", "GPS: X=" + myLocation.getX() + "  Y=" + myLocation.getY());
             return true;
         } catch (SQLException e) {
-           // Log.e("hoanganh", "Insert fail");
-=======
-            //Đưa dữ liệu lên Database
-            statement.executeUpdate("Insert into Account (ID_Account, UserName, PassWord, Coordinates_X, Coordinates_Y, RealTime, Battery, Speed, Share_Location, Share_Battery, Share_Speed) "
-                    + " values (" + newID + ", '" + userName + "', '" + passWord + "', 12.2, 106.78, '2019-11-17 23:00:00', 100, 120, 1 , 1, 1)");
-            // resultSet.next();
-            Log.e("Circle17", "Insert success!");
-            return true;
-        } catch (SQLException e) {
-            Log.e("Circle17", "Insert fail");
+           // Log.e("Circle17", "Insert fail");
             e.printStackTrace();
             return false;
         }
@@ -133,13 +121,11 @@ public class Bussiness {
             return true;
         } catch (SQLException e) {
             Log.e("Circle17", "delete fail");
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
             e.printStackTrace();
             return false;
         }
     }
 
-<<<<<<< HEAD
     public static int getBatteryPercentage(Context context) {
 
         IntentFilter iFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -176,8 +162,7 @@ public class Bussiness {
         //Log.e("hoanganh", "OK!");
         return locationListener;
     }
-}
-=======
+
     public static List<String> getListCircleFromDatabase(String username) {
         List<String> listNameCircle = new ArrayList<String>();
 
@@ -216,4 +201,3 @@ public class Bussiness {
         return listNameCircle;
     }
 }
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583

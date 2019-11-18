@@ -42,10 +42,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-<<<<<<< HEAD
+
         // getActionBar().hide();
-=======
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
 
         getActionBar().hide();
         setContentView(R.layout.login);
@@ -59,10 +57,7 @@ public class MainActivity extends Activity {
         //Cập nhật lại trạng thái trước đó của ứng dụng
         this.updateState();
 
-<<<<<<< HEAD
-=======
         //Khởi tạo lớp Bussiness
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
         //Kết nối cơ sở dữ liệu
         connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
@@ -71,25 +66,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-<<<<<<< HEAD
-        Log.e(TAG_CIRCLE, "onStart");
-
-    }
-    public void login_Click(View view){
-        this.view = view;
-        EditText edit_user=(EditText)findViewById(R.id.inputUser);
-        EditText edit_pass=(EditText)findViewById(R.id.inputPass);
-        boolean loginStatus = Bussiness.login(edit_user.getText().toString(),edit_pass.getText().toString());
-        if (loginStatus);
-=======
-        if (isRememberMe == true) {
-            chkbxRememberMe.setChecked(true);
+        if(isRememberMe){
             edUserName.setText(userName);
             edPassWord.setText(passWord);
+            chkbxRememberMe.setChecked(true);
         }
         Log.e(TAG_CIRCLE, "onStart");
-
->>>>>>> 46f92cbecdb8e19412f785193b7457868de5c583
     }
 
     @Override
