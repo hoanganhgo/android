@@ -31,12 +31,12 @@ public class MainActivity extends Activity {
     private EditText edPassWord;
     private CheckBox chkbxRememberMe;
 
-    private Context context;
     private int countAccess;
     private boolean isLogin;
     private boolean isRememberMe;
     private String userName;
     private String passWord;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
