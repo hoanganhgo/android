@@ -3,22 +3,27 @@
     <item
         android:id="@+id/nav_people"
         android:icon="@drawable/ic_people"
-        android:title="@string/people" />
+        android:title="@string/people"/>
+
     <item
         android:id="@+id/nav_places"
-        android:icon="@drawable/ic_place"
-        android:title="@string/places" />
+        android:icon="@drawable/ic_places"
+        android:title="@string/places"/>
+
     <item
         android:id="@+id/nav_sos"
-        android:icon="@drawable/ic_action_pass"
+        android:icon="@drawable/ic_sos"
         android:title="@string/sos" />
+
     <item
         android:id="@+id/nav_invite"
         android:icon="@drawable/ic_invite"
         android:title="Invite" />
+
     <item
         android:id="@+id/nav_leave"
         android:icon="@drawable/ic_leave"
         android:title="@string/leave" />
+
 
 </menu>

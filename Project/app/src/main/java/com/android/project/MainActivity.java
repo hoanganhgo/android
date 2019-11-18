@@ -44,12 +44,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
-        // getActionBar().hide();
-
-        getActionBar().hide();
         setContentView(R.layout.login);
 
         //Kết nối với các thành phần giao diện
