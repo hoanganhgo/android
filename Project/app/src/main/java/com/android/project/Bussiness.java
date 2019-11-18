@@ -31,9 +31,7 @@ public class Bussiness {
         }
     }
 
-<<<<<<< HEAD
 
-=======
     public static boolean register(String userName, String passWord)
     {
         try {
@@ -55,5 +53,4 @@ public class Bussiness {
             return false;
         }
     }
->>>>>>> 339f4c41cb8e3936a4beebe4b9e770e62083f17a
 }
