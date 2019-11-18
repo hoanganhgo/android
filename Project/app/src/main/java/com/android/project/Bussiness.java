@@ -176,21 +176,26 @@ public class Bussiness {
 
             Log.e("Circle17", "ID Account: " + Integer.toString(ID_Account));
 
-            resultSet = statement.executeQuery("Select ID_Circle from Joining");// where ID_Account = " + ID_Account);
+            resultSet = statement.executeQuery("Select ID_Circle from Joining where ID_Account = " + ID_Account);
 /*            resultSet.next();
             int ID_Circle = resultSet.getInt(1);*/
-            ResultSet cur;
-            int ID_Circle;
+
+            List<Integer> ID_Circle = new ArrayList<Integer>();
             while(resultSet.next())
             {
+                ID_Circle.add(resultSet.getInt(1));
+                //Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
+            }
 
-                ID_Circle = resultSet.getInt(1);
-                Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
-                cur = statement.executeQuery("Select CircleName from Circle where ID_Circle = " + ID_Circle);
+            for(int i=0; i<ID_Circle.size(); i++)
+            {
+                String idCircleString = Integer.toString(ID_Circle.get(i));
+                Log.e("Circle17", "ID Circle: " + idCircleString);
+                ResultSet cur = statement.executeQuery("Select CircleName from Circle where ID_Circle = " + idCircleString);
                 cur.next();
-                listNameCircle.add(cur.getString(1));
-                Log.e("Circle17", "Circle name: " + cur.getString(1));
-
+                String nameCircle = cur.getString(1);
+                listNameCircle.add(nameCircle);
+                Log.e("Circle17", "Name Circle: " + nameCircle);
             }
 
             Log.e("Circle17", "Query success!");
