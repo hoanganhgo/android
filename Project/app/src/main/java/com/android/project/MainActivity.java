@@ -47,7 +47,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
-        //setContentView(R.layout.activity_main);
         setContentView(R.layout.login);
 
         //Kết nối với các thành phần giao diện

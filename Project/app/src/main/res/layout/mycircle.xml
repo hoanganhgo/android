@@ -1,180 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
+    android:background="@drawable/gradient">
 
-    android:background="@drawable/gradient"
-    tools:context=".Home_Activity">
-
-
-    <fragment
-        android:id="@+id/fragment_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-    <Spinner
-        android:id="@+id/list_circleDropdown"
-        android:layout_width="150dp"
+    <TextView
+        android:id="@+id/tv_mycircle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageButton
-        android:id="@+id/ib_chat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/bt_background"
-        android:src="@android:drawable/stat_notify_chat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:drawablePadding="25dp"
+        android:text="@string/my_circle"
+        android:textFontWeight="@integer/google_play_services_version"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp" />
 
     <ImageButton
-        android:id="@+id/ib_menu"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/maps"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="100dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/map" />
+
+    <ImageButton
+        android:id="@+id/members"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:src="@drawable/menu"
-        android:background="@drawable/bt_background" />
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/maps"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/member" />
 
-    <RelativeLayout
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@drawable/gradient"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+    <ImageButton
+        android:id="@+id/invite"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/maps"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/invitation" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/circle_home_bottom" >
+    <ImageButton
+        android:id="@+id/chatcircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/maps"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/group" />
 
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+    <ImageButton
+        android:id="@+id/staticlocation"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/invite"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/place" />
 
-    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/leavecircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/invite"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/leavecircle" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageButton
+        android:id="@+id/sos"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/invite"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/sos" />
 
-
-<!--    <?xml version="1.0" encoding="utf-8"?>-->
-<!--    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="@drawable/gradient">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_mycircle"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:drawablePadding="25dp"-->
-<!--            android:text="@string/my_circle"-->
-<!--            android:textFontWeight="@integer/google_play_services_version"-->
-<!--            android:textColor="#000000"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:textSize="30dp" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/maps"-->
-<!--            android:layout_width="150dp"-->
-<!--            android:layout_height="150dp"-->
-<!--            android:layout_marginTop="100dp"-->
-<!--            android:background="@null"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:src="@drawable/map" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/members"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginLeft="30dp"-->
-<!--            android:background="@null"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:layout_below="@+id/maps"-->
-<!--            android:layout_alignParentLeft="true"-->
-<!--            android:src="@drawable/member" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/invite"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginLeft="30dp"-->
-<!--            android:background="@null"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:layout_below="@+id/maps"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:src="@drawable/invitation" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/chatcircle"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginRight="30dp"-->
-<!--            android:background="@null"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:layout_below="@+id/maps"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:src="@drawable/group" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/staticlocation"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:layout_marginLeft="30dp"-->
-<!--            android:background="@null"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:layout_below="@+id/invite"-->
-<!--            android:layout_alignParentLeft="true"-->
-<!--            android:src="@drawable/place" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/leavecircle"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:layout_marginLeft="30dp"-->
-<!--            android:background="@null"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:layout_below="@+id/invite"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:src="@drawable/leavecircle" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/sos"-->
-<!--            android:layout_width="80dp"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:layout_marginRight="30dp"-->
-<!--            android:background="@null"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:layout_below="@+id/invite"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:src="@drawable/sos" />-->
-
-<!--    </RelativeLayout>-->
-
+</RelativeLayout>
