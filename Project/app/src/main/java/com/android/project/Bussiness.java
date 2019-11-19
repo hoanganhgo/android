@@ -310,11 +310,42 @@ public class Bussiness {
             statement.executeUpdate("Insert into Joining (ID_Join, ID_Circle, ID_Account) " +
                     " values (" + newIDJoin + ", " + ID_Circle + ", " + ID_Account + ")");
 
-            Log.e("Circle17", "Query success!");
+            Log.e("Circle17", "Insert member success!");
 
             return true;
         } catch (SQLException e) {
-            Log.e("Circle17", "Query fail");
+            Log.e("Circle17", "Insert member fail");
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    public static boolean deleteMember(String nameCircle, String userName) {
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("Select MAX(ID_Join) from Joining");
+            resultSet.next();
+            int newIDJoin = resultSet.getInt(1) + 1;
+
+            resultSet = statement.executeQuery("Select ID_Account from Account where UserName = '" + userName + "'");
+            resultSet.next();
+            int ID_Account = resultSet.getInt(1);
+
+            resultSet = statement.executeQuery("Select ID_Circle from Circle where CircleName = '" + nameCircle + "'");
+            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);
+
+            Log.e("Circle17", "ID Account: " + Integer.toString(ID_Account));
+
+            statement.executeUpdate("delete from Joining where ID_Circle = " + ID_Circle + " and ID_Account = " + ID_Account);
+
+            Log.e("Circle17", "Delete member success!");
+
+            return true;
+        } catch (SQLException e) {
+            Log.e("Circle17", "Delete member fail");
             e.printStackTrace();
 
             return false;
@@ -337,11 +368,11 @@ public class Bussiness {
             statement.executeUpdate("Insert into Static_Location (ID_Location) " + //, ID_Circle, Coordinates_X, Coordinates_Y) " +
                     " values (" + newIDLocation + ")");//", " + ID_Circle + ", " + static_myLocation.getX() + ", "
             //+ static_myLocation.getY() + ", '" + static_myLocation.getCheckIn() + "', '" + static_myLocation.getCheckOut() + "')");
-            Log.e("Circle17", "Query success!");
+            Log.e("Circle17", "Delete member success!");
 
             return true;
         } catch (SQLException e) {
-            Log.e("Circle17", "Query fail");
+            Log.e("Circle17", "Delete member fail");
             e.printStackTrace();
 
             return false;

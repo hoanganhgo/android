@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
+
+import java.util.List;
 
 public class Home_Activity extends Activity{
     ImageButton imgbtnIbMenu;
@@ -20,21 +23,35 @@ public class Home_Activity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.circle_home);
 
+        Intent callingIntent = getIntent();
+        Bundle myBundle = callingIntent.getExtras();
+        userName = myBundle.getString("userName");
         listView = (ListView) findViewById(R.id.listCircle);
 
-        //ArrayAdapter<String> data = new ArrayAdapter<String>(t);
+        final List<String> listCircleName = Bussiness.getListCircleFromDatabase(userName);
+
+        CircleAddapter circleAddapter = new CircleAddapter(this, listCircleName);
+
+        listView.setAdapter(circleAddapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Home_Activity.this, MyCircle_Activity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("nameCircle", listCircleName.get(position));
+                bundle.putString("userName", userName);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         imgbtnIbMenu = (ImageButton) findViewById(R.id.ib_menu);
         imgbtnIbMenu.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
                 // bắt gói Intent bundle từ MainActivity, lấy user name và gửi đến ChatActivity
-                Intent callingIntent = getIntent();
-                Bundle myBundle = callingIntent.getExtras();
-                userName = myBundle.getString("userName");
-
                 Bundle bundle = new Bundle();
                 bundle.putString("userName", userName);
 
