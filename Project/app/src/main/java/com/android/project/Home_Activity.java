@@ -15,7 +15,7 @@ public class Home_Activity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.circle_home);
 
-        listView = (ListView) findViewById(R.id.listCircle);
+      //  listView = (ListView) findViewById(R.id.listCircle);
 
         //ArrayAdapter<String> data = new ArrayAdapter<String>(t);
 

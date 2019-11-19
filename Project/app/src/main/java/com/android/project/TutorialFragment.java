@@ -17,8 +17,8 @@ import org.w3c.dom.Text;
  * A simple {@link Fragment} subclass.
  */
 public class TutorialFragment extends Fragment {
-    TextView textView;
 
+    private TextView textView;
     public TutorialFragment() {
         // Required empty public constructor
     }
@@ -28,8 +28,8 @@ public class TutorialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_tutorial,container,false);
-        textView = (TextView) view.findViewById(R.id.textPage);
+        View view = inflater.inflate(R.layout.tut_sample,container,false);
+        textView = (TextView) view.findViewById(R.id.texttest);
         Bundle bundle = getArguments();
         String message = Integer.toString(bundle.getInt("count"));
         textView.setText("Page " + message);
