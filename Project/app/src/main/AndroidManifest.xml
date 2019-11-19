@@ -31,6 +31,7 @@
 
         <activity
             android:name=".MapsActivity"
+
             android:label="@string/title_activity_maps"></activity>
         <activity
             android:name=".Register_Activity"
@@ -60,6 +61,7 @@
         <activity
             android:name=".sos_Activity"
             android:label="SOS" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

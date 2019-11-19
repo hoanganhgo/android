@@ -1,33 +1,21 @@
 package com.android.project;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ListActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 
-import java.util.List;
-
 public class Home_Activity extends Activity{
-    ImageButton imgbtnIbMenu;
     ListView listView;
-
-    private String userName;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.circle_home);
 
-        Intent callingIntent = getIntent();
-        Bundle myBundle = callingIntent.getExtras();
-        userName = myBundle.getString("userName");
         listView = (ListView) findViewById(R.id.listCircle);
-
 
 
         imgbtnIbMenu = (ImageButton) findViewById(R.id.ib_menu);
@@ -77,11 +65,4 @@ public class Home_Activity extends Activity{
         startActivity(intent);
     }
 
-    public void create_Circle_Click(View view) {
-        Intent intent = new Intent(this, Create_Circle_Activity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("userName", userName);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
 }
