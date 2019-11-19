@@ -36,8 +36,7 @@
         <activity
             android:name=".Register_Activity"
             android:label="Register"></activity>
-        <activity android:name=".Tutorial"
-            android:label="Tutorial"/>
+
         <activity
             android:name=".Home_Activity"
             android:label="Home" />

@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 public class SwipeAdapter extends FragmentStatePagerAdapter {
     public SwipeAdapter(FragmentManager fm) {
-
         super(fm);
     }
 
