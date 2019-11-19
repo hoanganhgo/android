@@ -31,7 +31,6 @@
 
         <activity
             android:name=".MapsActivity"
-
             android:label="@string/title_activity_maps"></activity>
         <activity
             android:name=".Register_Activity"
@@ -43,6 +42,15 @@
         <activity
             android:name=".ChatActivity"
             android:label="Chat" />
+        <activity
+            android:name=".Profile_Activity"
+            android:label="Profile" />
+        <activity
+            android:name=".Create_Circle_Activity"
+            android:label="Create Circle" />
+        <activity
+            android:name=".MyCircle_Activity"
+            android:label="My Circle" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

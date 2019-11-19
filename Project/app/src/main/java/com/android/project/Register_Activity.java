@@ -1,6 +1,7 @@
 package com.android.project;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -48,7 +49,14 @@ public class Register_Activity extends Activity {
            // MyLocation myLocation=Bussiness.getCurrentLocation(Register_Activity.this);
            // Log.e("hoanganh","GPS: X="+myLocation.getX()+"  Y="+myLocation.getY());
 
-            Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level, myLocation);
+            Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level, null);
+
+            //Chuyển sang màn hình Circle home
+            Intent intent = new Intent(this, Home_Activity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("userName", userName.getText().toString());
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 }

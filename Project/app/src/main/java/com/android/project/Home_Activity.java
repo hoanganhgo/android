@@ -44,4 +44,21 @@ public class Home_Activity extends Activity{
             }
         });
     }
+
+    public void personal_Click(View view) {
+       // Intent intent = new Intent(this, Profile_Activity.class);
+        Intent intent = new Intent(this, MyCircle_Activity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("userName", userName);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    public void create_Circle_Click(View view) {
+        Intent intent = new Intent(this, Create_Circle_Activity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("userName", userName);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }

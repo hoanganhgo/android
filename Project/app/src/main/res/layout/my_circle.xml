@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/gradient">
+    <TextView
+          android:id="@+id/tv_mycircle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:drawablePadding="25dp"
+          android:text="@string/my_circle"
+          android:textFontWeight="@integer/google_play_services_version"
+          android:textColor="#000000"
+          android:layout_centerHorizontal="true"
+          android:textSize="30dp" />
+
+    <ImageButton
+        android:id="@+id/maps"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="100dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/map" />
+
+    <ImageButton
+        android:id="@+id/members"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/maps"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/member" />
+
+    <ImageButton
+        android:id="@+id/invite"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/maps"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/invitation" />
+
+    <ImageButton
+        android:id="@+id/chatcircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/maps"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/group" />
+
+    <ImageButton
+        android:id="@+id/staticlocation"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/invite"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/place" />
+
+    <ImageButton
+        android:id="@+id/leavecircle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/invite"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/leavecircle" />
+
+    <ImageButton
+        android:id="@+id/sos"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/invite"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/sos" />
+</RelativeLayout>
