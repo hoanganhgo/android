@@ -94,6 +94,9 @@ public class Bussiness {
             statement.executeUpdate("Insert into Circle (ID_Circle, CircleName, Admin) "
                     + " values (" + newCircleID + ", '" + circle.getCircleName() + "', " + ID_Admin + ")");
             //resultSet.next();
+
+            insertMember(circle.getCircleName(),circle.getAdmin().getUserName());
+
             Log.e("hoanganh", "Insert success!");
             return true;
         } catch (SQLException e) {

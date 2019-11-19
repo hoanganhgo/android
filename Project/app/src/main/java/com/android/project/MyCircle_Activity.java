@@ -75,11 +75,7 @@ public class MyCircle_Activity extends Activity {
                 String result = Bussiness.deleteMember(nameCircle, userName)? "Success" : "Fail";
                 Toast.makeText(getApplication(), result, Toast.LENGTH_LONG).show();
                 Log.e("Circle17", "Leave: " + result);
-                Intent intentInvite = new Intent(MyCircle_Activity.this, Home_Activity.class);
-                Bundle bundleInvite = new Bundle();
-                bundleInvite.putString("userName", userName);
-                intentInvite.putExtras(bundleInvite);
-                startActivity(intentInvite);
+                finish();
             }
         });
 
@@ -122,5 +118,18 @@ public class MyCircle_Activity extends Activity {
                 startActivity(intentInvite);
             }
         });*/
+    }
+
+    public void sos_Click(View view) {
+        Intent intent = new Intent(this, sos_Activity.class);
+        startActivity(intent);
+    }
+
+    public void maps_Click(View view) {
+        Intent intent = new Intent(this, MapsActivity.class);
+
+
+
+        startActivity(intent);
     }
 }

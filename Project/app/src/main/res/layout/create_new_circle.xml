@@ -3,6 +3,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Circle"
+        android:textSize="40dp"
+        android:textFontWeight="@integer/google_play_services_version"
+        android:layout_gravity="center_horizontal"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,7 +20,7 @@
         android:text="Please enter name new circle that want to create!" />
 
     <EditText
-        android:id="@+id/input_newMember"
+        android:id="@+id/input_circleName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -22,7 +31,7 @@
         android:layout_marginRight="50dp"/>
 
     <Button
-        android:id="@+id/btn_addMember"
+        android:id="@+id/btn_addCircle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -32,7 +41,8 @@
 
         android:text="Create"
         android:angle="0"
-        android:background="@drawable/gradient"/>
+        android:background="@drawable/gradient"
+        android:onClick="create_Circle_Click"/>
 
 
 </LinearLayout>

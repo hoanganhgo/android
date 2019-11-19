@@ -5,32 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/gradient">
 
-    <FrameLayout
-        android:id="@+id/fl_inviteToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <TextView
-            android:id="@+id/tv_invite"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableStart="@drawable/ic_action_back"
-            android:drawablePadding="20dp"
-            android:gravity="center_vertical"
-            android:text="Invite"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:background="@drawable/gradient"/>
-
-    </FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invite"
+        android:textSize="40dp"
+        android:textFontWeight="@integer/google_play_services_version"
+        android:layout_gravity="center_horizontal"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="53dp"
+        android:layout_marginLeft="25dp"
         android:text="@string/invite" />
 
     <EditText
@@ -40,7 +30,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="username"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="25dp"
         android:layout_marginRight="50dp"/>
 
     <Button

@@ -21,7 +21,8 @@
         android:background="@null"
         android:scaleType="fitXY"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/map" />
+        android:src="@drawable/map"
+        android:onClick="maps_Click"/>
 
     <ImageButton
         android:id="@+id/members"
@@ -93,5 +94,6 @@
         android:scaleType="fitXY"
         android:layout_below="@+id/invite"
         android:layout_alignParentRight="true"
-        android:src="@drawable/sos" />
+        android:src="@drawable/sos"
+        android:onClick="sos_Click"/>
 </RelativeLayout>

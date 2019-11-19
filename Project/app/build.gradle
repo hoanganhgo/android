@@ -41,6 +41,7 @@ dependencies {
     // firebase
     implementation 'com.android.support:design:23.4.0'
     implementation 'com.firebaseui:firebase-ui:0.6.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
 
 }
 

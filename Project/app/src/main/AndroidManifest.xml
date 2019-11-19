@@ -57,6 +57,9 @@
         <activity
             android:name=".CircleMember_Activity"
             android:label="Circle Member" />
+        <activity
+            android:name=".sos_Activity"
+            android:label="SOS" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

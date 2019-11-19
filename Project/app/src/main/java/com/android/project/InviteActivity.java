@@ -35,11 +35,7 @@ public class InviteActivity extends Activity {
                 if(isSuccess)
                 {
                     Toast.makeText(getApplication(),"Invite Success", Toast.LENGTH_LONG).show();
-                    Intent backIntent = new Intent(InviteActivity.this, MyCircle_Activity.class);
-                    Bundle backBundle = new Bundle();
-                    backBundle.putString("nameCircle", nameCircle);
-                    backIntent.putExtras(backBundle);
-                    startActivity(backIntent);
+                    finish();
                 }
                 else
                 {

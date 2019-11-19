@@ -28,23 +28,7 @@ public class Home_Activity extends Activity{
         userName = myBundle.getString("userName");
         listView = (ListView) findViewById(R.id.listCircle);
 
-        final List<String> listCircleName = Bussiness.getListCircleFromDatabase(userName);
 
-        CircleAddapter circleAddapter = new CircleAddapter(this, listCircleName);
-
-        listView.setAdapter(circleAddapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Home_Activity.this, MyCircle_Activity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("nameCircle", listCircleName.get(position));
-                bundle.putString("userName", userName);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
 
         imgbtnIbMenu = (ImageButton) findViewById(R.id.ib_menu);
         imgbtnIbMenu.setOnClickListener(new View.OnClickListener() {
@@ -62,9 +46,31 @@ public class Home_Activity extends Activity{
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final List<String> listCircleName = Bussiness.getListCircleFromDatabase(userName);
+
+        CircleAddapter circleAddapter = new CircleAddapter(this, listCircleName);
+
+        listView.setAdapter(circleAddapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Home_Activity.this, MyCircle_Activity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("nameCircle", listCircleName.get(position));
+                bundle.putString("userName", userName);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+    }
+
     public void personal_Click(View view) {
        // Intent intent = new Intent(this, Profile_Activity.class);
-        Intent intent = new Intent(this, MyCircle_Activity.class);
+        Intent intent = new Intent(this, Profile_Activity.class);
         Bundle bundle = new Bundle();
         bundle.putString("userName", userName);
         intent.putExtras(bundle);
