@@ -207,6 +207,50 @@ public class Bussiness {
         return listNameCircle;
     }
 
+    public static List<String> getListUserFromDatabase(String nameCircle) {
+        List<String> listNameAccount = new ArrayList<String>();
+
+        Log.e("Circle17", "Get list username");
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+            ResultSet resultSet;
+            resultSet = statement.executeQuery("Select ID_Circle from Circle where CircleName = '" + nameCircle + "'");
+            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);
+
+            Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
+
+            resultSet = statement.executeQuery("Select ID_Account from Joining where ID_Circle = " + ID_Circle);
+/*            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);*/
+
+            List<Integer> ID_Account = new ArrayList<Integer>();
+            while(resultSet.next())
+            {
+                ID_Account.add(resultSet.getInt(1));
+                //Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
+            }
+
+            for(int i=0; i<ID_Account.size(); i++)
+            {
+                String idAccountString = Integer.toString(ID_Account.get(i));
+                Log.e("Circle17", "ID Account: " + idAccountString);
+                ResultSet cur = statement.executeQuery("Select UserName from Account where ID_Account = " + idAccountString);
+                cur.next();
+                String nameAccount = cur.getString(1);
+                listNameAccount.add(nameAccount);
+                Log.e("Circle17", "Name Account: " + nameCircle);
+            }
+
+            Log.e("Circle17", "Query success!");
+        } catch (SQLException e) {
+            Log.e("Circle17", "Query fail");
+            e.printStackTrace();
+        }
+        return listNameAccount;
+    }
+
     public static Circle loadCircle(String nameCircle) {
         Log.e("Circle17", "Load circle");
         Circle circle;

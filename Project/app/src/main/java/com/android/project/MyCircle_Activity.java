@@ -43,6 +43,9 @@ public class MyCircle_Activity extends Activity {
         btnstaticLocation = findViewById(R.id.staticlocation);
         btnleaveCircle = findViewById(R.id.leavecircle);
         btnsos = findViewById(R.id.sos);
+        tvNameCircle = findViewById(R.id.tv_mycircle);
+
+        tvNameCircle.setText(nameCircle);
 
         btnchatCircle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +78,17 @@ public class MyCircle_Activity extends Activity {
                 Intent intentInvite = new Intent(MyCircle_Activity.this, Home_Activity.class);
                 Bundle bundleInvite = new Bundle();
                 bundleInvite.putString("userName", userName);
+                intentInvite.putExtras(bundleInvite);
+                startActivity(intentInvite);
+            }
+        });
+
+        btnmembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentInvite = new Intent(MyCircle_Activity.this, CircleMember_Activity.class);
+                Bundle bundleInvite = new Bundle();
+                bundleInvite.putString("nameCircle", nameCircle);
                 intentInvite.putExtras(bundleInvite);
                 startActivity(intentInvite);
             }

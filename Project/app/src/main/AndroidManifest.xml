@@ -54,6 +54,9 @@
         <activity
             android:name=".InviteActivity"
             android:label="Invite" />
+        <activity
+            android:name=".CircleMember_Activity"
+            android:label="Circle Member" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
