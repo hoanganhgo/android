@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyCircle_Activity extends Activity {
     private String nameCircle;
@@ -42,17 +47,6 @@ public class MyCircle_Activity extends Activity {
 
         tvNameCircle.setText(nameCircle);
 
-        btnmaps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("userName", userName);
-                Intent intent = new Intent(MyCircle_Activity.this, MapsActivity.class);
-//                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-
         btnchatCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,11 +75,7 @@ public class MyCircle_Activity extends Activity {
                 String result = Bussiness.deleteMember(nameCircle, userName)? "Success" : "Fail";
                 Toast.makeText(getApplication(), result, Toast.LENGTH_LONG).show();
                 Log.e("Circle17", "Leave: " + result);
-                Intent intentInvite = new Intent(MyCircle_Activity.this, Home_Activity.class);
-                Bundle bundleInvite = new Bundle();
-                bundleInvite.putString("userName", userName);
-                intentInvite.putExtras(bundleInvite);
-                startActivity(intentInvite);
+                finish();
             }
         });
 
@@ -128,5 +118,18 @@ public class MyCircle_Activity extends Activity {
                 startActivity(intentInvite);
             }
         });*/
+    }
+
+    public void sos_Click(View view) {
+        Intent intent = new Intent(this, sos_Activity.class);
+        startActivity(intent);
+    }
+
+    public void maps_Click(View view) {
+        Intent intent = new Intent(this, MapsActivity.class);
+
+
+
+        startActivity(intent);
     }
 }

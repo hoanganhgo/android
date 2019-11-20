@@ -94,6 +94,9 @@ public class Bussiness {
             statement.executeUpdate("Insert into Circle (ID_Circle, CircleName, Admin) "
                     + " values (" + newCircleID + ", '" + circle.getCircleName() + "', " + ID_Admin + ")");
             //resultSet.next();
+
+            insertMember(circle.getCircleName(),circle.getAdmin().getUserName());
+
             Log.e("hoanganh", "Insert success!");
             return true;
         } catch (SQLException e) {
@@ -207,6 +210,50 @@ public class Bussiness {
         return listNameCircle;
     }
 
+    public static List<String> getListUserFromDatabase(String nameCircle) {
+        List<String> listNameAccount = new ArrayList<String>();
+
+        Log.e("Circle17", "Get list username");
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+            ResultSet resultSet;
+            resultSet = statement.executeQuery("Select ID_Circle from Circle where CircleName = '" + nameCircle + "'");
+            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);
+
+            Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
+
+            resultSet = statement.executeQuery("Select ID_Account from Joining where ID_Circle = " + ID_Circle);
+/*            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);*/
+
+            List<Integer> ID_Account = new ArrayList<Integer>();
+            while(resultSet.next())
+            {
+                ID_Account.add(resultSet.getInt(1));
+                //Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
+            }
+
+            for(int i=0; i<ID_Account.size(); i++)
+            {
+                String idAccountString = Integer.toString(ID_Account.get(i));
+                Log.e("Circle17", "ID Account: " + idAccountString);
+                ResultSet cur = statement.executeQuery("Select UserName from Account where ID_Account = " + idAccountString);
+                cur.next();
+                String nameAccount = cur.getString(1);
+                listNameAccount.add(nameAccount);
+                Log.e("Circle17", "Name Account: " + nameCircle);
+            }
+
+            Log.e("Circle17", "Query success!");
+        } catch (SQLException e) {
+            Log.e("Circle17", "Query fail");
+            e.printStackTrace();
+        }
+        return listNameAccount;
+    }
+
     public static Circle loadCircle(String nameCircle) {
         Log.e("Circle17", "Load circle");
         Circle circle;
@@ -310,11 +357,42 @@ public class Bussiness {
             statement.executeUpdate("Insert into Joining (ID_Join, ID_Circle, ID_Account) " +
                     " values (" + newIDJoin + ", " + ID_Circle + ", " + ID_Account + ")");
 
-            Log.e("Circle17", "Query success!");
+            Log.e("Circle17", "Insert member success!");
 
             return true;
         } catch (SQLException e) {
-            Log.e("Circle17", "Query fail");
+            Log.e("Circle17", "Insert member fail");
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    public static boolean deleteMember(String nameCircle, String userName) {
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("Select MAX(ID_Join) from Joining");
+            resultSet.next();
+            int newIDJoin = resultSet.getInt(1) + 1;
+
+            resultSet = statement.executeQuery("Select ID_Account from Account where UserName = '" + userName + "'");
+            resultSet.next();
+            int ID_Account = resultSet.getInt(1);
+
+            resultSet = statement.executeQuery("Select ID_Circle from Circle where CircleName = '" + nameCircle + "'");
+            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);
+
+            Log.e("Circle17", "ID Account: " + Integer.toString(ID_Account));
+
+            statement.executeUpdate("delete from Joining where ID_Circle = " + ID_Circle + " and ID_Account = " + ID_Account);
+
+            Log.e("Circle17", "Delete member success!");
+
+            return true;
+        } catch (SQLException e) {
+            Log.e("Circle17", "Delete member fail");
             e.printStackTrace();
 
             return false;
@@ -337,11 +415,11 @@ public class Bussiness {
             statement.executeUpdate("Insert into Static_Location (ID_Location) " + //, ID_Circle, Coordinates_X, Coordinates_Y) " +
                     " values (" + newIDLocation + ")");//", " + ID_Circle + ", " + static_myLocation.getX() + ", "
             //+ static_myLocation.getY() + ", '" + static_myLocation.getCheckIn() + "', '" + static_myLocation.getCheckOut() + "')");
-            Log.e("Circle17", "Query success!");
+            Log.e("Circle17", "Delete member success!");
 
             return true;
         } catch (SQLException e) {
-            Log.e("Circle17", "Query fail");
+            Log.e("Circle17", "Delete member fail");
             e.printStackTrace();
 
             return false;
