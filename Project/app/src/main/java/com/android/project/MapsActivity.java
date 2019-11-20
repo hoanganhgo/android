@@ -2,6 +2,7 @@ package com.android.project;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,18 +12,25 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    private String nameCircle;
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.circle_home);
+        setContentView(R.layout.mycircle);          ////// circle_home or mycircle
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(this);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        nameCircle = bundle.getString("nameCircle");
+        userName = bundle.getString("userName");
     }
 
 
@@ -39,9 +47,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        //My Location
+        List<Member> listMember = Bussiness.getMembers(nameCircle);
+        for(int i=0; i<listMember.size(); i++)
+        {
+            String name = listMember.get(i).getUserName();
+            if(!name.contentEquals(userName)) {
+                float coor_X = listMember.get(i).getLocation().getX();
+                float coor_Y = listMember.get(i).getLocation().getY();
+
+                LatLng yourLocation = new LatLng(coor_X, coor_Y);
+                mMap.addMarker(new MarkerOptions().position(yourLocation).title(name));
+            }
+
+        }
+
+        if (MainActivity.myLocation!=null)
+        {
+            LatLng yourLocation = new LatLng(MainActivity.myLocation.getX(), MainActivity.myLocation.getY());
+            mMap.addMarker(new MarkerOptions().position(yourLocation).title("You"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
+        }
+
+
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        /*LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 }

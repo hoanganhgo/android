@@ -1,6 +1,7 @@
 package com.android.project;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -43,12 +44,15 @@ public class Register_Activity extends Activity {
             //Lấy lượng pin
             int level=Bussiness.getBatteryPercentage(Register_Activity.this);
 
-            //Lấy vị trí
-            MyLocation myLocation=null;
-           // MyLocation myLocation=Bussiness.getCurrentLocation(Register_Activity.this);
-           // Log.e("hoanganh","GPS: X="+myLocation.getX()+"  Y="+myLocation.getY());
+            //Đăng ký
+            Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level, MainActivity.myLocation);
 
-            Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level, myLocation);
+            //Chuyển sang màn hình Circle home
+            Intent intent = new Intent(this, Home_Activity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("userName", userName.getText().toString());
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 }

@@ -6,7 +6,7 @@ public class Circle {
     private String circleName;
     private List<Member> members;
     private Member admin;
-    private Static_MyLocation locations;
+    private List<Static_MyLocation> locations;
 
     public Circle(String circleName, Member admin)
     {
@@ -14,7 +14,7 @@ public class Circle {
         this.admin = admin;
     }
 
-    public Circle(String circleName, List<Member> members, Member admin, Static_MyLocation locations) {
+    public Circle(String circleName, List<Member> members, Member admin, List<Static_MyLocation> locations) {
         this.circleName = circleName;
         this.members = members;
         this.admin = admin;
@@ -45,11 +45,11 @@ public class Circle {
         this.admin = admin;
     }
 
-    public Static_MyLocation getLocations() {
+    public List<Static_MyLocation> getLocations() {
         return locations;
     }
 
-    public void setLocations(Static_MyLocation locations) {
+    public void setLocations(List<Static_MyLocation> locations) {
         this.locations = locations;
     }
 }

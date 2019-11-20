@@ -6,9 +6,7 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+
 
     <application
         android:allowBackup="true"
@@ -31,7 +29,6 @@
 
         <activity
             android:name=".MapsActivity"
-
             android:label="@string/title_activity_maps"></activity>
         <activity
             android:name=".Register_Activity"
@@ -40,6 +37,30 @@
         <activity
             android:name=".Home_Activity"
             android:label="Home" />
+        <activity
+            android:name=".ChatActivity"
+            android:label="Chat" />
+        <activity
+            android:name=".Profile_Activity"
+            android:label="Profile" />
+        <activity
+            android:name=".Create_Circle_Activity"
+            android:label="Create Circle" />
+        <activity
+            android:name=".MyCircle_Activity"
+            android:label="My Circle" />
+        <activity
+            android:name=".InviteActivity"
+            android:label="Invite" />
+        <activity
+            android:name=".CircleMember_Activity"
+            android:label="Circle Member" />
+        <activity
+            android:name=".sos_Activity"
+            android:label="SOS" />
+        <activity
+            android:name=".StaticLocation_Activity"
+            android:label="Static Location" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,5 +69,10 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
 </manifest>
