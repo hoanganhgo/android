@@ -22,12 +22,13 @@
     </FrameLayout>
 
     <TextView
-        android:layout_below="@+id/btnInvite"
         android:id="@+id/lableListMember"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fl_circleMembertoolbar"
         android:text="Members"
         android:textAlignment="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></TextView>
+        android:textSize="20dp"></TextView>
     <ListView
 
         android:id="@+id/list_member"
@@ -43,7 +44,7 @@
         android:id="@+id/btnInvite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fl_circleMembertoolbar"
+        android:layout_below="@+id/list_member"
         android:drawableStart="@drawable/ic_action_plus"
         android:text="Invite new member"
         android:textSize="25sp"

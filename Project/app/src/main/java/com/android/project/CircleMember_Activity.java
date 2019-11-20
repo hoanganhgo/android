@@ -34,8 +34,8 @@ public class CircleMember_Activity extends Activity {
         lvMember = findViewById(R.id.list_member);
 
         tvNameCircle.setText(nameCircle);
-        CircleAddapter addapter = new CircleAddapter(this, nametest);
-        lvMember.setAdapter(addapter);
+        MemberAdapter adapter = new MemberAdapter(this, nametest);
+        lvMember.setAdapter(adapter);
 
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
