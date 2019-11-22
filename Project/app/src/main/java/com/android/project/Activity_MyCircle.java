@@ -5,16 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MyCircle_Activity extends Activity {
+public class Activity_MyCircle extends Activity {
     private String nameCircle;
     private String userName;
     private TextView tvNameCircle;
@@ -29,7 +24,7 @@ public class MyCircle_Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_circle);
+        setContentView(R.layout.activity_my_circle);
 
         final Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -52,7 +47,7 @@ public class MyCircle_Activity extends Activity {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("userName", userName);
-                Intent intent = new Intent(MyCircle_Activity.this, ChatActivity.class);
+                Intent intent = new Intent(Activity_MyCircle.this, Activity_Chat.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -61,7 +56,7 @@ public class MyCircle_Activity extends Activity {
         btninvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentInvite = new Intent(MyCircle_Activity.this, InviteActivity.class);
+                Intent intentInvite = new Intent(Activity_MyCircle.this, Activity_Invite.class);
                 Bundle bundleInvite = new Bundle();
                 bundleInvite.putString("nameCircle", nameCircle);
                 intentInvite.putExtras(bundleInvite);
@@ -82,7 +77,7 @@ public class MyCircle_Activity extends Activity {
         btnmembers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentInvite = new Intent(MyCircle_Activity.this, CircleMember_Activity.class);
+                Intent intentInvite = new Intent(Activity_MyCircle.this, Activity_CircleMember.class);
                 Bundle bundleInvite = new Bundle();
                 bundleInvite.putString("nameCircle", nameCircle);
                 intentInvite.putExtras(bundleInvite);
@@ -111,7 +106,7 @@ public class MyCircle_Activity extends Activity {
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentInvite = new Intent(MyCircle_Activity.this, InviteActivity.class);
+                Intent intentInvite = new Intent(Activity_MyCircle.this, Activity_Invite.class);
                 Bundle bundleInvite = new Bundle();
                 bundleInvite.putString("nameCircle", nameCircle);
                 intentInvite.putExtras(bundleInvite);
@@ -121,15 +116,15 @@ public class MyCircle_Activity extends Activity {
     }
 
     public void sos_Click(View view) {
-        Intent intent = new Intent(this, sos_Activity.class);
+        Intent intent = new Intent(this, Activity_SOS.class);
         startActivity(intent);
     }
 
     public void maps_Click(View view) {
-        Intent intent = new Intent(this, MapsActivity.class);
-
-
-
+        Intent intent = new Intent(this, Activity_Maps.class);
         startActivity(intent);
+    }
+
+    public void insert_new_location(View view) {
     }
 }

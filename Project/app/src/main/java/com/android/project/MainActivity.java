@@ -18,10 +18,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.maps.GoogleMap;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -29,9 +31,14 @@ public class MainActivity extends Activity implements LocationListener {
     private String TAG_CIRCLE = "Circle17";
     private String SAVE_STATE_TABLE = "saveState";
 
+    //permission
+    private static final int MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 124;
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 123;
+
     private GoogleMap mMap;
     private ConnectionHelper connectionHelper;
     public static Connection connection = null;
+    public static MyLocation myLocation = null;
 
     private Button btnLogin;
     private EditText edUserName;
@@ -51,7 +58,7 @@ public class MainActivity extends Activity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
 
         //Kết nối với các thành phần giao diện
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -67,19 +74,52 @@ public class MainActivity extends Activity implements LocationListener {
         connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
 
-        //GPS
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        //GPS ------------------------------------------------------
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+            }
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_COARSE_LOCATION);
+
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    Activity#requestPermissions
-            Log.e("Location", "Fail ");
+            //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
+            // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        assert locationManager != null;
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,  this);
     }
@@ -189,7 +229,7 @@ public class MainActivity extends Activity implements LocationListener {
         }
 
         if (loginStatus) {
-            Intent intent = new Intent(this, Home_Activity.class);
+            Intent intent = new Intent(this, Activity_Home.class);
             Bundle bundle = new Bundle();
             bundle.putString("userName", userName);
             bundle.putString("passWord", passWord);
@@ -207,7 +247,7 @@ public class MainActivity extends Activity implements LocationListener {
             return;
         }
 
-        Intent register = new Intent(this, Register_Activity.class);
+        Intent register = new Intent(this, Activity_Register.class);
         startActivity(register);
     }
 
@@ -215,6 +255,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         Log.e("LocationGPS", "lat: " + location.getLatitude());
         Log.e("LocationGPS", "lng: " + location.getLongitude());
+        myLocation=new MyLocation((float)location.getLatitude(),(float)location.getLongitude());
     }
 
     @Override

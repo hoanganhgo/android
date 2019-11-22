@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class Home_Activity extends Activity{
+public class Activity_Home extends Activity{
     ImageButton imgbtnIbMenu;
     ListView listView;
 
@@ -21,7 +21,7 @@ public class Home_Activity extends Activity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.circle_home);
+        setContentView(R.layout.activity_home);
 
         Intent callingIntent = getIntent();
         Bundle myBundle = callingIntent.getExtras();
@@ -35,11 +35,11 @@ public class Home_Activity extends Activity{
 
             @Override
             public void onClick(View view) {
-                // bắt gói Intent bundle từ MainActivity, lấy user name và gửi đến ChatActivity
+                // bắt gói Intent bundle từ MainActivity, lấy user name và gửi đến Activity_Chat
                 Bundle bundle = new Bundle();
                 bundle.putString("userName", userName);
 
-                Intent intent = new Intent(Home_Activity.this, ChatActivity.class);
+                Intent intent = new Intent(Activity_Home.this, Activity_Chat.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -58,7 +58,7 @@ public class Home_Activity extends Activity{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Home_Activity.this, MyCircle_Activity.class);
+                Intent intent = new Intent(Activity_Home.this, Activity_MyCircle.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("nameCircle", listCircleName.get(position));
                 bundle.putString("userName", userName);
@@ -69,8 +69,8 @@ public class Home_Activity extends Activity{
     }
 
     public void personal_Click(View view) {
-       // Intent intent = new Intent(this, Profile_Activity.class);
-        Intent intent = new Intent(this, Profile_Activity.class);
+       // Intent intent = new Intent(this, Activity_Profile.class);
+        Intent intent = new Intent(this, Activity_Profile.class);
         Bundle bundle = new Bundle();
         bundle.putString("userName", userName);
         intent.putExtras(bundle);
@@ -78,7 +78,7 @@ public class Home_Activity extends Activity{
     }
 
     public void create_Circle_Click(View view) {
-        Intent intent = new Intent(this, Create_Circle_Activity.class);
+        Intent intent = new Intent(this, Activity_Create_Circle.class);
         Bundle bundle = new Bundle();
         bundle.putString("userName", userName);
         intent.putExtras(bundle);

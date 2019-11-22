@@ -11,14 +11,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class Activity_Maps extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);          ////// circle_home or mycircle or activity_maps
+        setContentView(R.layout.activity_maps);          ////// activity_home or mycircle or activity_maps
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_map);
@@ -39,9 +39,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in HCMUS and move the camera
-        LatLng sydney = new LatLng(10.762618, 106.682181);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in HCMUS"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //My Location
+        if (MainActivity.myLocation!=null)
+        {
+            LatLng yourLocation = new LatLng(MainActivity.myLocation.getX(), MainActivity.myLocation.getY());
+            mMap.addMarker(new MarkerOptions().position(yourLocation).title("You"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
+        }
     }
 }

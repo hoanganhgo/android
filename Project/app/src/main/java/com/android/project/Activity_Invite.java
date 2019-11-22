@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-public class InviteActivity extends Activity {
+public class Activity_Invite extends Activity {
     private EditText edUserName;
     private Button btnInvite;
     private String nameCircle;
@@ -18,7 +18,7 @@ public class InviteActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.invite);
+        setContentView(R.layout.activity_invite);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();

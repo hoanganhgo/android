@@ -143,30 +143,6 @@ public class Bussiness {
         return (int) (batteryPct * 100);
     }
 
-    //@SuppressLint("MissingPermission")
-    public static MyLocation getCurrentLocation(Context context) {
-        /*MyLocation result=null;
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager != null) {
-            android.location.Location lastKnownLocationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastKnownLocationGPS != null) {
-                result=new MyLocation((float)lastKnownLocationGPS.getLatitude(),(float)lastKnownLocationGPS.getLongitude());
-            } else {
-                lastKnownLocationGPS = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                result=new MyLocation((float)lastKnownLocationGPS.getLatitude(),(float)lastKnownLocationGPS.getLongitude());
-            }
-            return result;
-        } else {
-            return null;
-        }*/
-        LocationManager locationManager = null;
-        MyLocation locationListener = new MyLocation();
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-     //   locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        //Log.e("hoanganh", "OK!");
-        return locationListener;
-    }
-
     public static List<String> getListCircleFromDatabase(String username) {
         List<String> listNameCircle = new ArrayList<String>();
 
@@ -423,6 +399,67 @@ public class Bussiness {
             e.printStackTrace();
 
             return false;
+        }
+    }
+
+    public static List<Member> getMembers(String nameCircle) {
+        Log.e("Circle17", "Get members");
+
+        List<Member> list_member = new ArrayList<Member>();
+        try {
+            //truy xuất cơ sở dữ liệu sql
+            Statement statement = MainActivity.connection.createStatement();
+            ResultSet resultSet;
+
+            //Tìm ID của circle và Admin theo tên của Circle
+            resultSet = statement.executeQuery("Select ID_Circle from Circle where CircleName = '" + nameCircle + "'");
+            resultSet.next();
+            int ID_Circle = resultSet.getInt(1);
+
+            //Tìm các thành viên tham gia memmber
+            Log.e("Circle17", "ID Circle: " + Integer.toString(ID_Circle));
+
+            //Lấy các thành viên tham gia trong circle
+            resultSet = statement.executeQuery("Select ID_Account from Joining where ID_Circle = " + ID_Circle);
+
+            //Lấy danh sách các ID của Account
+            List<Integer> ID_Account = new ArrayList<Integer>();
+            while (resultSet.next()) {
+                ID_Account.add(resultSet.getInt(1));
+            }
+
+            //Dựa vào danh sách ID các Account, ta tạo ra danh sách các Member
+
+            for (int i = 0; i < ID_Account.size(); i++) {
+                String idAccountString = Integer.toString(ID_Account.get(i));
+                Log.e("Circle17", "ID Account: " + idAccountString);
+                Log.e("Circle17", "start");
+                ResultSet cur = statement.executeQuery("Select *" +
+                        " from Account where ID_Account = " + idAccountString);
+                cur.next();
+                String userName = cur.getString(2);
+                Log.e("Circle17", userName);
+                float coor_x = cur.getFloat(4);
+                float coor_y = cur.getFloat(5);
+                Time time = cur.getTime(6);
+
+                int battery = cur.getInt(7);
+                int speed = cur.getInt(8);
+
+                boolean isShareLocation = cur.getInt(9) == 1 ? true : false;
+                boolean isShareBaterry = cur.getInt(10) == 1 ? true : false;
+                boolean isShareSpeed = cur.getInt(11) == 1 ? true : false;
+
+                Member member = new Member(userName, new Dynamic_MyLocation(coor_x, coor_y, time), battery, speed, isShareLocation, isShareBaterry, isShareSpeed);
+                list_member.add(member);
+            }
+
+            Log.e("Circle17", "Query success!");
+            return list_member;
+        } catch (SQLException e) {
+            Log.e("Circle17", "Query fail");
+            e.printStackTrace();
+            return null;
         }
     }
 }

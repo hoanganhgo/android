@@ -31,35 +31,35 @@
             android:value="AIzaSyBtXkHfgQxnxw-6aYQ8QcojZ4LIUe5NXwo" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activity_Maps"
             android:label="@string/title_activity_maps"></activity>
         <activity
-            android:name=".Register_Activity"
+            android:name=".Activity_Register"
             android:label="Register"></activity>
 
         <activity
-            android:name=".Home_Activity"
+            android:name=".Activity_Home"
             android:label="Home" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".Activity_Chat"
             android:label="Chat" />
         <activity
-            android:name=".Profile_Activity"
+            android:name=".Activity_Profile"
             android:label="Profile" />
         <activity
-            android:name=".Create_Circle_Activity"
+            android:name=".Activity_Create_Circle"
             android:label="Create Circle" />
         <activity
-            android:name=".MyCircle_Activity"
+            android:name=".Activity_MyCircle"
             android:label="My Circle" />
         <activity
-            android:name=".InviteActivity"
+            android:name=".Activity_Invite"
             android:label="Invite" />
         <activity
-            android:name=".CircleMember_Activity"
+            android:name=".Activity_CircleMember"
             android:label="Circle Member" />
         <activity
-            android:name=".sos_Activity"
+            android:name=".Activity_SOS"
             android:label="SOS" />
         <activity android:name=".MainActivity">
             <intent-filter>

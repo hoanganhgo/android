@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class Profile_Activity extends Activity {
+public class Activity_Profile extends Activity {
     private String userName;
     private TextView user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile);
+        setContentView(R.layout.activity_profile);
 
         user=(TextView)findViewById(R.id.userName);
 
-        //Bắt username từ Home_Activity
+        //Bắt username từ Activity_Home
         Intent callingIntent = getIntent();
         Bundle myBundle = callingIntent.getExtras();
         userName = myBundle.getString("userName");

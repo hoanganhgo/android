@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ChatActivity extends AppCompatActivity {
+public class Activity_Chat extends AppCompatActivity {
 
     private FirebaseListAdapter<Message> adapter;
 

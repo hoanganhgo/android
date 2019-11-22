@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-public class Register_Activity extends Activity {
+public class Activity_Register extends Activity {
 
     private EditText userName;
     private EditText passWord;
@@ -14,7 +14,7 @@ public class Register_Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
+        setContentView(R.layout.activity_signup);
 
         userName=(EditText)findViewById(R.id.register_userName);
         passWord=(EditText)findViewById(R.id.register_passWord);
@@ -42,17 +42,17 @@ public class Register_Activity extends Activity {
         else
         {
             //Lấy lượng pin
-            int level=Bussiness.getBatteryPercentage(Register_Activity.this);
+            int level=Bussiness.getBatteryPercentage(Activity_Register.this);
 
             //Lấy vị trí
             MyLocation myLocation=null;
-           // MyLocation myLocation=Bussiness.getCurrentLocation(Register_Activity.this);
+           // MyLocation myLocation=Bussiness.getCurrentLocation(Activity_Register.this);
            // Log.e("hoanganh","GPS: X="+myLocation.getX()+"  Y="+myLocation.getY());
 
             Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level, null);
 
             //Chuyển sang màn hình Circle home
-            Intent intent = new Intent(this, Home_Activity.class);
+            Intent intent = new Intent(this, Activity_Home.class);
             Bundle bundle = new Bundle();
             bundle.putString("userName", userName.getText().toString());
             intent.putExtras(bundle);

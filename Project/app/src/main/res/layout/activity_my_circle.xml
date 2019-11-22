@@ -70,7 +70,8 @@
         android:scaleType="fitXY"
         android:layout_below="@+id/invite"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/place" />
+        android:src="@drawable/place"
+        android:onClick="insert_new_location"/>
 
     <ImageButton
         android:id="@+id/leavecircle"
