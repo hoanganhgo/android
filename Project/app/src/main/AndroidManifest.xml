@@ -17,7 +17,7 @@
         android:label="Circle 17"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat">
+        android:theme="@style/Theme.Design.NoActionBar">
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -58,6 +58,10 @@
         <activity
             android:name=".Activity_CircleMember"
             android:label="Circle Member" />
+
+        <activity
+            android:name=".Activity_MyCircle_Home"
+            android:label="My Circle Home" />
         <activity
             android:name=".Activity_SOS"
             android:label="SOS" />

@@ -58,7 +58,7 @@ public class Activity_Home extends Activity{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(Activity_Home.this, Activity_MyCircle.class);
+                Intent intent = new Intent(Activity_Home.this, Activity_MyCircle_Home.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("nameCircle", listCircleName.get(position));
                 bundle.putString("userName", userName);

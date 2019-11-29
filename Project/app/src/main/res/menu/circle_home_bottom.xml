@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_people"
+        android:id="@+id/nav_Maps"
+        android:icon="@drawable/map1"
+        android:title="Maps" />
+
+    <item
+        android:id="@+id/nav_Members"
         android:icon="@drawable/ic_people"
-        android:title="@string/people" />
+        android:title="Members"/>
 
     <item
-        android:id="@+id/nav_places"
-        android:icon="@drawable/ic_places"
-        android:title="@string/places"/>
-
-    <item
-        android:id="@+id/nav_sos"
-        android:icon="@drawable/ic_sos"
-        android:title="@string/sos" />
-
-    <item
-        android:id="@+id/nav_invite"
-        android:icon="@drawable/ic_invite"
+        android:id="@+id/nav_Invite"
+        android:icon="@drawable/ic_addmember"
         android:title="Invite" />
 
     <item
-        android:id="@+id/nav_leave"
-        android:icon="@drawable/ic_leave"
-        android:title="@string/leave" />
+        android:id="@+id/nav_addLocation"
+        android:icon="@drawable/ic_addlocation"
+        android:title="Location" />
+
+    <item
+        android:id="@+id/nav_Sos"
+        android:icon="@drawable/sos1"
+        android:title="@string/sos" />
 
 
 </menu>

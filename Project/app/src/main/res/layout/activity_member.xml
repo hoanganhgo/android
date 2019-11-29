@@ -4,22 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient">
 
-    <FrameLayout
-        android:id="@+id/fl_circleMembertoolbar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
 
-        <TextView
-            android:id="@+id/tv_mycircle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:drawableStart="@drawable/ic_action_back"
-            android:drawablePadding="20dp"
-            android:gravity="center_vertical"
-            android:text="Family Circle"
-            android:textSize="25sp" />
-
-    </FrameLayout>
 
     <TextView
         android:layout_below="@+id/btnInvite"
@@ -43,7 +28,8 @@
         android:id="@+id/btnInvite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fl_circleMembertoolbar"
+        android:layout_marginTop="60dp"
+        android:layout_alignParentTop="true"
         android:drawableStart="@drawable/ic_action_plus"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"

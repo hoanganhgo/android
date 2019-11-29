@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Invite"
         android:textSize="40dp"
+        android:layout_marginTop="60dp"
         android:textFontWeight="@integer/google_play_services_version"
         android:layout_gravity="center_horizontal"/>
 
