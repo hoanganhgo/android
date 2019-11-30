@@ -7,6 +7,14 @@ import android.location.LocationManager;
 import android.os.BatteryManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,57 +25,36 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Bussiness {
 
-    //Nếu thông tin đăng nhập đúng sẽ trả về true
-    public static boolean login(String userName, String passWord) {
-        try {
-            //truy xuất cơ sở dữ liệu sql
-            Statement statement = MainActivity.connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("Select PassWord From Account Where UserName=" + "'" + userName + "'");
-            resultSet.next();
-            //Lấy mật khẩu tương ứng với username
-            String truePassWord = resultSet.getString(1);
-            if (truePassWord.contentEquals(passWord)) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    public static boolean register(String userName, String passWord, int battery, MyLocation myLocation, int speed){
+        //Khởi tạo thời gian hiện tại
+        DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference myRef=database.child("Account").child(userName);
+        myRef.child("PassWord").setValue(passWord);
+        if (myLocation!=null)
+        {
+            myRef.child("Coordinates_X").setValue(myLocation.getX());
+            myRef.child("Coordinates_Y").setValue(myLocation.getY());
         }
-    }
-
-
-    public static boolean register(String userName, String passWord, int battery, MyLocation myLocation) {
-        try {
-            //truy xuất cơ sở dữ liệu sql
-            Statement statement = MainActivity.connection.createStatement();
-            //Chọn ID cho tài khoản mới
-            ResultSet resultSet = statement.executeQuery("Select MAX(ID_Account) from Account");
-            resultSet.next();
-            int newID = resultSet.getInt(1) + 1;
-            //Khởi tạo thời gian hiện tại
-            DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
-
-            //Đưa dữ liệu lên Database
-            statement.executeUpdate("Insert into Account (ID_Account, UserName, PassWord, Coordinates_X, Coordinates_Y, RealTime, Battery, Speed, Share_Location, Share_Battery, Share_Speed) "
-                    + " values ("+newID+", '"+userName+"', '"+passWord+"', 0, 0, '"+now+"', "+battery+", 50, 1 , 1, 1)");
-
-            //Log.e("hoanganh", "Insert success!");
-            //Log.e("hoanganh", now.toString());
-            //Log.e("hoanganh", "Pin-> " + battery);
-            //Log.e("hoanganh", "GPS: X=" + myLocation.getX() + "  Y=" + myLocation.getY());
-            return true;
-        } catch (SQLException e) {
-           // Log.e("Circle17", "Insert fail");
-            e.printStackTrace();
-            return false;
+        else
+        {
+            myRef.child("Coordinates_X").setValue(0);
+            myRef.child("Coordinates_Y").setValue(0);
         }
+        myRef.child("RealTime").setValue(now.toString());
+        myRef.child("Battery").setValue(battery);
+        myRef.child("Speed").setValue(speed);             //viet ham lay speed
+        myRef.child("Share_Location").setValue(1);
+        myRef.child("Share_Battery").setValue(1);
+        myRef.child("Share_Speed").setValue(1);
+        return true;
     }
 
     public static boolean insertCircleToDatabase(Circle circle) {

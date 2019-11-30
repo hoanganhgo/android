@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,13 +19,21 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Objects;
 
 
 public class MainActivity extends Activity implements LocationListener {
@@ -39,6 +48,11 @@ public class MainActivity extends Activity implements LocationListener {
     private ConnectionHelper connectionHelper;
     public static Connection connection = null;
     public static MyLocation myLocation = null;
+    private DataSnapshot listAccount = null;
+    private DatabaseReference myRef=null;
+    private ValueEventListener valueEventListener=null;
+    public static int speed=0;
+
 
     private Button btnLogin;
     private EditText edUserName;
@@ -73,6 +87,22 @@ public class MainActivity extends Activity implements LocationListener {
         //Kết nối cơ sở dữ liệu
         connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
+
+        //firebase - get list account in database
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        myRef = database.child("Account");
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listAccount = dataSnapshot;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+                Log.w("firebase123", "Failed to read value.", error.toException());
+            }
+        };
 
         //GPS ------------------------------------------------------
         // Here, thisActivity is the current activity
@@ -133,6 +163,9 @@ public class MainActivity extends Activity implements LocationListener {
             chkbxRememberMe.setChecked(true);
         }
         Log.e(TAG_CIRCLE, "onStart");
+
+        //Tải lại danh sách Account
+        myRef.addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
@@ -206,42 +239,58 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     public void login_Click(View view) {
-        this.view = view;
-     //   Log.e(TAG_CIRCLE, "Clicked");
         userName = edUserName.getText().toString();
         passWord = edPassWord.getText().toString();
 
-        if (connection==null)
+        if (!isNetworkConnected() && listAccount==null)
         {
-            textStatus.setText("Please check your connection!");
+            //Log.e("firebase123","Not Connect");
+            textStatus.setText("Check your connection!");
             return;
         }
 
-        boolean loginStatus = Bussiness.login(userName, passWord);
-        /*Test
-        Circle circle = new Circle("Circletest", new Member(userName));
-        Bussiness.insertCircleToDatabase(circle);
-        Bussiness.deleteCircleToDatabase(circle);*/
-        List<String> list = Bussiness.getListCircleFromDatabase(userName);
+        //Kiểm tra tính hợp lệ của tên tài khoản
+        if (!Activity_Register.checkUserName(userName))
+        {
+            textStatus.setText("UserName is not invalid!");
+            edUserName.setFocusable(true);
+            return;
+        }
 
+        //Log.e("firebase123","heher");
+        //Kiểm tra sự tồn tại của UserName
+        if (!Activity_Register.existUserName(listAccount,userName))
+        {
+            //Log.e("firebase123","Not Exist");
+            textStatus.setText("UserName is not exist!");
+            edUserName.setFocusable(true);
+            return;
+        }
+
+        //So khớp mât khẩu
+        if (!passWord.contentEquals(Objects.requireNonNull(listAccount.child(userName).child("PassWord").getValue()).toString()))
+        {
+            textStatus.setText("Password is incorrect!");
+            edPassWord.setFocusable(true);
+            return;
+        }
+       // Log.e("firebase123",userName+" "+passWord);
+        List<String> list = Bussiness.getListCircleFromDatabase(userName);
+        //Log.e("firebase123","here1");
         for(int i=0; i<list.size(); i++){
             Log.e("CircleName: ", list.get(i));
         }
-
-        if (loginStatus) {
-            Intent intent = new Intent(this, Activity_Home.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("userName", userName);
-            bundle.putString("passWord", passWord);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        } else {
-            textStatus.setText("Username or Password is incorrect!");
-        }
+        //Log.e("firebase123","here2");
+        Intent intent = new Intent(this, Activity_Home.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("userName", userName);
+        bundle.putString("passWord", passWord);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     public void register_Click(View view) {
-        if (connection==null)
+        if (!isNetworkConnected())
         {
             textStatus.setText("Please check your connection!");
             return;
@@ -256,6 +305,10 @@ public class MainActivity extends Activity implements LocationListener {
         Log.e("LocationGPS", "lat: " + location.getLatitude());
         Log.e("LocationGPS", "lng: " + location.getLongitude());
         myLocation=new MyLocation((float)location.getLatitude(),(float)location.getLongitude());
+
+        this.speed=(int)Math.round(location.getSpeed()*3.6);
+        Log.e("LocationGPS","Speed: " + this.speed + "km/h");
+
     }
 
     @Override
@@ -271,5 +324,11 @@ public class MainActivity extends Activity implements LocationListener {
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return Objects.requireNonNull(cm).getActiveNetworkInfo() != null && Objects.requireNonNull(cm.getActiveNetworkInfo()).isConnected();
     }
 }

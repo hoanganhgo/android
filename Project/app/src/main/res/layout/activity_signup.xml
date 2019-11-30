@@ -64,7 +64,7 @@
         android:background="#DCFFFFFF"
         android:textColor="#FF000000"
         android:padding="15dp"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:textSize="15sp"
         android:autofillHints="" />
 
