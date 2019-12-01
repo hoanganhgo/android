@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import com.android.project.Bussiness;
+import com.android.project.Object.Member;
+import com.android.project.Adapter.MemberAdapter;
+import com.android.project.R;
 
 import java.util.List;
 
@@ -33,8 +38,8 @@ public class Activity_CircleMember extends Activity {
         lvMember = findViewById(R.id.list_member);
 
         tvNameCircle.setText(nameCircle);
-        MemberAdapter addapter = new MemberAdapter(this, memberList);
-        lvMember.setAdapter(addapter);
+        //MemberAdapter addapter = new MemberAdapter(this, memberList);
+        //lvMember.setAdapter(addapter);
 
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override

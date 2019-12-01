@@ -1,13 +1,13 @@
-package com.android.project;
+package com.android.project.ModelDatabase;
 
 import java.util.Date;
 
-public class Message {
+public class MessageModel {
     private String messageText;
     private String messageUser = "unknown user";
     private long messageTime;
 
-    public Message(String messageText, String messageUser) {
+    public MessageModel(String messageText, String messageUser) {
         this.messageText = messageText;
         this.messageUser = messageUser;
 
@@ -15,7 +15,7 @@ public class Message {
         messageTime = new Date().getTime();
     }
 
-    public Message(){
+    public MessageModel(){
 
     }
 

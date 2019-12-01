@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/gradient"
-    tools:context=".Activity_Register">
+    tools:context=".Activity.Activity_Register">
 
 
     <androidx.cardview.widget.CardView

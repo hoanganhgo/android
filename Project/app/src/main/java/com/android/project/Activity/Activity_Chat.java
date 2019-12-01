@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.project.ModelDatabase.MessageModel;
+import com.android.project.R;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Activity_Chat extends AppCompatActivity {
 
-    private FirebaseListAdapter<Message> adapter;
+    private FirebaseListAdapter<MessageModel> adapter;
 
     private String userName;
 
@@ -46,7 +48,7 @@ public class Activity_Chat extends AppCompatActivity {
                 FirebaseDatabase.getInstance()
                         .getReference()
                         .push()
-                        .setValue(new Message(input.getText().toString(),
+                        .setValue(new MessageModel(input.getText().toString(),
                                 userName)
                         );
 
@@ -61,10 +63,10 @@ public class Activity_Chat extends AppCompatActivity {
     private void displayChatMessages(){
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
-        adapter = new FirebaseListAdapter<Message>(this, Message.class,
+        adapter = new FirebaseListAdapter<MessageModel>(this, MessageModel.class,
                 R.layout.message, FirebaseDatabase.getInstance().getReference()) {
             @Override
-            protected void populateView(View v, Message model, int position) {
+            protected void populateView(View v, MessageModel model, int position) {
                 // Get references to the views of message.xml
                 TextView messageText = (TextView)v.findViewById(R.id.message_text);
                 TextView messageUser = (TextView)v.findViewById(R.id.message_user);

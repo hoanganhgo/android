@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.project.Bussiness;
+import com.android.project.Object.Circle;
+import com.android.project.Object.Member;
+import com.android.project.R;
 
 public class Activity_Create_Circle extends Activity {
 

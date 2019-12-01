@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.project.Bussiness;
+import com.android.project.R;
 
 public class Activity_MyCircle extends Activity {
     private String nameCircle;

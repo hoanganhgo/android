@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
 
     android:background="@drawable/gradient"
-    tools:context=".Activity_Home">
+    tools:context=".Activity.Activity_Home">
 
 
     <fragment

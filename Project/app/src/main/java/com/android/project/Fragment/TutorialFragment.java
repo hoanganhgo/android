@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Fragment;
 
 
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.android.project.R;
 
 import org.w3c.dom.Text;
 

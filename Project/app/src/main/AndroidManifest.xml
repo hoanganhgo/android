@@ -31,41 +31,41 @@
             android:value="AIzaSyBtXkHfgQxnxw-6aYQ8QcojZ4LIUe5NXwo" />
 
         <activity
-            android:name=".Activity_Maps"
+            android:name=".Activity.Activity_Maps"
             android:label="@string/title_activity_maps"></activity>
         <activity
-            android:name=".Activity_Register"
+            android:name=".Activity.Activity_Register"
             android:label="Register"></activity>
 
         <activity
-            android:name=".Activity_Home"
+            android:name=".Activity.Activity_Home"
             android:label="Home" />
         <activity
-            android:name=".Activity_Chat"
+            android:name=".Activity.Activity_Chat"
             android:label="Chat" />
         <activity
-            android:name=".Activity_Profile"
+            android:name=".Activity.Activity_Profile"
             android:label="Profile" />
         <activity
-            android:name=".Activity_Create_Circle"
+            android:name=".Activity.Activity_Create_Circle"
             android:label="Create Circle" />
         <activity
-            android:name=".Activity_MyCircle"
+            android:name=".Activity.Activity_MyCircle"
             android:label="My Circle" />
         <activity
-            android:name=".Activity_Invite"
+            android:name=".Activity.Activity_Invite"
             android:label="Invite" />
         <activity
-            android:name=".Activity_CircleMember"
+            android:name=".Activity.Activity_CircleMember"
             android:label="Circle Member" />
 
         <activity
-            android:name=".Activity_MyCircle_Home"
+            android:name=".Activity.Activity_MyCircle_Home"
             android:label="My Circle Home" />
         <activity
-            android:name=".Activity_SOS"
+            android:name=".Activity.Activity_SOS"
             android:label="SOS" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

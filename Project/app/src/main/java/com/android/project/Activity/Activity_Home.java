@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.project.Bussiness;
+import com.android.project.Adapter.CircleAddapter;
+import com.android.project.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

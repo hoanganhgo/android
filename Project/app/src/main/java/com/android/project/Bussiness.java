@@ -5,18 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.location.LocationManager;
 import android.os.BatteryManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.android.project.Activity.MainActivity;
+import com.android.project.Object.Circle;
+import com.android.project.Object.Dynamic_MyLocation;
+import com.android.project.Object.Member;
+import com.android.project.Object.MyLocation;
+import com.android.project.Object.Static_MyLocation;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,9 +27,6 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class Bussiness {

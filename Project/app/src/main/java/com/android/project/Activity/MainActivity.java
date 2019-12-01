@@ -1,9 +1,8 @@
-package com.android.project;
+package com.android.project.Activity;
 
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,8 +23,13 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.project.Activity.Activity_Home;
+import com.android.project.Activity.Activity_Register;
+import com.android.project.Bussiness;
+import com.android.project.ConnectionHelper;
+import com.android.project.Object.MyLocation;
+import com.android.project.R;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

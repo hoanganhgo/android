@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.project.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,7 +30,7 @@ public class SOS_Fragment extends Fragment {
     private String userName;
     private String circleName;
 
-    SOS_Fragment(String circleName, String userName)
+    public SOS_Fragment(String circleName, String userName)
     {
         this.circleName=circleName;
         this.userName=userName;

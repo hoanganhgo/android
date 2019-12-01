@@ -1,10 +1,8 @@
-package com.android.project;
+package com.android.project.Activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,6 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.project.Bussiness;
+import com.android.project.Fragment.AddLocation_Fragment;
+import com.android.project.Fragment.Invite_Fragment;
+import com.android.project.Fragment.Member_Fragment;
+import com.android.project.Fragment.SOS_Fragment;
+import com.android.project.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,7 +74,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
         sos_fragment = new SOS_Fragment(circleName, userName);
         addLocation_fragment = new AddLocation_Fragment();
         invite_fragment = new Invite_Fragment();
-        member_fragment = new Member_Fragment();
+        member_fragment = new Member_Fragment(circleName);
         maps_fragment = new Activity_Maps();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Activity_Maps()).commit();

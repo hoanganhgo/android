@@ -1,4 +1,6 @@
-package com.android.project;
+package com.android.project.Object;
+
+import com.android.project.ModelDatabase.MessageModel;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class Member {
     private boolean shareLocation;
     private boolean shareBattery;
     private boolean shareSpeed;
-    private List<Message> mailBox;
+    private List<MessageModel> mailBox;
 
     public Member(String userName)
     {
@@ -83,11 +85,11 @@ public class Member {
         this.shareSpeed = shareSpeed;
     }
 
-    public List<Message> getMailBox() {
+    public List<MessageModel> getMailBox() {
         return mailBox;
     }
 
-    public void setMailBox(List<Message> mailBox) {
+    public void setMailBox(List<MessageModel> mailBox) {
         this.mailBox = mailBox;
     }
 

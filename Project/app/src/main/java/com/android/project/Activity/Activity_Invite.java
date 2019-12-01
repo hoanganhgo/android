@@ -1,4 +1,4 @@
-package com.android.project;
+package com.android.project.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import com.android.project.Bussiness;
+import com.android.project.R;
 
 public class Activity_Invite extends Activity {
     private EditText edUserName;
