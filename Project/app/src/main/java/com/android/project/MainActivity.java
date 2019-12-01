@@ -3,6 +3,7 @@ package com.android.project;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,7 +53,6 @@ public class MainActivity extends Activity implements LocationListener {
     private DatabaseReference myRef=null;
     private ValueEventListener valueEventListener=null;
     public static int speed=0;
-
 
     private Button btnLogin;
     private EditText edUserName;

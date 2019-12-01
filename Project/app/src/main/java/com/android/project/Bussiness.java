@@ -1,11 +1,14 @@
 package com.android.project;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.os.BatteryManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -26,6 +29,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class Bussiness {
@@ -447,6 +452,29 @@ public class Bussiness {
             Log.e("Circle17", "Query fail");
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void notify_SOS(final Context context, String circleName, String member)
+    {
+        AlertDialog.Builder alert_sos=new AlertDialog.Builder(context);
+        alert_sos.setTitle("SOS");
+        alert_sos.setMessage("I am "+member+". We join "+circleName+" together. Please help me now!");
+        alert_sos.setIcon(R.drawable.icon_sos);
+
+// Setting Negative "NO" Btn
+        alert_sos.setNegativeButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        try{
+            alert_sos.show();
+        }catch (Exception ignored)
+        {
+            //Nothing
         }
     }
 }

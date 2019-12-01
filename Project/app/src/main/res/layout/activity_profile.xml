@@ -31,10 +31,10 @@
         android:layout_height="wrap_content"
         android:drawablePadding="25dp"
         android:layout_gravity="center_horizontal"
-        android:text="Profile"
+        android:text="@string/profile"
         android:textFontWeight="@integer/google_play_services_version"
         android:textColor="#000000"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -65,7 +65,10 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
-        android:text="Share my location" />
+        android:textSize="22sp"
+        android:checked="true"
+        android:onClick="share_locaction_change"
+        android:text="@string/share_my_location" />
 
     <Switch
         android:id="@+id/share_myBattery"
@@ -74,7 +77,10 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
-        android:text="Share my battery level" />
+        android:textSize="22sp"
+        android:checked="true"
+        android:onClick="share_battery_change"
+        android:text="@string/share_my_battery_level" />
 
     <Switch
         android:id="@+id/share_mySpeed"
@@ -83,7 +89,10 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
-        android:text="Share my speed" />
+        android:textSize="22sp"
+        android:checked="true"
+        android:onClick="share_speed_change"
+        android:text="@string/share_my_speed" />
 
     <Button
         android:id="@+id/btn_signOut"
@@ -93,7 +102,7 @@
         android:background="@drawable/bt_background"
         android:layout_gravity="center_horizontal"
         android:textColor="@android:color/white"
-        android:text="Sign-out"
+        android:text="@string/sign_out"
         android:onClick="signOut_Click"/>
 
 </LinearLayout>

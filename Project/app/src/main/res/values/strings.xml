@@ -31,5 +31,11 @@
     <string name="people">People</string>
     <string name="places">Places</string>
     <string name="leave">Leave</string>
+    <string name="share_my_location">Share my location</string>
+    <string name="share_my_battery_level">Share my battery level</string>
+    <string name="share_my_speed">Share my speed</string>
+    <string name="sign_out">Sign-out</string>
+    <string name="profile">Profile</string>
+    <string name="turn_on_sos">Turn on SOS</string>
 
 </resources>
