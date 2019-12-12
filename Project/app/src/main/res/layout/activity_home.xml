@@ -9,26 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!--<fragment
-            android:id="@+id/fragment_map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>-->
-
-
-        <!--<Spinner
-            android:id="@+id/list_circleDropdown"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown" />-->
-
-        <ListView
+              <ListView
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="130dp"
             android:id="@+id/listCircle"
@@ -43,10 +24,10 @@
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
-            android:background="@null"
-            android:scaleType="fitXY"
             android:layout_toLeftOf="@+id/personal"
-            android:src="@drawable/add"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:src="@drawable/add_button"
             android:onClick="create_Circle_Click"/>
 
         <ImageButton
@@ -56,19 +37,19 @@
             android:layout_toRightOf="@+id/personal"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
-            android:background="@null"
+            android:src="@drawable/chat_button"
             android:scaleType="fitXY"
-            android:src="@android:drawable/stat_notify_chat" />
+            android:background="@null"/>
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/personal"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bt_background"
-            android:scaleType="fitXY"
             android:src="@drawable/personal"
+            app:civ_border_color="@color/red"
+            app:civ_border_width="2dp"
             android:onClick="personal_Click"/>
 
         <TextView
