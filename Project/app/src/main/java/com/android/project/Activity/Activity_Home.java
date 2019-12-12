@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.android.project.Bussiness;
 import com.android.project.Adapter.CircleAddapter;
+import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,7 +67,7 @@ public class Activity_Home extends Activity{
 
         //Listen event SOS
         sosRef=database.child("Circles");
-        sos_event=new ValueEventListener() {
+        sos_event = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String status= Objects.requireNonNull(dataSnapshot.child("SOS").getValue()).toString();
@@ -83,12 +84,32 @@ public class Activity_Home extends Activity{
 
             }
         };
-        String[] listCircleName={"circle test 1","circle test 2", "MyCircle", "newCircle"};
+
+        final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);
+
         for (String circle : listCircleName)
         {
             Log.e("circle", circle);
             sosRef.child(circle).addValueEventListener(sos_event);
         }
+
+        Log.e("AccountChange", userName + " change");
+
+        FirebaseDatabase.getInstance().getReference().child("Account").child(userName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.e("AccountChange", userName + " change");
+                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                for (String circle : listCircleName) {
+                    FirebaseDatabase.getInstance().getReference().child("Circles").child(circle).child("Members").child(userName).setValue(userModel);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         imgbtnIbMenu = (ImageButton) findViewById(R.id.ib_menu);
         imgbtnIbMenu.setOnClickListener(new View.OnClickListener() {
@@ -109,8 +130,8 @@ public class Activity_Home extends Activity{
     @Override
     protected void onStart() {
         super.onStart();
-        final List<String> listCircleName = Bussiness.getListCircleFromDatabase(userName);
 
+        final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);
         CircleAddapter circleAddapter = new CircleAddapter(this, listCircleName);
 
         listView.setAdapter(circleAddapter);

@@ -1,4 +1,4 @@
-package com.android.project.Object;
+package com.android.project.ClassObject;
 
 import android.location.Location;
 import android.location.LocationListener;

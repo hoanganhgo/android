@@ -73,7 +73,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
 
         sos_fragment = new SOS_Fragment(circleName, userName);
         addLocation_fragment = new AddLocation_Fragment();
-        invite_fragment = new Invite_Fragment();
+        invite_fragment = new Invite_Fragment(circleName, userName);
         member_fragment = new Member_Fragment(circleName);
         maps_fragment = new Activity_Maps();
 

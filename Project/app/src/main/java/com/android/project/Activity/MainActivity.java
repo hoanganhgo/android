@@ -18,16 +18,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.android.project.Activity.Activity_Home;
-import com.android.project.Activity.Activity_Register;
 import com.android.project.Bussiness;
 import com.android.project.ConnectionHelper;
-import com.android.project.Object.MyLocation;
+import com.android.project.ClassObject.MyLocation;
 import com.android.project.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.database.DataSnapshot;
@@ -272,18 +271,14 @@ public class MainActivity extends Activity implements LocationListener {
         }
 
         //So khớp mât khẩu
-        if (!passWord.contentEquals(Objects.requireNonNull(listAccount.child(userName).child("PassWord").getValue()).toString()))
+        if (!passWord.contentEquals(Objects.requireNonNull(listAccount.child(userName).child("password").getValue()).toString()))
         {
             textStatus.setText("Password is incorrect!");
             edPassWord.setFocusable(true);
             return;
         }
        // Log.e("firebase123",userName+" "+passWord);
-        List<String> list = Bussiness.getListCircleFromDatabase(userName);
-        //Log.e("firebase123","here1");
-        for(int i=0; i<list.size(); i++){
-            Log.e("CircleName: ", list.get(i));
-        }
+
         //Log.e("firebase123","here2");
         Intent intent = new Intent(this, Activity_Home.class);
         Bundle bundle = new Bundle();
@@ -291,6 +286,8 @@ public class MainActivity extends Activity implements LocationListener {
         bundle.putString("passWord", passWord);
         intent.putExtras(bundle);
         startActivity(intent);
+
+        Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
     }
 
     public void register_Click(View view) {

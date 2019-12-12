@@ -1,4 +1,4 @@
-package com.android.project.Object;
+package com.android.project.ClassObject;
 
 import com.android.project.ModelDatabase.MessageModel;
 

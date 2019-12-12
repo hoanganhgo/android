@@ -10,8 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.android.project.ModelDatabase.JoinModel;
-import com.android.project.ModelDatabase.MemberModel;
-import com.android.project.Object.Member;
+import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +22,7 @@ import java.util.List;
 
 public class MemberAdapter extends BaseAdapter {
     private Activity activity;
-    private List<MemberModel> memberModels;
+    private List<UserModel> userModels;
     private String circleName;
     private View view;
 
@@ -35,12 +34,12 @@ public class MemberAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return memberModels.size();
+        return userModels.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return memberModels.get(position);
+        return userModels.get(position);
     }
 
     @Override
@@ -72,12 +71,12 @@ public class MemberAdapter extends BaseAdapter {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot dataaccount : dataSnapshot.getChildren())
                         {
-                            MemberModel memberModel = dataaccount.getValue(MemberModel.class);
+                            UserModel userModel = dataaccount.getValue(UserModel.class);
                             for(String username : usernames)
                             {
-                                if(username.contentEquals(memberModel.getUserName()))
+                                if(username.contentEquals(userModel.getUsername()))
                                 {
-                                    memberModels.add(memberModel);
+                                    userModels.add(userModel);
                                 }
                             }
                         }
@@ -89,9 +88,9 @@ public class MemberAdapter extends BaseAdapter {
                         TextView tvNameMember = (TextView) view.findViewById(R.id.tv_MemberName);
                         TextView tvMemberStatus = (TextView)view.findViewById(R.id.tv_MemberStatus);
 
-                        MemberModel member = memberModels.get(pos);
+                        UserModel member = userModels.get(pos);
 
-                        tvNameMember.setText(member.getUserName());
+                        tvNameMember.setText(member.getUsername());
 
                         String battery = Integer.toString(member.getBattery());
                         String speed = Integer.toString(member.getSpeed());
@@ -110,6 +109,7 @@ public class MemberAdapter extends BaseAdapter {
 
             }
         });
+
         return convertView;
     }
 }

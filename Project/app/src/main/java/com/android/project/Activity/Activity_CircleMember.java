@@ -3,25 +3,34 @@ package com.android.project.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.project.Bussiness;
-import com.android.project.Object.Member;
-import com.android.project.Adapter.MemberAdapter;
+import com.android.project.ClassObject.Member;
+import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 public class Activity_CircleMember extends Activity {
     private String nameCircle;
+    private String userName;
     private TextView tvNameCircle;
     private Button btnInvite;
     private ListView lvMember;
+    private List<String> circles = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +38,9 @@ public class Activity_CircleMember extends Activity {
         final Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         nameCircle = bundle.getString("nameCircle");
-
+        userName = bundle.getString("userName");
         //Log.e("Circle17", nameCircle);
-        List<Member> memberList = Bussiness.getMembers(nameCircle);
+        circles = Bussiness.getCircleUserJoinning(userName);
 
         tvNameCircle = findViewById(R.id.tv_mycircle);
         btnInvite = findViewById(R.id.btnInvite);
@@ -40,6 +49,24 @@ public class Activity_CircleMember extends Activity {
         tvNameCircle.setText(nameCircle);
         //MemberAdapter addapter = new MemberAdapter(this, memberList);
         //lvMember.setAdapter(addapter);
+
+        Log.e("AccountChange", userName + " change");
+
+        FirebaseDatabase.getInstance().getReference().child("Account").child("bao").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.e("AccountChange", userName + " change");
+                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                for (String circle : circles) {
+                    FirebaseDatabase.getInstance().getReference().child("Circles").child("Bao").child("Members").child(userName).setValue(userModel);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -70,9 +70,9 @@ public class Activity_MyCircle extends Activity {
         btnleaveCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String result = Bussiness.deleteMember(nameCircle, userName)? "Success" : "Fail";
-                Toast.makeText(getApplication(), result, Toast.LENGTH_LONG).show();
-                Log.e("Circle17", "Leave: " + result);
+                //String result = Bussiness.deleteMember(nameCircle, userName)? "Success" : "Fail";
+/*                Toast.makeText(getApplication(), result, Toast.LENGTH_LONG).show();
+                Log.e("Circle17", "Leave: " + result);*/
                 finish();
             }
         });
@@ -82,6 +82,7 @@ public class Activity_MyCircle extends Activity {
             public void onClick(View v) {
                 Intent intentInvite = new Intent(Activity_MyCircle.this, Activity_CircleMember.class);
                 Bundle bundleInvite = new Bundle();
+                bundleInvite.putString("userName", userName);
                 bundleInvite.putString("nameCircle", nameCircle);
                 intentInvite.putExtras(bundleInvite);
                 startActivity(intentInvite);

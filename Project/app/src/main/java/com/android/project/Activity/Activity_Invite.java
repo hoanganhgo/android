@@ -8,10 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.project.Bussiness;
+import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Activity_Invite extends Activity {
     private EditText edUserName;
@@ -33,10 +39,23 @@ public class Activity_Invite extends Activity {
         btnInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userNameMember = edUserName.getText().toString();
-                boolean isSuccess = Bussiness.insertMember(nameCircle,userNameMember);
+                final String userNameMember = edUserName.getText().toString();
+                boolean isSuccess = Bussiness.insertJoiningTable(userNameMember, nameCircle);
                 if(isSuccess)
                 {
+                    FirebaseDatabase.getInstance().getReference().child("Account").child(userNameMember)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    FirebaseDatabase.getInstance().getReference().child("Circles").child(nameCircle).child("Members")
+                                            .child(userNameMember).setValue(dataSnapshot.getValue(UserModel.class));
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                     Toast.makeText(getApplication(),"Invite Success", Toast.LENGTH_LONG).show();
                     finish();
                 }
