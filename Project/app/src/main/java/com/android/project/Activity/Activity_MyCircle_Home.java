@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +35,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
     private Invite_Fragment invite_fragment;
     private Member_Fragment member_fragment;
     private Activity_Maps maps_fragment;
+    private ImageButton btnChat;
 
 
     @Override
@@ -45,9 +48,10 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
         //Nhận dữ liệu từ Activity_Home
         Intent callingIntent=getIntent();
         Bundle bundle=callingIntent.getExtras();
-        String circleName=bundle.getString("nameCircle");
+        final String circleName=bundle.getString("nameCircle");
         final String userName=bundle.getString("userName");
 
+        btnChat = findViewById(R.id.ib_chat);
         //Read data from database.
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference sosRef=database.child("Circles");
@@ -79,6 +83,17 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Activity_Maps()).commit();
 
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("userName", userName);
+                bundle.putString("nameCircle", circleName);
+                Intent intent = new Intent(Activity_MyCircle_Home.this, Activity_Chat.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
