@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,7 @@ public class Activity_Chat extends AppCompatActivity {
     private FirebaseListAdapter<MessageModel> adapter;
 
     private String userName;
+    private String nameCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,9 @@ public class Activity_Chat extends AppCompatActivity {
         Intent callingIntent = getIntent();
         Bundle myBundle = callingIntent.getExtras();
         userName = myBundle.getString("userName");
+        nameCircle = myBundle.getString("nameCircle", "Leak");
+
+        Toast.makeText(getApplicationContext(), "nameCircle" + nameCircle, Toast.LENGTH_SHORT).show();
 
         // hiển thị tin nhắn
         displayChatMessages();
@@ -46,10 +51,9 @@ public class Activity_Chat extends AppCompatActivity {
                 // Read the input field and push a new instance
                 // of ChatMessage to the Firebase database
                 FirebaseDatabase.getInstance()
-                        .getReference()
+                        .getReference().child("RoomChat").child(nameCircle)
                         .push()
-                        .setValue(new MessageModel(input.getText().toString(),
-                                userName)
+                        .setValue(new MessageModel(input.getText().toString(), userName)
                         );
 
                 // Clear the input
@@ -64,7 +68,8 @@ public class Activity_Chat extends AppCompatActivity {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
         adapter = new FirebaseListAdapter<MessageModel>(this, MessageModel.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
+                R.layout.message, FirebaseDatabase.getInstance().getReference().child("RoomChat").child(nameCircle)
+                ) {
             @Override
             protected void populateView(View v, MessageModel model, int position) {
                 // Get references to the views of message.xml
