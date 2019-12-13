@@ -86,7 +86,7 @@ public class Activity_Register extends Activity {
         //Lấy lượng pin
         int level= Bussiness.getBatteryPercentage(Activity_Register.this);
 
-        if (!Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level, MainActivity.myLocation, MainActivity.speed))
+        if (!Bussiness.register(userName.getText().toString(),passWord.getText().toString(), level))
         {
             Toast.makeText(this,"Register faill",Toast.LENGTH_LONG).show();
             return;

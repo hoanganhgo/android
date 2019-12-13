@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class MainActivity extends Activity implements LocationListener {
+public class MainActivity extends Activity{
     private String TAG_CIRCLE = "Circle17";
     private String SAVE_STATE_TABLE = "saveState";
 
@@ -51,11 +51,9 @@ public class MainActivity extends Activity implements LocationListener {
     private GoogleMap mMap;
     private ConnectionHelper connectionHelper;
     public static Connection connection = null;
-    public static MyLocation myLocation = null;
     private DataSnapshot listAccount = null;
     private DatabaseReference myRef=null;
     private ValueEventListener valueEventListener=null;
-    public static int speed=0;
 
     private Button btnLogin;
     private EditText edUserName;
@@ -150,11 +148,6 @@ public class MainActivity extends Activity implements LocationListener {
             return;
         }
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        assert locationManager != null;
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,  this);
     }
 
     @Override
@@ -301,31 +294,7 @@ public class MainActivity extends Activity implements LocationListener {
         startActivity(register);
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.e("LocationGPS", "lat: " + location.getLatitude());
-        Log.e("LocationGPS", "lng: " + location.getLongitude());
-        myLocation=new MyLocation((float)location.getLatitude(),(float)location.getLongitude());
 
-        this.speed=(int)Math.round(location.getSpeed()*3.6);
-        Log.e("LocationGPS","Speed: " + this.speed + "km/h");
-
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

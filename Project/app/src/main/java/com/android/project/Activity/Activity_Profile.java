@@ -76,33 +76,33 @@ public class Activity_Profile extends Activity {
     public void share_locaction_change(View view) {
         if (share_location.isChecked())
         {
-            myRef.child("Share_Location").setValue(1);
+            myRef.child("share_location").setValue(1);
         }
         else
         {
-            myRef.child("Share_Location").setValue(0);
+            myRef.child("share_location").setValue(0);
         }
     }
 
     public void share_battery_change(View view) {
         if (share_battery.isChecked())
         {
-            myRef.child("Share_Battery").setValue(1);
+            myRef.child("share_battery").setValue(1);
         }
         else
         {
-            myRef.child("Share_Battery").setValue(0);
+            myRef.child("share_battery").setValue(0);
         }
     }
 
     public void share_speed_change(View view) {
         if (share_speed.isChecked())
         {
-            myRef.child("Share_Speed").setValue(1);
+            myRef.child("share_speed").setValue(1);
         }
         else
         {
-            myRef.child("Share_Speed").setValue(0);
+            myRef.child("share_speed").setValue(0);
         }
     }
 }

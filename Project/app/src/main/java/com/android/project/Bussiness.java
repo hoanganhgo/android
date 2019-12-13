@@ -32,7 +32,7 @@ import java.util.List;
 
 public class Bussiness {
 
-    public static boolean register(String userName, String passWord, int battery, MyLocation myLocation, int speed){
+    public static boolean register(String userName, String passWord, int battery){
         //Khởi tạo thời gian hiện tại
         DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("yyyy-mm-dd hh:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -41,19 +41,11 @@ public class Bussiness {
         DatabaseReference myRef=database.child("Account").child(userName);
         myRef.child("username").setValue(userName);
         myRef.child("password").setValue(passWord);
-        if (myLocation!=null)
-        {
-            myRef.child("coor_x").setValue(myLocation.getX());
-            myRef.child("coor_y").setValue(myLocation.getY());
-        }
-        else
-        {
-            myRef.child("coor_x").setValue(0);
-            myRef.child("coor_y").setValue(0);
-        }
+        myRef.child("coor_x").setValue(0);
+        myRef.child("coor_y").setValue(0);
         myRef.child("realtime").setValue((long)(new Date().getTime()));
         myRef.child("battery").setValue(battery);
-        myRef.child("speed").setValue(speed);             //viet ham lay speed
+        myRef.child("speed").setValue(0);             //viet ham lay speed
         myRef.child("share_location").setValue(1);
         myRef.child("share_battery").setValue(1);
         myRef.child("share_speed").setValue(1);

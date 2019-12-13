@@ -55,7 +55,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
         ValueEventListener sos_event=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String status= Objects.requireNonNull(dataSnapshot.child("SOS").getValue()).toString();
+                String status= Objects.requireNonNull(dataSnapshot.getValue().toString());
                 String parent=dataSnapshot.getKey();
                 if (!status.contentEquals("") && !status.contentEquals(userName))
                 {
@@ -69,7 +69,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
             }
         };
         //Create notify
-        sosRef.child(circleName).addValueEventListener(sos_event);
+        sosRef.child(circleName).child("SOS").addValueEventListener(sos_event);
 
         sos_fragment = new SOS_Fragment(circleName, userName);
         addLocation_fragment = new AddLocation_Fragment();

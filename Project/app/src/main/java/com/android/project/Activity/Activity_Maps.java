@@ -1,6 +1,8 @@
 package com.android.project.Activity;
 
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.android.project.Bussiness;
 import com.android.project.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,11 +20,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class Activity_Maps extends Fragment implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-
+    private GoogleMap mMap=null;
+    private boolean begin=false;
     SupportMapFragment mapFragment;
 
     @Nullable
@@ -36,6 +46,49 @@ public class Activity_Maps extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(this);
+
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference gpsRef=database.child("Circles");
+        //Listen event GPS
+        ValueEventListener gps_event=new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (mMap==null) {
+                    return;
+                }
+                String X = null,Y=null;
+                mMap.clear();
+                for (DataSnapshot user : dataSnapshot.getChildren())
+                {
+                    String x=user.child("coor_x").getValue().toString();
+                    String y=user.child("coor_y").getValue().toString();
+                    String name=user.getKey();
+                    if (name.contentEquals(Activity_Home.user))
+                    {
+                        X=x;
+                        Y=y;
+                        name="you";
+                    }
+                    Log.e("gps123","listen: "+name+" => "+x+"   "+y);
+                    LatLng yourLocation = new LatLng(Double.parseDouble(x),Double.parseDouble(y));
+                    mMap.addMarker(new MarkerOptions().position(yourLocation).title(name));
+                }
+
+                if (!begin)
+                {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(X),Double.parseDouble(Y))));
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
+                    begin=true;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        //Create notify
+        gpsRef.child(Activity_Home.circle_Selected).child("Members").addValueEventListener(gps_event);
     }
 
     /**
@@ -50,13 +103,5 @@ public class Activity_Maps extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        //My Location
-        if (MainActivity.myLocation!=null)
-        {
-            LatLng yourLocation = new LatLng(MainActivity.myLocation.getX(), MainActivity.myLocation.getY());
-            mMap.addMarker(new MarkerOptions().position(yourLocation).title("You"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
-        }
     }
 }

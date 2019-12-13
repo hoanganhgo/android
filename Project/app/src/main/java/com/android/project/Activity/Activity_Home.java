@@ -1,7 +1,13 @@
 package com.android.project.Activity;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +20,7 @@ import androidx.annotation.Nullable;
 
 import com.android.project.Bussiness;
 import com.android.project.Adapter.CircleAddapter;
+import com.android.project.ClassObject.MyLocation;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.google.firebase.database.DataSnapshot;
@@ -25,17 +32,20 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 import java.util.Objects;
 
-public class Activity_Home extends Activity{
+public class Activity_Home extends Activity implements LocationListener {
     ImageButton imgbtnIbMenu;
     ListView listView;
 
     private String userName;
-    private DataSnapshot dataUser=null;
-    public static boolean isDisplay=true;
+    private DataSnapshot dataUser = null;
+    public static boolean isDisplay = true;
 
-    private DatabaseReference sosRef=null;
-    private DatabaseReference myRef=null;
-    private ValueEventListener sos_event=null;
+    private DatabaseReference sosRef = null;
+    private DatabaseReference myRef = null;
+    private ValueEventListener sos_event = null;
+
+    public static String circle_Selected=null;
+    public static String user=null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,32 +59,31 @@ public class Activity_Home extends Activity{
 
         //Read data from database.
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        myRef=database.child("Account").child(userName);
+        myRef = database.child("Account").child(userName);
         //Listen event sharing
-        ValueEventListener valueEventListener=new ValueEventListener() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dataUser=dataSnapshot;
-                Log.e("notify","Run");
+                dataUser = dataSnapshot;
+                Log.e("notify", "Run");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("notify","Read sharing fail");
+                Log.e("notify", "Read sharing fail");
             }
         };
         myRef.addListenerForSingleValueEvent(valueEventListener);
 
         //Listen event SOS
-        sosRef=database.child("Circles");
+        sosRef = database.child("Circles");
         sos_event = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String status= Objects.requireNonNull(dataSnapshot.child("SOS").getValue()).toString();
-                String parent=dataSnapshot.getKey();
-                if (!status.contentEquals("") && isDisplay)
-                {
-                    Log.e("notify","Data change Home");
+                String status = Objects.requireNonNull(dataSnapshot.getValue().toString());
+                String parent = dataSnapshot.getKey();
+                if (!status.contentEquals("") && isDisplay) {
+                    Log.e("notify", "Data change Home");
                     Bussiness.notify_SOS(Activity_Home.this, parent, status);
                 }
             }
@@ -87,10 +96,9 @@ public class Activity_Home extends Activity{
 
         final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);
 
-        for (String circle : listCircleName)
-        {
+        for (String circle : listCircleName) {
             Log.e("circle", circle);
-            sosRef.child(circle).addValueEventListener(sos_event);
+            sosRef.child(circle).child("SOS").addValueEventListener(sos_event);
         }
 
         Log.e("AccountChange", userName + " change");
@@ -125,6 +133,23 @@ public class Activity_Home extends Activity{
                 startActivity(intent);
             }
         });
+
+        //GPS
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        assert locationManager != null;
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,  this);
     }
 
     @Override
@@ -139,6 +164,8 @@ public class Activity_Home extends Activity{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                circle_Selected=listCircleName.get(position);
+                user=userName;
                 Intent intent = new Intent(Activity_Home.this, Activity_MyCircle_Home.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("nameCircle", listCircleName.get(position));
@@ -155,15 +182,16 @@ public class Activity_Home extends Activity{
     protected void onStop()
     {
         super.onStop();
+        Log.e("isDisplay","false");
         isDisplay=false;
     }
 
     public void personal_Click(View view) {
        // Intent intent = new Intent(this, Activity_Profile.class);
         //Cài đặt giá trị sharing lên màn hình
-        String status_Location = Objects.requireNonNull(dataUser.child("Share_Location").getValue()).toString();
-        String status_Battery = Objects.requireNonNull(dataUser.child("Share_Battery").getValue()).toString();
-        String status_Speed = Objects.requireNonNull(dataUser.child("Share_Speed").getValue()).toString();
+        String status_Location = Objects.requireNonNull(dataUser.child("share_location").getValue()).toString();
+        String status_Battery = Objects.requireNonNull(dataUser.child("share_battery").getValue()).toString();
+        String status_Speed = Objects.requireNonNull(dataUser.child("share_speed").getValue()).toString();
 
         Intent intent = new Intent(this, Activity_Profile.class);
         Bundle bundle = new Bundle();
@@ -181,5 +209,35 @@ public class Activity_Home extends Activity{
         bundle.putString("userName", userName);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.e("LocationGPS", "lat: " + location.getLatitude());
+        Log.e("LocationGPS", "lng: " + location.getLongitude());
+        //myLocation=new MyLocation((float)location.getLatitude(),(float)location.getLongitude());
+
+        int speed =(int)Math.round(location.getSpeed()*3.6);
+        //Log.e("LocationGPS","Speed: " + this.speed + "km/h");
+
+        //set firebase
+        myRef.child("coor_x").setValue(location.getLatitude());
+        myRef.child("coor_y").setValue(location.getLongitude());
+        myRef.child("speed").setValue(speed);
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }
