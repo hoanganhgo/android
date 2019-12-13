@@ -52,9 +52,6 @@
             android:name=".Activity.Activity_Create_Circle"
             android:label="Create Circle" />
         <activity
-            android:name=".Activity.Activity_MyCircle"
-            android:label="My Circle" />
-        <activity
             android:name=".Activity.Activity_Invite"
             android:label="Invite" />
         <activity
@@ -64,9 +61,6 @@
         <activity
             android:name=".Activity.Activity_MyCircle_Home"
             android:label="My Circle Home" />
-        <activity
-            android:name=".Activity.Activity_SOS"
-            android:label="SOS" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
