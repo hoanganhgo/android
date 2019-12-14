@@ -20,15 +20,17 @@ import androidx.annotation.Nullable;
 
 import com.android.project.Bussiness;
 import com.android.project.Adapter.CircleAddapter;
-import com.android.project.ClassObject.MyLocation;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,6 +48,10 @@ public class Activity_Home extends Activity implements LocationListener {
 
     public static String circle_Selected=null;
     public static String user=null;
+    public static LatLng myLocation=null;
+
+    private ArrayList<String> lowBatteries=new ArrayList<String>();
+    private ArrayList<String> overSpeeds= new ArrayList<String>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,11 +100,40 @@ public class Activity_Home extends Activity implements LocationListener {
             }
         };
 
+        ValueEventListener help_event=new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot member : dataSnapshot.getChildren())
+                {
+                    String circleName=dataSnapshot.getRef().getParent().getKey();
+                    String memberName=member.getKey();
+                    int speed= Integer.parseInt(member.child("speed").getValue().toString());
+                    int battery=Integer.parseInt(member.child("battery").getValue().toString());
+                    if (speed>80 && !Bussiness.checkInList(member.getKey().toString(),overSpeeds))  //80km/h
+                    {
+                        Bussiness.notify_OverSpeed(Activity_Home.this,circleName,memberName);
+                        overSpeeds.add(memberName);
+                    }
+                    if (battery<10 && !Bussiness.checkInList(member.getKey().toString(),lowBatteries))  //level < 10%
+                    {
+                        Bussiness.notify_LowBattery(Activity_Home.this,circleName,memberName);
+                        lowBatteries.add(memberName);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
         final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);
 
         for (String circle : listCircleName) {
             Log.e("circle", circle);
             sosRef.child(circle).child("SOS").addValueEventListener(sos_event);
+            sosRef.child(circle).child("Members").addValueEventListener(help_event);
         }
 
         Log.e("AccountChange", userName + " change");
@@ -133,6 +168,43 @@ public class Activity_Home extends Activity implements LocationListener {
                 startActivity(intent);
             }
         });
+
+        //Luồng cập nhật pin
+        Thread thread_Battery = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        //Lấy lượng pin
+                        int level= Bussiness.getBatteryPercentage(Activity_Home.this);
+                        myRef.child("battery").setValue(level);
+                        sleep(60000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread_Battery.start();
+
+        //Luồng cập nhật thời gian thực
+        Thread thread_RealTime=new Thread(){
+            @Override
+            public void run(){
+                try{
+                    while(true)
+                    {
+                        long realTime=(long)(new Date().getTime());
+                        //Log.e("test123","realtime: "+realTime);
+                        myRef.child("realtime").setValue(realTime);
+                        sleep(10000);
+                    }
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread_RealTime.start();
 
         //GPS
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -223,6 +295,7 @@ public class Activity_Home extends Activity implements LocationListener {
         //set firebase
         myRef.child("coor_x").setValue(location.getLatitude());
         myRef.child("coor_y").setValue(location.getLongitude());
+        myLocation=new LatLng(location.getLatitude(),location.getLongitude());
         myRef.child("speed").setValue(speed);
     }
 

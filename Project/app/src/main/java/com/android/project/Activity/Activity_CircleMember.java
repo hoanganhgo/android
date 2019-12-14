@@ -47,8 +47,6 @@ public class Activity_CircleMember extends Activity {
         lvMember = findViewById(R.id.list_member);
 
         tvNameCircle.setText(nameCircle);
-        //MemberAdapter addapter = new MemberAdapter(this, memberList);
-        //lvMember.setAdapter(addapter);
 
         Log.e("AccountChange", userName + " change");
 

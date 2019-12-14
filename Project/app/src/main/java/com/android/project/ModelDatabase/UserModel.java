@@ -8,7 +8,7 @@ public class UserModel {
     private float coor_x;
     private float coor_y;
     private long realtime;
-    private int share_locatioon;
+    private int share_location;
     private int share_battery;
     private int share_speed;
 
@@ -17,15 +17,15 @@ public class UserModel {
     }
 
     public UserModel(int battery, float coordinates_X, float coordinates_Y,
-                     String passWord, int share_Battery,
+                     String passWord, int share_Battery, long realTime,
                      int share_Location, int share_Speed, int speed, String username){
         this.battery = battery;
         this.coor_x = coordinates_X;
         this.coor_y = coordinates_Y;
         this.password = passWord;
-//        this.RealTime = realTime;
+        this.realtime = realTime;
         this.share_battery = share_Battery;
-        this.share_locatioon = share_Location;
+        this.share_location = share_Location;
         this.share_speed = share_Speed;
         this.speed = speed;
         this.username = username;
@@ -55,10 +55,10 @@ public class UserModel {
     }
 
     public int getShare_location() {
-        return share_locatioon;
+        return share_location;
     }
     public void setShareLocation(int shareLocation) {
-        this.share_locatioon = shareLocation;
+        this.share_location = shareLocation;
     }
 
     public int getShare_battery() {

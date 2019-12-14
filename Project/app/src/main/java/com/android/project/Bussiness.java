@@ -1,6 +1,7 @@
 package com.android.project;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,11 +10,6 @@ import android.os.BatteryManager;
 import android.util.Log;
 
 import com.android.project.Activity.MainActivity;
-import com.android.project.ClassObject.Circle;
-import com.android.project.ClassObject.Dynamic_MyLocation;
-import com.android.project.ClassObject.Member;
-import com.android.project.ClassObject.MyLocation;
-import com.android.project.ClassObject.Static_MyLocation;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,7 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -57,6 +52,14 @@ public class Bussiness {
         IntentFilter iFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = context.registerReceiver(null, iFilter);
 
+        BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent intent) {
+                int level = intent.getIntExtra("level", 0);
+                Log.e("test", String.valueOf(level) + "%");
+            }
+        };
+
         int level = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) : -1;
         int scale = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1) : -1;
 
@@ -86,6 +89,64 @@ public class Bussiness {
         {
             //Nothing
         }
+    }
+
+    public static void notify_OverSpeed(final Context context, String circleName, String member)
+    {
+        AlertDialog.Builder alert_sos=new AlertDialog.Builder(context);
+        alert_sos.setTitle("Over Speed");
+        alert_sos.setMessage(member+" is over speed!\n(Circle: "+circleName+")");
+        alert_sos.setIcon(R.drawable.speedometer);
+
+// Setting Negative "NO" Btn
+        alert_sos.setNegativeButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        try{
+            alert_sos.show();
+        }catch (Exception ignored)
+        {
+            //Nothing
+        }
+    }
+
+    public static void notify_LowBattery(final Context context, String circleName, String member)
+    {
+        AlertDialog.Builder alert_sos=new AlertDialog.Builder(context);
+        alert_sos.setTitle("SOS");
+        alert_sos.setMessage("Battery of "+member+" is very low!\n(Circle: "+circleName+")");
+        alert_sos.setIcon(R.drawable.lowbattery);
+
+// Setting Negative "NO" Btn
+        alert_sos.setNegativeButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        try{
+            alert_sos.show();
+        }catch (Exception ignored)
+        {
+            //Nothing
+        }
+    }
+
+    public static boolean checkInList(String member, ArrayList<String> array)
+    {
+        for (String item : array)
+        {
+            if (member.contentEquals(item))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static List<String> getCircleUserJoinning(String username) {

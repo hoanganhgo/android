@@ -238,11 +238,24 @@ public class MainActivity extends Activity{
         userName = edUserName.getText().toString();
         passWord = edPassWord.getText().toString();
 
-        if (!isNetworkConnected() && listAccount==null)
+        if (!isNetworkConnected())
         {
             //Log.e("firebase123","Not Connect");
             textStatus.setText("Check your connection!");
             return;
+        }
+        else
+        {
+            if (listAccount==null)
+            {
+//                Thread thread = new Thread() {
+//                    @Override
+//                    public void run() {
+//                        myRef.addListenerForSingleValueEvent(valueEventListener);
+//                    }
+//                };
+                finish();
+            }
         }
 
         //Kiểm tra tính hợp lệ của tên tài khoản

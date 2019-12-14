@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class Activity_Maps extends Fragment implements OnMapReadyCallback {
@@ -56,17 +57,34 @@ public class Activity_Maps extends Fragment implements OnMapReadyCallback {
                 if (mMap==null) {
                     return;
                 }
-                String X = null,Y=null;
+                String x = null,y=null;
+                if (Activity_Home.myLocation!=null && !begin)
+                {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(Activity_Home.myLocation));
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
+                    begin=true;
+                }
                 mMap.clear();
                 for (DataSnapshot user : dataSnapshot.getChildren())
                 {
-                    String x=user.child("coor_x").getValue().toString();
-                    String y=user.child("coor_y").getValue().toString();
+                    if (user.child("share_location").getValue().toString().contentEquals("0"))
+                    {
+                        continue;
+                    }
+                    long realTime=Long.parseLong(user.child("realtime").getValue().toString());
+                    long present=(long)(new Date().getTime());
+                    long time = present-realTime;         //miliseconds
+                    if (time>60000)
+                    {
+                        continue;            //Vượt quá thời gian để định vị
+                    }
+
+                    x=user.child("coor_x").getValue().toString();
+                    y=user.child("coor_y").getValue().toString();
                     String name=user.getKey();
+                    assert name != null;
                     if (name.contentEquals(Activity_Home.user))
                     {
-                        X=x;
-                        Y=y;
                         name="you";
                     }
                     Log.e("gps123","listen: "+name+" => "+x+"   "+y);
@@ -74,9 +92,9 @@ public class Activity_Maps extends Fragment implements OnMapReadyCallback {
                     mMap.addMarker(new MarkerOptions().position(yourLocation).title(name));
                 }
 
-                if (!begin)
+                if (!begin && x!=null)
                 {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(X),Double.parseDouble(Y))));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(x),Double.parseDouble(y))));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
                     begin=true;
                 }

@@ -3,6 +3,7 @@ package com.android.project.Activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 @SuppressLint("Registered")
@@ -36,6 +38,9 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
     private Member_Fragment member_fragment;
     private Activity_Maps maps_fragment;
     private ImageButton btnChat;
+
+    private ArrayList<String> lowBatteries=new ArrayList<String>();
+    private ArrayList<String> overSpeeds= new ArrayList<String>();
 
 
     @Override
@@ -72,8 +77,38 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
 
             }
         };
+
+        ValueEventListener help_event=new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot member : dataSnapshot.getChildren())
+                {
+                    String circleName=dataSnapshot.getRef().getParent().getKey();
+                    String memberName=member.getKey();
+                    int speed= Integer.parseInt(member.child("speed").getValue().toString());
+                    int battery=Integer.parseInt(member.child("battery").getValue().toString());
+                    if (speed>80 && !Bussiness.checkInList(memberName,overSpeeds))  //80km/h
+                    {
+                        Log.e("test1234","Speed; "+speed+", Battery: "+battery);
+                        Bussiness.notify_OverSpeed(Activity_MyCircle_Home.this,circleName,memberName);
+                        overSpeeds.add(memberName);
+                    }
+                    if (battery<10 && !Bussiness.checkInList(memberName,lowBatteries))  //level < 10%
+                    {
+                        Bussiness.notify_LowBattery(Activity_MyCircle_Home.this,circleName,memberName);
+                        lowBatteries.add(memberName);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
         //Create notify
         sosRef.child(circleName).child("SOS").addValueEventListener(sos_event);
+        sosRef.child(circleName).child("Members").addValueEventListener(help_event);
 
         sos_fragment = new SOS_Fragment(circleName, userName);
         addLocation_fragment = new AddLocation_Fragment();
