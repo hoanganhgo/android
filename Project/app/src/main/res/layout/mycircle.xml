@@ -20,7 +20,7 @@
     </FrameLayout>
 
 
-    <Spinner
+<!--    <Spinner
         android:id="@+id/list_circleDropdown"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -28,7 +28,15 @@
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         android:layout_centerInParent="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true" />-->
+
+<!--    <EditText
+        android:hint="Enter your address..."
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"/>-->
 
 
     <ImageButton

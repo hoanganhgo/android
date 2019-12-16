@@ -1,6 +1,5 @@
 package com.android.project.Activity;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
-import com.android.project.Bussiness;
 import com.android.project.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,18 +24,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class Activity_Maps extends Fragment implements OnMapReadyCallback {
 
-    private GoogleMap mMap=null;
-    private boolean begin=false;
-    SupportMapFragment mapFragment;
+    private GoogleMap mMap = null;
+    private boolean begin = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_maps,container,false);
+        final View view = inflater.inflate(R.layout.activity_maps, container, false);
+        return view;
     }
 
     @Override
@@ -49,54 +45,49 @@ public class Activity_Maps extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
 
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference gpsRef=database.child("Circles");
+        DatabaseReference gpsRef = database.child("Circles");
         //Listen event GPS
-        ValueEventListener gps_event=new ValueEventListener() {
+        ValueEventListener gps_event = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (mMap==null) {
+                if (mMap == null) {
                     return;
                 }
-                String x = null,y=null;
-                if (Activity_Home.myLocation!=null && !begin)
-                {
+                String x = null, y = null;
+                if (Activity_Home.myLocation != null && !begin) {
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(Activity_Home.myLocation));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
-                    begin=true;
+                    begin = true;
                 }
                 mMap.clear();
-                for (DataSnapshot user : dataSnapshot.getChildren())
-                {
-                    if (user.child("share_location").getValue().toString().contentEquals("0"))
-                    {
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
+                    if (user.child("share_location").getValue().toString().contentEquals("0")) {
                         continue;
                     }
-                    long realTime=Long.parseLong(user.child("realtime").getValue().toString());
-                    long present=(long)(new Date().getTime());
-                    long time = present-realTime;         //miliseconds
-                    if (time>60000)
-                    {
+                    long realTime = Long.parseLong(user.child("realtime").getValue().toString());
+                    long present = (long) (new Date().getTime());
+                    long time = present - realTime;         //miliseconds
+                    if (time > 60000) {
                         continue;            //Vượt quá thời gian để định vị
                     }
 
-                    x=user.child("coor_x").getValue().toString();
-                    y=user.child("coor_y").getValue().toString();
-                    String name=user.getKey();
+                    x = user.child("coor_x").getValue().toString();
+                    y = user.child("coor_y").getValue().toString();
+                    String name = user.getKey();
                     assert name != null;
-                    if (name.contentEquals(Activity_Home.user))
-                    {
-                        name="you";
+                    if (name.contentEquals(Activity_Home.user)) {
+                        name = "you";
                     }
-                    Log.e("gps123","listen: "+name+" => "+x+"   "+y);
-                    LatLng yourLocation = new LatLng(Double.parseDouble(x),Double.parseDouble(y));
+                    Log.e("gps123", "listen: " + name + " => " + x + "   " + y);
+                    LatLng yourLocation = new LatLng(Double.parseDouble(x), Double.parseDouble(y));
                     mMap.addMarker(new MarkerOptions().position(yourLocation).title(name));
+                    //FirebaseDatabase.getInstance().getReference().child()
                 }
 
-                if (!begin && x!=null)
-                {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(x),Double.parseDouble(y))));
+                if (!begin && x != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(x), Double.parseDouble(y))));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
-                    begin=true;
+                    begin = true;
                 }
             }
 

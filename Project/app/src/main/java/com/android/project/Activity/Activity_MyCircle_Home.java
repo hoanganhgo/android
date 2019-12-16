@@ -31,13 +31,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @SuppressLint("Registered")
-public class Activity_MyCircle_Home extends AppCompatActivity {
+public class Activity_MyCircle_Home extends AppCompatActivity{
     private AddLocation_Fragment addLocation_fragment;
     private SOS_Fragment sos_fragment;
     private Invite_Fragment invite_fragment;
     private Member_Fragment member_fragment;
     private Activity_Maps maps_fragment;
     private ImageButton btnChat;
+    private ImageButton btnLeave;
 
     private ArrayList<String> lowBatteries=new ArrayList<String>();
     private ArrayList<String> overSpeeds= new ArrayList<String>();
@@ -57,6 +58,8 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
         final String userName=bundle.getString("userName");
 
         btnChat = findViewById(R.id.ib_chat);
+        btnLeave = findViewById(R.id.ib_leave);
+
         //Read data from database.
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference sosRef=database.child("Circles");
@@ -111,7 +114,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
         sosRef.child(circleName).child("Members").addValueEventListener(help_event);
 
         sos_fragment = new SOS_Fragment(circleName, userName);
-        addLocation_fragment = new AddLocation_Fragment();
+        addLocation_fragment = new AddLocation_Fragment(circleName);
         invite_fragment = new Invite_Fragment(circleName, userName);
         member_fragment = new Member_Fragment(circleName);
         maps_fragment = new Activity_Maps();
@@ -127,6 +130,13 @@ public class Activity_MyCircle_Home extends AppCompatActivity {
                 Intent intent = new Intent(Activity_MyCircle_Home.this, Activity_Chat.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+            }
+        });
+
+        btnLeave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
