@@ -3,6 +3,7 @@ package com.android.project.Fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ import com.android.project.HttpDataHander;
 import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.ModelDatabase.StaticLocationModel;
 import com.android.project.R;
+import com.bumptech.glide.load.model.ImageVideoWrapper;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +50,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
 
 public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap = null;
@@ -92,8 +97,11 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
                     public void onClick(View v) {
                         String nameLocaion = ((EditText) customDialog.findViewById(R.id.edName)).getText().toString();
                         String address = ((EditText) customDialog.findViewById(R.id.edAddress)).getText().toString();
+                        String checkin = ((TextView) customDialog.findViewById(R.id.tvCheckin)).getText().toString();
+                        String checkout = ((TextView) customDialog.findViewById(R.id.tvCheckout)).getText().toString();
+
                         if (address.contentEquals("") == false && nameLocaion.contentEquals("") == false) {
-                            findLocation(nameLocaion, address);
+                            findLocation(nameLocaion, address, checkin, checkout);
                         }
                         customDialog.dismiss();
                     }
@@ -104,6 +112,44 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
                         customDialog.dismiss();
                     }
                 });
+                customDialog.findViewById(R.id.settingCheckin).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Calendar calendar = Calendar.getInstance();
+                        int hour_now = calendar.get(Calendar.HOUR);
+                        int minute_now = calendar.get(Calendar.MINUTE);
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(mainActivity, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                calendar.set(0,0,0,hourOfDay,minute,0);
+                                String checkin = StaticLocationModel.calendarToString(calendar);
+                                ((TextView)customDialog.findViewById(R.id.tvCheckin)).setText(checkin);
+                            }
+                        }, hour_now, minute_now, true);
+
+                        timePickerDialog.show();
+                    }
+                });
+                customDialog.findViewById(R.id.settingCheckout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Calendar calendar = Calendar.getInstance();
+                        int hour_now = calendar.get(Calendar.HOUR);
+                        int minute_now = calendar.get(Calendar.MINUTE);
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(mainActivity, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                calendar.set(0,0,0,hourOfDay,minute,0);
+                                String checkin = StaticLocationModel.calendarToString(calendar);
+                                ((TextView)customDialog.findViewById(R.id.tvCheckout)).setText(checkin);
+                            }
+                        }, hour_now, minute_now, true);
+
+                        timePickerDialog.show();
+                    }
+                });
+
+
                 customDialog.show();
             }
         });
@@ -139,40 +185,64 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
 
                         final Dialog detailDialog = new Dialog(mainActivity);
                         detailDialog.setContentView(R.layout.dialog_detail_location);
+
+                        //Lấy item được chọn
                         final StaticLocationModel staticLocationModel = adapter.getItem(position);
+
+                        //set lại dữ liệu cho view
                         final EditText edName = (EditText)detailDialog.findViewById(R.id.edDetailName);
                         edName.setText(staticLocationModel.getName());
 
+                        //set lại dữ liệu cho view
                         final EditText edAddress = (EditText)detailDialog.findViewById(R.id.edDetailAddress);
                         edAddress.setText(staticLocationModel.getAddress());
 
+                        //set lại dữ liệu cho view
+                        final TextView tvCheckin = (TextView) detailDialog.findViewById(R.id.tvDetailCheckin);
+                        tvCheckin.setText(staticLocationModel.getCheckin());
+
+                        //set lại dữ liệu cho view
+                        final TextView tvCheckout = (TextView) detailDialog.findViewById(R.id.tvDetailCheckout);
+                        tvCheckout.setText(staticLocationModel.getCheckout());
+
+                        //Sự kiện người dùng nhấn button OK
                         ((Button)detailDialog.findViewById(R.id.btnDetailOK)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
+                                //Kiểm tra sự thay đổi trên view để tiến hành cập nhật
                                 boolean isChangeName = !(edName.getText().toString().contentEquals(staticLocationModel.getName())) &
                                         !(edName.getText().toString().contentEquals(""));
                                 boolean isChangeAddress = !(edAddress.getText().toString().contentEquals(staticLocationModel.getAddress())) &
                                         !(edAddress.getText().toString().contentEquals(""));
+                                boolean isChangeCheckin = !(tvCheckin.getText().toString().contentEquals(staticLocationModel.getCheckin()));
+                                boolean isChangeCheckout = !(tvCheckout.getText().toString().contentEquals(staticLocationModel.getCheckout()));
 
-                                if(isChangeName){
+                                if(isChangeName || isChangeCheckin || isChangeCheckout){
                                     staticLocationModel.setName(edName.getText().toString());
+                                    staticLocationModel.setCheckin(tvCheckin.getText().toString());
+                                    staticLocationModel.setCheckout(tvCheckout.getText().toString());
+
                                     updateStaticLocation(staticLocationModel, UPDATE_MODE);
                                 }
+
                                 if(isChangeAddress){
                                     Log.e("isChangeAddress", "isChangeAddress");
                                     updateStaticLocation(staticLocationModel, DELETE_MODE);
-                                    findLocation(edName.getText().toString(), edAddress.getText().toString());
+                                    findLocation(edName.getText().toString(), edAddress.getText().toString(), staticLocationModel.getCheckin(), staticLocationModel.getCheckout());
                                 }
                                 detailDialog.dismiss();
                             }
                         });
+
+                        ////Sự kiện người dùng nhấn button Cancel
                         ((Button)detailDialog.findViewById(R.id.btnDetailCancel)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 detailDialog.dismiss();
                             }
                         });
+
+                        //Sự kiện người dùng nhấn button move camera
                         ((Button)detailDialog.findViewById(R.id.btnMoveCamera)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -180,11 +250,53 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(staticLocationModel.getCoor_x(), staticLocationModel.getCoor_y()), 10f));
                             }
                         });
+
+                        //Sự kiện người dùng nhấn button delete
                         ((Button)detailDialog.findViewById(R.id.btnDelete)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 detailDialog.dismiss();
                                 updateStaticLocation(staticLocationModel, DELETE_MODE);
+                            }
+                        });
+
+                        //Sự kiện người dùng nhấn button setting checkin
+                        ((ImageButton)detailDialog.findViewById(R.id.settingDetailCheckin)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final Calendar calendar = Calendar.getInstance();
+                                int hour_now = calendar.get(Calendar.HOUR);
+                                int minute_now = calendar.get(Calendar.MINUTE);
+                                TimePickerDialog timePickerDialog = new TimePickerDialog(mainActivity, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        calendar.set(0,0,0,hourOfDay,minute,0);
+                                        String checkin = StaticLocationModel.calendarToString(calendar);
+                                        ((TextView)detailDialog.findViewById(R.id.tvDetailCheckin)).setText(checkin);
+                                    }
+                                }, hour_now, minute_now, true);
+
+                                timePickerDialog.show();
+                            }
+                        });
+
+                        //Sự kiện người dùng nhấn button setting checkout
+                        ((ImageButton)detailDialog.findViewById(R.id.settingDetailCheckout)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final Calendar calendar = Calendar.getInstance();
+                                int hour_now = calendar.get(Calendar.HOUR);
+                                int minute_now = calendar.get(Calendar.MINUTE);
+                                TimePickerDialog timePickerDialog = new TimePickerDialog(mainActivity, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        calendar.set(0,0,0,hourOfDay,minute,0);
+                                        String checkin = StaticLocationModel.calendarToString(calendar);
+                                        ((TextView)detailDialog.findViewById(R.id.tvDetailCheckout)).setText(checkin);
+                                    }
+                                }, hour_now, minute_now, true);
+
+                                timePickerDialog.show();
                             }
                         });
 
@@ -230,15 +342,17 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
         mMap = googleMap;
     }
 
-    public void findLocation(String name, String address){
-        Pair<String, String> location = new Pair<String, String>(name, address);
+    public void findLocation(String name, String address, String checkin, String checkout){
+        String[] location = {name, address, checkin, checkout};
         new AddLocation_Fragment.GetCoordinates().execute(location);
     }
 
-    private class GetCoordinates extends AsyncTask<Pair, Void, String> {
+    private class GetCoordinates extends AsyncTask<String[], Void, String> {
         ProgressDialog dialog = new ProgressDialog(mainActivity);
         String address;
         String name;
+        String checkin;
+        String checkout;
 
         @Override
         protected void onPreExecute() {
@@ -249,15 +363,18 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
         }
 
         @Override
-        protected String doInBackground(Pair... pairs) {
+        protected String doInBackground(String[]... strings) {
             String response = "";
             String API_KEY = getText(R.string.google_maps_key).toString();
             Log.e("API_KEY", "API_KEY: " + API_KEY);
 
             try {
-                Pair location = pairs[0];
-                name = location.first.toString();
-                address = location.second.toString();
+                String[] location = strings[0];
+                name = location[0];
+                address = location[1];
+                checkin = location[2];
+                checkout = location[3];
+
                 HttpDataHander httpDataHander = new HttpDataHander();
                 String url = String.format
                         ("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", address, API_KEY);
@@ -299,7 +416,7 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
 /*                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
                     mMap.moveCamera(CameraUpdateFactory.zoomTo(10.0f));*/
 
-                    updateStaticLocation(new StaticLocationModel(name, address, Double.parseDouble(lat), Double.parseDouble(lng)), ADD_MODE);
+                    updateStaticLocation(new StaticLocationModel(name, address, Double.parseDouble(lat), Double.parseDouble(lng), checkin, checkout), ADD_MODE);
                     drawLocation(newLocation);
                     if (dialog.isShowing()) {
                         dialog.dismiss();
