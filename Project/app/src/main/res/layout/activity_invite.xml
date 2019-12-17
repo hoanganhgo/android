@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="320dp"
     android:layout_height="match_parent"
-    tools:context=".Activity.MainActivity"
     android:orientation="vertical"
-    android:background="@drawable/gradient">
-
+    android:padding="20dp"
+    android:background="#ffffff">
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Invite"
-        android:textSize="40dp"
-        android:layout_marginTop="60dp"
-        android:textFontWeight="@integer/google_play_services_version"
-        android:layout_gravity="center_horizontal"/>
-
-    <TextView
+        android:textColor="#000000"
+        android:textSize="25dp"
+        android:text="Add Member"
+        android:textAlignment="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="25dp"
-        android:text="@string/invite" />
-
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:textColor="#000000"
+        android:text="Name: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <EditText
-        android:id="@+id/input_newMember"
+        android:background="#a6a7ab"
+        android:id="@+id/edInviteName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="username"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="50dp"/>
+        android:hint="Enter username..."
+        android:textColorHint="#000000"
+        android:textColor="#000000"/>
 
-    <Button
-        android:id="@+id/btn_addMember"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
+    <LinearLayout
         android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <Button
+            android:id="@+id/btnInviteCancel"
+            android:text="Cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"/>
 
-        android:layout_marginRight="50dp"
-
-        android:text="Invite"
-        android:angle="0"
-        android:background="@drawable/gradient"/>
-
+        <Button
+            android:id="@+id/btnInviteOK"
+            android:text="OK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"/>
+    </LinearLayout>
 </LinearLayout>

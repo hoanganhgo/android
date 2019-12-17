@@ -1,25 +1,33 @@
 package com.android.project.Fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.project.Activity.Activity_MyCircle_Home;
+import com.android.project.Bussiness;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +63,6 @@ public class Member_Fragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.list_member);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members");
-
 
         FirebaseListAdapter<UserModel> adapter = new FirebaseListAdapter<UserModel>(mainActivity, UserModel.class,
                 R.layout.member_item, databaseReference) {
@@ -112,6 +119,59 @@ public class Member_Fragment extends Fragment {
             }
         };
         listView.setAdapter(adapter);
+
+        ImageButton addMember = view.findViewById(R.id.btnAddmember);
+        addMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog customDialog = new Dialog(view.getContext());
+                customDialog.setContentView(R.layout.activity_invite);
+
+                customDialog.findViewById(R.id.btnInviteOK).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final String userName = ((EditText) customDialog.findViewById(R.id.edInviteName)).getText().toString();
+
+                        if (userName.contentEquals("") == false) {
+                            boolean isSuccess = Bussiness.insertJoiningTable(userName, circleName);
+                            if(isSuccess)
+                            {
+                                FirebaseDatabase.getInstance().getReference().child("Account").child(userName)
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members")
+                                                        .child(userName).setValue(dataSnapshot.getValue(UserModel.class));
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                Toast.makeText(mainActivity,"Invite Success", Toast.LENGTH_LONG).show();
+
+                            }
+                            else
+                            {
+                                Toast.makeText(mainActivity,"Account not exits", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        customDialog.dismiss();
+                    }
+                });
+
+                customDialog.findViewById(R.id.btnInviteCancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        customDialog.dismiss();
+                    }
+                });
+
+                customDialog.show();
+
+            }
+        });
 
         return view;
     }

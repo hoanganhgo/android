@@ -10,15 +10,16 @@
         android:icon="@drawable/ic_people"
         android:title="Members"/>
 
-    <item
-        android:id="@+id/nav_Invite"
-        android:icon="@drawable/ic_addmember"
-        android:title="Invite" />
 
     <item
         android:id="@+id/nav_addLocation"
         android:icon="@drawable/ic_addlocation"
         android:title="Location" />
+
+    <item
+        android:id="@+id/nav_History"
+        android:icon="@drawable/ic_people"
+        android:title="History" />
 
     <item
         android:id="@+id/nav_Sos"

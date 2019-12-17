@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.android.project.Bussiness;
 import com.android.project.Fragment.AddLocation_Fragment;
+import com.android.project.Fragment.History_Fragment;
 import com.android.project.Fragment.Invite_Fragment;
 import com.android.project.Fragment.Member_Fragment;
 import com.android.project.Fragment.SOS_Fragment;
@@ -35,6 +36,8 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
     private AddLocation_Fragment addLocation_fragment;
     private SOS_Fragment sos_fragment;
     private Invite_Fragment invite_fragment;
+    private History_Fragment history_fragment;
+
     private Member_Fragment member_fragment;
     private Activity_Maps maps_fragment;
     private ImageButton btnChat;
@@ -118,6 +121,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
         invite_fragment = new Invite_Fragment(circleName, userName);
         member_fragment = new Member_Fragment(circleName);
         maps_fragment = new Activity_Maps();
+        history_fragment = new History_Fragment(circleName, userName);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Activity_Maps()).commit();
 
@@ -145,8 +149,8 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.nav_Invite:
-                    InitializeFragment(invite_fragment);
+                case R.id.nav_History:
+                    InitializeFragment(history_fragment);
                     return true;
                 case R.id.nav_Members:
                     InitializeFragment(member_fragment);

@@ -2,6 +2,7 @@ package com.android.project.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +21,8 @@ import androidx.annotation.Nullable;
 
 import com.android.project.Bussiness;
 import com.android.project.Adapter.CircleAddapter;
+import com.android.project.ModelDatabase.HistoryModel;
+import com.android.project.ModelDatabase.StaticLocationModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.google.android.gms.maps.model.LatLng;
@@ -30,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +53,9 @@ public class Activity_Home extends Activity implements LocationListener {
     public static String circle_Selected=null;
     public static String user=null;
     public static LatLng myLocation=null;
+
+    private List<String> listCircleName = null;
+    private List<String> listLocationArrived = new ArrayList<String>();
 
     private ArrayList<String> lowBatteries=new ArrayList<String>();
     private ArrayList<String> overSpeeds= new ArrayList<String>();
@@ -100,7 +107,7 @@ public class Activity_Home extends Activity implements LocationListener {
             }
         };
 
-        ValueEventListener help_event=new ValueEventListener() {
+        ValueEventListener help_event = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot member : dataSnapshot.getChildren())
@@ -128,7 +135,7 @@ public class Activity_Home extends Activity implements LocationListener {
             }
         };
 
-        final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);
+        listCircleName = Bussiness.getCircleUserJoinning(userName);
 
         for (String circle : listCircleName) {
             Log.e("circle", circle);
@@ -138,6 +145,9 @@ public class Activity_Home extends Activity implements LocationListener {
 
         Log.e("AccountChange", userName + " change");
 
+
+
+        //Đồng bộ thông tin của user tới các nhánh của circle mà user đó tham gia
         FirebaseDatabase.getInstance().getReference().child("Account").child(userName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -154,9 +164,9 @@ public class Activity_Home extends Activity implements LocationListener {
             }
         });
 
+        //Mở danh sách các phòng chat
         imgbtnIbMenu = (ImageButton) findViewById(R.id.ib_menu);
         imgbtnIbMenu.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 // bắt gói Intent bundle từ MainActivity, lấy user name và gửi đến Activity_Chat
@@ -236,7 +246,7 @@ public class Activity_Home extends Activity implements LocationListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                circle_Selected=listCircleName.get(position);
+                circle_Selected = listCircleName.get(position);
                 user=userName;
                 Intent intent = new Intent(Activity_Home.this, Activity_MyCircle_Home.class);
                 Bundle bundle = new Bundle();
@@ -251,11 +261,10 @@ public class Activity_Home extends Activity implements LocationListener {
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
-        Log.e("isDisplay","false");
-        isDisplay=false;
+        Log.e("isDisplay", "false");
+        isDisplay = false;
     }
 
     public void personal_Click(View view) {
@@ -292,11 +301,35 @@ public class Activity_Home extends Activity implements LocationListener {
         int speed =(int)Math.round(location.getSpeed()*3.6);
         //Log.e("LocationGPS","Speed: " + this.speed + "km/h");
 
+        double coor_x = location.getLatitude();
+        double coor_y = location.getLongitude();
+
+/*        double coor_x = 10.762913;
+        double coor_y = 106.6821717;*/
+
         //set firebase
-        myRef.child("coor_x").setValue(location.getLatitude());
-        myRef.child("coor_y").setValue(location.getLongitude());
-        myLocation=new LatLng(location.getLatitude(),location.getLongitude());
+        myRef.child("coor_x").setValue(coor_x);
+        myRef.child("coor_y").setValue(coor_y);
+        myLocation=new LatLng(coor_x, coor_y);
         myRef.child("speed").setValue(speed);
+
+        /*HistoryModel historyModel = new HistoryModel(userName, String.format("%s has arrived %s", userName, "KHTN"));
+
+        //Đẩy lịch sử lên firebase
+        FirebaseDatabase.getInstance().getReference().child("Circles").child("abc").child("History").push().setValue(historyModel);
+
+        historyModel = new HistoryModel(userName, String.format("%s has arrived %s", "hoanganh", "KHTN"));
+
+        //Đẩy lịch sử lên firebase
+        FirebaseDatabase.getInstance().getReference().child("Circles").child("abc").child("History").push().setValue(historyModel);*/
+        //Kiểm tra xem có tới địa điểm nào trong StaticLocation hay không
+        //Nếu có thì tiến hành đẩy history lên.
+
+        Calendar calendar_now = Calendar.getInstance();
+        for(String circle : listCircleName)
+        {
+            checkInCheckOut(coor_x, coor_y, calendar_now, userName, circle);
+        }
     }
 
     @Override
@@ -312,5 +345,110 @@ public class Activity_Home extends Activity implements LocationListener {
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    private void checkInCheckOut(final double coor_x, final double coor_y, final Calendar calendar, final String user, final String nameCircle){
+        Log.e("checkInCheckOut", "checkInCheckOut " + nameCircle);
+
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        calendar.set(0,0,0, hour, minute, 0);
+
+        FirebaseDatabase.getInstance().getReference().child("Circles").child(nameCircle).child("StaticLocation").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    StaticLocationModel staticLocationModel = data.getValue(StaticLocationModel.class);
+
+                    Calendar checkin = StaticLocationModel.stringToCalendar(staticLocationModel.getCheckin());
+                    Calendar checkout = StaticLocationModel.stringToCalendar(staticLocationModel.getCheckout());
+                    String nameLocation = staticLocationModel.getName();
+
+                    Log.e("checkInCheckOut", "checkInCheckOut " + staticLocationModel.getName());
+
+                    //Nếu thời điểm checkin nhỏ hơn checkout
+                    if (checkin.compareTo(checkout) == -1) {
+                        //Kiểm tra nếu thời điểm người dùng thay đổi vị trí có nằm trong thời gian checkin checkout thì tiến hành kiểm tra
+                        //vị trí của người dùng so với vị trí của Địa điểm. Nếu bán kính dưới 50m thì tiến hành đẩy một thông báo lên.
+                        if ((checkin.compareTo(calendar) < 1) && (checkout.compareTo(calendar) > -1)) {
+                            double locationCoor_x = staticLocationModel.getCoor_x();
+                            double locationCoor_y = staticLocationModel.getCoor_y();
+                            Log.e("HistoryCompare", "true");
+                            if (distanceBetween2Points(coor_x, coor_y, locationCoor_x, locationCoor_y) < 0.05) {
+                                boolean arrived = false;
+                                for (String locationArrived : listLocationArrived) {
+                                    if (locationArrived.contentEquals(staticLocationModel.getName())) {
+                                        arrived = true;
+                                        break;
+                                    }
+                                }
+
+                                if (arrived == false)
+                                {
+                                    listLocationArrived.add(staticLocationModel.getName());
+
+                                    //Tạo một lịch sử
+                                    HistoryModel historyModel = new HistoryModel(user, String.format("%s has arrived %s", user, nameLocation));
+
+                                    //Đẩy lịch sử lên firebase
+                                    FirebaseDatabase.getInstance().getReference().child("Circles").child(nameCircle).child("History").push().setValue(historyModel);
+                                }
+                            } else {
+                                boolean arrived = false;
+                                for (String locationArrived : listLocationArrived) {
+                                    if (locationArrived.contentEquals(staticLocationModel.getName())) {
+                                        arrived = true;
+                                        listLocationArrived.remove(locationArrived);
+                                        break;
+                                    }
+                                }
+
+                                if (arrived) {
+                                    //Tạo một lịch sử
+                                    HistoryModel historyModel = new HistoryModel(user, String.format("%s has left %s", user, nameLocation));
+
+                                    //Đẩy lịch sử lên firebase
+                                    FirebaseDatabase.getInstance().getReference().child("Circles").child(nameCircle).child("History").push().setValue(historyModel);
+                                }
+                            }
+                        }
+
+                    } else {
+                        if ((checkin.compareTo(calendar) > -1) && (checkout.compareTo(calendar) < 1)) {
+                            double locationCoor_x = staticLocationModel.getCoor_x();
+                            double locationCoor_y = staticLocationModel.getCoor_y();
+
+                            if(distanceBetween2Points(coor_x, coor_y, locationCoor_x, locationCoor_y) < 0.05){
+                                //Tạo một lịch sử
+                                HistoryModel historyModel = new HistoryModel(user, String.format("%s has arrived %s", user, nameLocation));
+
+                                //Đẩy lịch sử lên firebase
+                                FirebaseDatabase.getInstance().getReference().child("Circles").child(nameCircle).child("History").push().setValue(historyModel);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public double distanceBetween2Points(double la1, double lo1, double la2, double lo2) {
+        double R = 6.371;
+        double dLat = (la2 - la1) * (Math.PI / 180);
+        double dLon = (lo2 - lo1) * (Math.PI / 180);
+        double la1ToRad = la1 * (Math.PI / 180);
+        double la2ToRad = la2 * (Math.PI / 180);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(la1ToRad)
+                * Math.cos(la2ToRad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c;
+        return d;
     }
 }

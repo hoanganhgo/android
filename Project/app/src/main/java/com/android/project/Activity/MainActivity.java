@@ -292,7 +292,6 @@ public class MainActivity extends Activity{
         bundle.putString("passWord", passWord);
         intent.putExtras(bundle);
         startActivity(intent);
-
         Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
     }
 

@@ -1,15 +1,11 @@
 package com.android.project.Fragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +24,9 @@ import androidx.fragment.app.Fragment;
 
 import com.android.project.Activity.Activity_MyCircle_Home;
 import com.android.project.HttpDataHander;
-import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.ModelDatabase.StaticLocationModel;
 import com.android.project.R;
-import com.bumptech.glide.load.model.ImageVideoWrapper;
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -506,4 +499,5 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
                 });
 
     }
+
 }
