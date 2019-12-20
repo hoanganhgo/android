@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class Activity_Profile extends Activity {
     private Switch share_location;
     private Switch share_speed;
     private Switch share_battery;
+    ProgressBar progressBar;
 
     private DatabaseReference myRef=null;
     @Override
@@ -37,6 +39,7 @@ public class Activity_Profile extends Activity {
         share_location=(Switch)findViewById(R.id.share_myLocation);
         share_speed=(Switch)findViewById(R.id.share_mySpeed);
         share_battery=(Switch)findViewById(R.id.share_myBattery);
+        progressBar=(ProgressBar)findViewById(R.id.progressBar_cyclic3);
 
         //Bắt username và sharing status từ Activity_Home
         Intent callingIntent = getIntent();
@@ -70,7 +73,10 @@ public class Activity_Profile extends Activity {
 
 
     public void signOut_Click(View view) {
-        finish();
+        progressBar.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void share_locaction_change(View view) {

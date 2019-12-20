@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +42,7 @@ import java.util.Objects;
 public class Activity_Home extends Activity implements LocationListener {
     ImageButton imgbtnIbMenu;
     ListView listView;
+    ProgressBar progressBar;
 
     private String userName;
     private DataSnapshot dataUser = null;
@@ -69,6 +71,7 @@ public class Activity_Home extends Activity implements LocationListener {
         Bundle myBundle = callingIntent.getExtras();
         userName = myBundle.getString("userName");
         listView = (ListView) findViewById(R.id.listCircle);
+        progressBar=(ProgressBar)findViewById(R.id.progressBar_cyclic2);
 
         //Read data from database.
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -237,6 +240,7 @@ public class Activity_Home extends Activity implements LocationListener {
     @Override
     protected void onStart() {
         super.onStart();
+        progressBar.setVisibility(View.INVISIBLE);
 
         final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);
         CircleAddapter circleAddapter = new CircleAddapter(this, listCircleName);
@@ -246,6 +250,7 @@ public class Activity_Home extends Activity implements LocationListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                progressBar.setVisibility(View.VISIBLE);
                 circle_Selected = listCircleName.get(position);
                 user=userName;
                 Intent intent = new Intent(Activity_Home.this, Activity_MyCircle_Home.class);
@@ -345,6 +350,13 @@ public class Activity_Home extends Activity implements LocationListener {
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+    @Override
+    public void onBackPressed() {
+        progressBar.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void checkInCheckOut(final double coor_x, final double coor_y, final Calendar calendar, final String user, final String nameCircle){

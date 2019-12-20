@@ -3,20 +3,20 @@ package com.android.project.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +36,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Connection;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -67,7 +66,7 @@ public class MainActivity extends Activity{
     private String userName;
     private String passWord;
     private View view;
-
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +74,9 @@ public class MainActivity extends Activity{
         //setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_login);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
+
         //Kết nối với các thành phần giao diện
-        btnLogin = (Button) findViewById(R.id.btnLogin);
         edUserName = (EditText) findViewById(R.id.inputUser);
         edPassWord = (EditText) findViewById(R.id.inputPass);
         chkbxRememberMe = (CheckBox) findViewById(R.id.cb_rememberme);
@@ -153,6 +153,8 @@ public class MainActivity extends Activity{
     @Override
     protected void onStart() {
         super.onStart();
+        progressBar.setVisibility(View.INVISIBLE);
+
         if(isRememberMe){
             edUserName.setText(userName);
             edPassWord.setText(passWord);
@@ -237,7 +239,7 @@ public class MainActivity extends Activity{
     public void login_Click(View view) {
         userName = edUserName.getText().toString();
         passWord = edPassWord.getText().toString();
-
+        progressBar.setVisibility(View.VISIBLE);
         if (!isNetworkConnected())
         {
             //Log.e("firebase123","Not Connect");
@@ -276,6 +278,8 @@ public class MainActivity extends Activity{
             return;
         }
 
+        //hash password
+        passWord=Bussiness.hash(passWord);
         //So khớp mât khẩu
         if (!passWord.contentEquals(Objects.requireNonNull(listAccount.child(userName).child("password").getValue()).toString()))
         {
@@ -283,6 +287,8 @@ public class MainActivity extends Activity{
             edPassWord.setFocusable(true);
             return;
         }
+
+
        // Log.e("firebase123",userName+" "+passWord);
 
         //Log.e("firebase123","here2");
@@ -296,6 +302,7 @@ public class MainActivity extends Activity{
     }
 
     public void register_Click(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         if (!isNetworkConnected())
         {
             textStatus.setText("Please check your connection!");
@@ -312,5 +319,11 @@ public class MainActivity extends Activity{
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return Objects.requireNonNull(cm).getActiveNetworkInfo() != null && Objects.requireNonNull(cm.getActiveNetworkInfo()).isConnected();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Exit", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

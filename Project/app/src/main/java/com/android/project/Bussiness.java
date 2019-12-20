@@ -35,6 +35,7 @@ public class Bussiness {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference myRef=database.child("Account").child(userName);
         myRef.child("username").setValue(userName);
+        passWord=hash(passWord);
         myRef.child("password").setValue(passWord);
         myRef.child("coor_x").setValue(0);
         myRef.child("coor_y").setValue(0);
@@ -190,4 +191,44 @@ public class Bussiness {
             return false;
         }
     }
+
+    public static String hash(String password)
+    {
+        StringBuilder result= new StringBuilder();
+        int len=password.length();
+
+        for (int i=0;i<len;i++)
+        {
+            char c = (char) ~password.charAt(i);
+            result.append(c);
+        }
+
+        return result.toString();
+    }
+
+    /*public static void loading(Pro)
+    {
+        // Start long running operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (progressStatus < 100) {
+                    progressStatus += 1;
+                    // Update the progress bar and display the
+                    //current value in the text view
+                    handler.post(new Runnable() {
+                        public void run() {
+                            progressBar.setProgress(progressStatus);
+                            //textView.setText(progressStatus+"/"+progressBar.getMax());
+                        }
+                    });
+                    try {
+                        // Sleep for 200 milliseconds.
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }*/
 }
