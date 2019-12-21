@@ -3,20 +3,20 @@ package com.android.project.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +36,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Connection;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -49,13 +48,11 @@ public class MainActivity extends Activity{
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 123;
 
     private GoogleMap mMap;
-    private ConnectionHelper connectionHelper;
-    public static Connection connection = null;
-    private DataSnapshot listAccount = null;
     private DatabaseReference myRef=null;
     private ValueEventListener valueEventListener=null;
+    public static Connection connection=null;
+    public static boolean theFirstLoad=true;
 
-    private Button btnLogin;
     private EditText edUserName;
     private EditText edPassWord;
     private CheckBox chkbxRememberMe;
@@ -66,8 +63,7 @@ public class MainActivity extends Activity{
     private boolean isRememberMe;
     private String userName;
     private String passWord;
-    private View view;
-
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +71,9 @@ public class MainActivity extends Activity{
         //setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_login);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar_cyclic);
+
         //Kết nối với các thành phần giao diện
-        btnLogin = (Button) findViewById(R.id.btnLogin);
         edUserName = (EditText) findViewById(R.id.inputUser);
         edPassWord = (EditText) findViewById(R.id.inputPass);
         chkbxRememberMe = (CheckBox) findViewById(R.id.cb_rememberme);
@@ -86,7 +83,7 @@ public class MainActivity extends Activity{
         this.updateState();
 
         //Kết nối cơ sở dữ liệu
-        connectionHelper = new ConnectionHelper();
+        ConnectionHelper connectionHelper = new ConnectionHelper();
         connection = connectionHelper.connectToServer();
 
         //firebase - get list account in database
@@ -95,7 +92,7 @@ public class MainActivity extends Activity{
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listAccount = dataSnapshot;
+                SplashActivity.listAccount = dataSnapshot;
             }
 
             @Override
@@ -137,22 +134,13 @@ public class MainActivity extends Activity{
             }
         }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        progressBar.setVisibility(View.INVISIBLE);
+
         if(isRememberMe){
             edUserName.setText(userName);
             edPassWord.setText(passWord);
@@ -160,8 +148,13 @@ public class MainActivity extends Activity{
         }
         Log.e(TAG_CIRCLE, "onStart");
 
-        //Tải lại danh sách Account
-        myRef.addListenerForSingleValueEvent(valueEventListener);
+        if (!theFirstLoad)
+        {
+            //Tải lại danh sách Account
+            myRef.addListenerForSingleValueEvent(valueEventListener);
+        }else{
+            theFirstLoad=false;
+        }
     }
 
     @Override
@@ -237,7 +230,6 @@ public class MainActivity extends Activity{
     public void login_Click(View view) {
         userName = edUserName.getText().toString();
         passWord = edPassWord.getText().toString();
-
         if (!isNetworkConnected())
         {
             //Log.e("firebase123","Not Connect");
@@ -246,43 +238,46 @@ public class MainActivity extends Activity{
         }
         else
         {
-            if (listAccount==null)
+            if (SplashActivity.listAccount==null)
             {
-//                Thread thread = new Thread() {
-//                    @Override
-//                    public void run() {
-//                        myRef.addListenerForSingleValueEvent(valueEventListener);
-//                    }
-//                };
-                finish();
+                textStatus.setText("Connecting to server! Login agian!");
+                return;
             }
         }
 
+        progressBar.setVisibility(View.VISIBLE);
         //Kiểm tra tính hợp lệ của tên tài khoản
         if (!Activity_Register.checkUserName(userName))
         {
             textStatus.setText("UserName is not invalid!");
             edUserName.setFocusable(true);
+            progressBar.setVisibility(View.INVISIBLE);
             return;
         }
 
         //Log.e("firebase123","heher");
         //Kiểm tra sự tồn tại của UserName
-        if (!Activity_Register.existUserName(listAccount,userName))
+        if (!Activity_Register.existUserName(SplashActivity.listAccount,userName))
         {
             //Log.e("firebase123","Not Exist");
             textStatus.setText("UserName is not exist!");
             edUserName.setFocusable(true);
+            progressBar.setVisibility(View.INVISIBLE);
             return;
         }
 
+        //hash password
+        passWord=Bussiness.hash(passWord);
         //So khớp mât khẩu
-        if (!passWord.contentEquals(Objects.requireNonNull(listAccount.child(userName).child("password").getValue()).toString()))
+        if (!passWord.contentEquals(Objects.requireNonNull(SplashActivity.listAccount.child(userName).child("password").getValue()).toString()))
         {
             textStatus.setText("Password is incorrect!");
             edPassWord.setFocusable(true);
+            progressBar.setVisibility(View.INVISIBLE);
             return;
         }
+
+
        // Log.e("firebase123",userName+" "+passWord);
 
         //Log.e("firebase123","here2");
@@ -296,6 +291,7 @@ public class MainActivity extends Activity{
     }
 
     public void register_Click(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         if (!isNetworkConnected())
         {
             textStatus.setText("Please check your connection!");
@@ -307,10 +303,14 @@ public class MainActivity extends Activity{
     }
 
 
-
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
         return Objects.requireNonNull(cm).getActiveNetworkInfo() != null && Objects.requireNonNull(cm.getActiveNetworkInfo()).isConnected();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Exit", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

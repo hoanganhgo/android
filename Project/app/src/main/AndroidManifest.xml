@@ -36,12 +36,15 @@
 
         <activity
             android:name=".Activity.Activity_Maps"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".Activity.Activity_Register"
+            android:screenOrientation="portrait"
             android:label="Register" />
         <activity
             android:name=".Activity.Activity_Home"
+            android:screenOrientation="portrait"
             android:label="Home" />
         <activity
             android:name=".Activity.Activity_List_Conversations"
@@ -51,19 +54,25 @@
             android:label="Chat" />
         <activity
             android:name=".Activity.Activity_Profile"
+            android:screenOrientation="portrait"
             android:label="Profile" />
         <activity
             android:name=".Activity.Activity_Create_Circle"
+            android:screenOrientation="portrait"
             android:label="Create Circle" />
         <activity
             android:name=".Activity.Activity_MyCircle_Home"
+            android:screenOrientation="portrait"
             android:label="My Circle Home" />
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".Activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activity.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

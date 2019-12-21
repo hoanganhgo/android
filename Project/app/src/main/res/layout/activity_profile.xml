@@ -25,6 +25,7 @@
             android:textSize="25sp" />
 
     </FrameLayout>-->
+
     <TextView
         android:id="@+id/tv_profile"
         android:layout_width="wrap_content"
@@ -52,18 +53,25 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="20dp"
         android:background="@android:color/transparent"
         android:text="nhoxtheanh"
         android:textAlignment="center"
         android:textSize="25sp" />
+ <ProgressBar
+     android:id="@+id/progressBar_cyclic3"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:minHeight="50dp"
+     android:minWidth="50dp"
+     android:visibility="invisible"
+     android:indeterminateTint="@color/colorPrimary"
+     android:layout_gravity="center_horizontal"/>
 
     <Switch
         android:id="@+id/share_myLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
         android:textSize="22sp"
         android:checked="true"
