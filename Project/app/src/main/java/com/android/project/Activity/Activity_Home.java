@@ -173,7 +173,7 @@ public class Activity_Home extends Activity implements LocationListener {
                 Bundle bundle = new Bundle();
                 bundle.putString("userName", userName);
 
-                Intent intent = new Intent(Activity_Home.this, Activity_Chat.class);
+                Intent intent = new Intent(Activity_Home.this, Activity_List_Conversations.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

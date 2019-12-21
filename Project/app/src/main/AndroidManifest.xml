@@ -44,6 +44,9 @@
             android:name=".Activity.Activity_Home"
             android:label="Home" />
         <activity
+            android:name=".Activity.Activity_List_Conversations"
+            android:label="Conversations" />
+        <activity
             android:name=".Activity.Activity_Chat"
             android:label="Chat" />
         <activity
