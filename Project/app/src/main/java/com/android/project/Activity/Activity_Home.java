@@ -89,7 +89,7 @@ public class Activity_Home extends Activity implements LocationListener {
                 Log.e("notify", "Read sharing fail");
             }
         };
-        myRef.addListenerForSingleValueEvent(valueEventListener);
+        myRef.addValueEventListener(valueEventListener);
 
         //Listen event SOS
         sosRef = database.child("Circles");
@@ -233,8 +233,8 @@ public class Activity_Home extends Activity implements LocationListener {
             // for Activity#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,  this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0,  this);
     }
 
     @Override

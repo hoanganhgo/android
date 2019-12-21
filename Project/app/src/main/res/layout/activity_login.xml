@@ -89,8 +89,8 @@
         android:layout_height="50dp"
         android:layout_above="@+id/btnReg"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="60dp"
         android:background="@drawable/bt_background"
         android:text="@string/login"
         android:onClick="login_Click" />
@@ -103,7 +103,7 @@
         android:textColor="#ffff0000"
         android:layout_below="@+id/btnLogin"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-25dp"/>
+        android:layout_marginTop="-45dp"/>
 
     <Button
         android:id="@+id/btnReg"
