@@ -9,17 +9,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.project.Adapter.ConversationAdapter;
-import com.android.project.Bussiness;
-import com.android.project.ModelDatabase.ConversationModel;
 import com.android.project.ModelDatabase.JoinModel;
 import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.R;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Activity_List_Conversations extends AppCompatActivity {
 
@@ -48,29 +42,6 @@ public class Activity_List_Conversations extends AppCompatActivity {
 
     // hiển thị tin nhắn
     private void displayMessagesList() {
-
-        final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);  // List chứa ds circle mà userName tham gia////////////////////////
-
-        final List<ConversationModel> ConversationList = new ArrayList<ConversationModel>(); // List cuộc trò chuyện (tên circle + last mess)
-
-        for (int i=0;i<listCircleName.size();i++) {
-            ConversationModel c1 = new ConversationModel(listCircleName.get(i),"Username" + i +": Let's start your conversation");
-            ConversationList.add(c1);
-        }
-
-
-//        // Tạm thời đổ dữ liệu code cứng
-//        ConversationModel c1 = new ConversationModel("General", "Username: abc... xyz");
-//        ConversationModel c2 = new ConversationModel();
-//        ConversationModel c3 = new ConversationModel();
-//        ConversationModel c4 = new ConversationModel();
-//        List<ConversationModel> ConversationTEMPlist = new ArrayList<ConversationModel>();
-//        ConversationTEMPlist.add(c1);
-//        ConversationTEMPlist.add(c2);
-//        ConversationTEMPlist.add(c3);
-//        ConversationTEMPlist.add(c4);
-
-
 
         ListView listOfConversations = (ListView) findViewById(R.id.list_of_conversations);
         //ConversationAdapter conversationAddapter = new ConversationAdapter(this, ConversationList);
@@ -105,7 +76,6 @@ public class Activity_List_Conversations extends AppCompatActivity {
         listOfConversations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ConversationModel conversation_Selected = ConversationList.get(position);
                 String user = userName;
                 Intent intent = new Intent(Activity_List_Conversations.this, Activity_Chat.class);
                 Bundle bundle = new Bundle();

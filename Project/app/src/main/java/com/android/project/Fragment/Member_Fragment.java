@@ -135,7 +135,7 @@ public class Member_Fragment extends Fragment {
                         if (userName.contentEquals("") == false) {
                             //Thêm bạn vào circle
                             FirebaseDatabase.getInstance().getReference().child("Account").child(userName)
-                                    .addValueEventListener(new ValueEventListener() {
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             if(dataSnapshot.exists()){
@@ -143,8 +143,20 @@ public class Member_Fragment extends Fragment {
                                                 FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members")
                                                         .child(userName).setValue(dataSnapshot.getValue(UserModel.class));
 
-                                                FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(circleName)
-                                                        .setValue(new JoinModel(circleName, userName));
+                                                FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(circleName)
+                                                                .setValue(new JoinModel(circleName, dataSnapshot.getValue(String.class)));
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+
+
                                                 Toast.makeText(mainActivity,"Invite Success !!", Toast.LENGTH_LONG).show();
                                             } else {
                                                 //bus number doesn't exists.

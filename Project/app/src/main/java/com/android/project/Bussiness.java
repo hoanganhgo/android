@@ -150,48 +150,6 @@ public class Bussiness {
         return false;
     }
 
-    public static List<String> getCircleUserJoinning(String username) {
-        List<String> Circles = new ArrayList<String>();
-
-        try {
-            //truy xuất cơ sở dữ liệu sql
-            Statement statement = MainActivity.connection.createStatement();
-            ResultSet resultSet;
-
-            //Tìm ID của circle và Admin theo tên của Circle
-            resultSet = statement.executeQuery("Select NameCircle from Joining where UserName = '"+username+"'");
-
-            while (resultSet.next()) {
-                Circles.add(resultSet.getString(1));
-            }
-            Log.e("getCircleUserJoinning", "getCircleUserJoinning success!");
-            return Circles;
-        } catch (SQLException e) {
-            Log.e("getCircleUserJoinning", "getCircleUserJoinning fail");
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /*public static boolean insertJoiningTable(String username, String namecircle){
-        try {
-            //truy xuất cơ sở dữ liệu sql
-            Statement statement = MainActivity.connection.createStatement();
-
-            Log.e("insertJoiningTable", "username: "+username+", namecircle: "+namecircle);
-
-            statement.executeUpdate("INSERT INTO Joining (NameCircle, UserName) " +
-                    "VALUES ('"+namecircle+"', '"+username+"');");
-
-            Log.e("insertJoiningTable", "insertJoiningTable success");
-            return true;
-        } catch (SQLException e) {
-            Log.e("insertJoiningTable", "insertJoiningTable fail");
-            e.printStackTrace();
-            return false;
-        }
-    }*/
-
     public static String hash(String password)
     {
         StringBuilder result= new StringBuilder();
