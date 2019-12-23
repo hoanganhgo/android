@@ -3,17 +3,14 @@ package com.android.project.Activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -26,7 +23,6 @@ import androidx.core.content.ContextCompat;
 
 import com.android.project.Bussiness;
 import com.android.project.ConnectionHelper;
-import com.android.project.ClassObject.MyLocation;
 import com.android.project.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.database.DataSnapshot;

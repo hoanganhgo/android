@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.project.R;
-
 import java.util.List;
 
 public class CircleAddapter extends BaseAdapter {

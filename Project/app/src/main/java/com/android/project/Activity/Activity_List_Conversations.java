@@ -2,23 +2,16 @@ package com.android.project.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.project.Adapter.CircleAddapter;
 import com.android.project.Adapter.ConversationAdapter;
 import com.android.project.Bussiness;
 import com.android.project.ModelDatabase.ConversationModel;
-import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.R;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,5 @@
 package com.android.project;
+
 import android.annotation.SuppressLint;
 import android.os.StrictMode;
 import android.util.Log;

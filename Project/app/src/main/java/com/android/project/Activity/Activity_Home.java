@@ -2,7 +2,6 @@ package com.android.project.Activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,8 +19,8 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.project.Bussiness;
 import com.android.project.Adapter.CircleAddapter;
+import com.android.project.Bussiness;
 import com.android.project.ModelDatabase.HistoryModel;
 import com.android.project.ModelDatabase.StaticLocationModel;
 import com.android.project.ModelDatabase.UserModel;

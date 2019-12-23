@@ -13,4 +13,3 @@ public class signup extends Activity {
         setContentView(R.layout.activity_signup);
     }
 }
-

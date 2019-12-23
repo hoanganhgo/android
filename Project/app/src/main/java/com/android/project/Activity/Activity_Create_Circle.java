@@ -11,8 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.android.project.Bussiness;
-import com.android.project.ClassObject.Circle;
-import com.android.project.ClassObject.Member;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.google.firebase.database.DataSnapshot;
