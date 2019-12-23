@@ -1,23 +1,38 @@
 package com.android.project.ModelDatabase;
 
 public class JoinModel {
-    private String circleName;
-    private String username;
+    private String circlename;
+    private String admin;
+    private MessageModel lastMessage = null;
 
     public JoinModel(){
 
     }
 
-    public JoinModel(String circlename, String username){
-        this.circleName = circlename;
-        this.username = username;
+    public JoinModel(String circlename, String admin){
+        this.circlename = circlename;
+        this.admin = admin;
+    }
+
+    public JoinModel(String circlename, String admin, MessageModel lastMessage){
+        this.circlename = circlename;
+        this.admin = admin;
+        this.lastMessage = lastMessage;
+    }
+
+    public void setLastMessage(MessageModel lastMessage){
+        this.lastMessage = lastMessage;
     }
 
     public String getCirclename(){
-        return circleName;
+        return circlename;
     }
 
-    public String getUsername(){
-        return username;
+    public String getAdmin(){
+        return admin;
+    }
+
+    public MessageModel getLastMessage(){
+        return lastMessage;
     }
 }

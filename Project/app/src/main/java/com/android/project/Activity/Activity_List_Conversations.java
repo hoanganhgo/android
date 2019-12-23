@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.project.Adapter.ConversationAdapter;
 import com.android.project.Bussiness;
 import com.android.project.ModelDatabase.ConversationModel;
+import com.android.project.ModelDatabase.JoinModel;
+import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.R;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,9 +73,31 @@ public class Activity_List_Conversations extends AppCompatActivity {
 
 
         ListView listOfConversations = (ListView) findViewById(R.id.list_of_conversations);
-        ConversationAdapter conversationAddapter = new ConversationAdapter(this, ConversationList);
+        //ConversationAdapter conversationAddapter = new ConversationAdapter(this, ConversationList);
 
-        listOfConversations.setAdapter(conversationAddapter);
+        final FirebaseListAdapter<JoinModel> adapter1 = new FirebaseListAdapter<JoinModel>(this, JoinModel.class,
+                R.layout.conversation_item_adapter, FirebaseDatabase.getInstance().getReference().child("Joining").child(userName)
+        ) {
+            @Override
+            protected void populateView(View v, JoinModel model, int position) {
+                TextView nameConversation = (TextView) v.findViewById(R.id.nameConversation);
+                TextView txtLastMessage = (TextView) v.findViewById(R.id.txtLastMessage);
+
+                nameConversation.setText(model.getCirclename());
+
+                MessageModel lastMess = model.getLastMessage();
+                if(lastMess != null)
+                {
+                    txtLastMessage.setText(String.format("%s: %s", lastMess.getMessageUser(), lastMess.getMessageText()));
+                }
+                else
+                {
+                    txtLastMessage.setText("Empty");
+                }
+            }
+        };
+
+        listOfConversations.setAdapter(adapter1);
 
 
         // onclick cho các message item
@@ -82,7 +109,7 @@ public class Activity_List_Conversations extends AppCompatActivity {
                 String user = userName;
                 Intent intent = new Intent(Activity_List_Conversations.this, Activity_Chat.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("nameCircle", conversation_Selected.getCircleNameConversation());
+                bundle.putString("nameCircle", adapter1.getItem(position).getCirclename());
                 bundle.putString("userName", userName);
                 intent.putExtras(bundle);
                 startActivity(intent);

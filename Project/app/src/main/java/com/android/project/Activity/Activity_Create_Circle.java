@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.android.project.Bussiness;
+import com.android.project.ModelDatabase.JoinModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.google.firebase.database.DataSnapshot;
@@ -43,7 +44,15 @@ public class Activity_Create_Circle extends Activity {
         db.child("admin").setValue(userName);
         db.child("SOS").setValue("");
 
-        Bussiness.insertJoiningTable(userName, namecircle);
+        //Cách cũ
+        //Bussiness.insertJoiningTable(userName, namecircle);
+
+        //Cách mới: tạo một nhánh trong Joining, lấy tên là chính user này
+        //Mỗi mẫu tin sẽ chứa thông tin về tên circle tham gia, ai làm admin, mẫu tin nhắn cuối cùng.
+
+        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(namecircle).setValue(new JoinModel(namecircle, userName));
+
+
         Toast.makeText(getApplicationContext(), "create ok", Toast.LENGTH_SHORT).show();
         FirebaseDatabase.getInstance().getReference().child("Account").addValueEventListener(new ValueEventListener() {
             @Override

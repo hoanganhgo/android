@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.android.project.Activity.Activity_MyCircle_Home;
 import com.android.project.Bussiness;
+import com.android.project.ModelDatabase.JoinModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -132,29 +133,31 @@ public class Member_Fragment extends Fragment {
                         final String userName = ((EditText) customDialog.findViewById(R.id.edInviteName)).getText().toString();
 
                         if (userName.contentEquals("") == false) {
-                            boolean isSuccess = Bussiness.insertJoiningTable(userName, circleName);
-                            if(isSuccess)
-                            {
-                                FirebaseDatabase.getInstance().getReference().child("Account").child(userName)
-                                        .addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //Thêm bạn vào circle
+                            FirebaseDatabase.getInstance().getReference().child("Account").child(userName)
+                                    .addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if(dataSnapshot.exists()){
+                                                //bus number exists in Database
                                                 FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members")
                                                         .child(userName).setValue(dataSnapshot.getValue(UserModel.class));
+
+                                                FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(circleName)
+                                                        .setValue(new JoinModel(circleName, userName));
+                                                Toast.makeText(mainActivity,"Invite Success !!", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                //bus number doesn't exists.
+                                                Toast.makeText(mainActivity,"Account not exits !!", Toast.LENGTH_LONG).show();
                                             }
+                                        }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                            }
-                                        });
-                                Toast.makeText(mainActivity,"Invite Success", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
 
-                            }
-                            else
-                            {
-                                Toast.makeText(mainActivity,"Account not exits", Toast.LENGTH_LONG).show();
-                            }
                         }
                         customDialog.dismiss();
                     }

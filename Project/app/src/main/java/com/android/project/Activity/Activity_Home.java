@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,9 +23,12 @@ import androidx.annotation.Nullable;
 import com.android.project.Adapter.CircleAddapter;
 import com.android.project.Bussiness;
 import com.android.project.ModelDatabase.HistoryModel;
+import com.android.project.ModelDatabase.JoinModel;
+import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.ModelDatabase.StaticLocationModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -109,7 +113,7 @@ public class Activity_Home extends Activity implements LocationListener {
             }
         };
 
-        ValueEventListener help_event = new ValueEventListener() {
+        final ValueEventListener help_event = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot member : dataSnapshot.getChildren())
@@ -137,13 +141,30 @@ public class Activity_Home extends Activity implements LocationListener {
             }
         };
 
-        listCircleName = Bussiness.getCircleUserJoinning(userName);
+        //listCircleName = Bussiness.getCircleUserJoinning(userName);
 
-        for (String circle : listCircleName) {
+        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    String circle = data.getValue(JoinModel.class).getCirclename();
+                    Log.e("circle", circle);
+                    sosRef.child(circle).child("SOS").addValueEventListener(sos_event);
+                    sosRef.child(circle).child("Members").addValueEventListener(help_event);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+/*        for (String circle : listCircleName) {
             Log.e("circle", circle);
             sosRef.child(circle).child("SOS").addValueEventListener(sos_event);
             sosRef.child(circle).child("Members").addValueEventListener(help_event);
-        }
+        }*/
 
         Log.e("AccountChange", userName + " change");
 
@@ -154,12 +175,23 @@ public class Activity_Home extends Activity implements LocationListener {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.e("AccountChange", userName + " change");
-                UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                for (String circle : listCircleName) {
-                    FirebaseDatabase.getInstance().getReference().child("Circles").child(circle).child("Members").child(userName).setValue(userModel);
-                }
-            }
+                final UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
+                FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot data : dataSnapshot.getChildren()){
+                            String circle = data.getValue(JoinModel.class).getCirclename();
+                            FirebaseDatabase.getInstance().getReference().child("Circles").child(circle).child("Members").child(userName).setValue(userModel);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -241,20 +273,30 @@ public class Activity_Home extends Activity implements LocationListener {
         super.onStart();
         progressBar.setVisibility(View.INVISIBLE);
 
-        final List<String> listCircleName = Bussiness.getCircleUserJoinning(userName);
-        CircleAddapter circleAddapter = new CircleAddapter(this, listCircleName);
+        final FirebaseListAdapter<JoinModel> adapter = new FirebaseListAdapter<JoinModel>(this, JoinModel.class,
+                R.layout.line_adapter_circle, FirebaseDatabase.getInstance().getReference().child("Joining").child(userName)
+        ) {
+            @Override
+            protected void populateView(View v, JoinModel model, int position) {
+                TextView txNameCircle = (TextView) v.findViewById(R.id.txNameCircle);
+                TextView txNameAdmin = (TextView) v.findViewById(R.id.txNameAdmin);
 
-        listView.setAdapter(circleAddapter);
+                txNameCircle.setText(Integer.toString(position + 1) + ". " + model.getCirclename());
+                txNameAdmin.setText("Admin: " + model.getAdmin());
+            }
+        };
+
+        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 progressBar.setVisibility(View.VISIBLE);
-                circle_Selected = listCircleName.get(position);
+                circle_Selected = adapter.getItem(position).getCirclename();
                 user=userName;
                 Intent intent = new Intent(Activity_Home.this, Activity_MyCircle_Home.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("nameCircle", listCircleName.get(position));
+                bundle.putString("nameCircle", circle_Selected);
                 bundle.putString("userName", userName);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -305,8 +347,8 @@ public class Activity_Home extends Activity implements LocationListener {
         int speed =(int)Math.round(location.getSpeed()*3.6);
         //Log.e("LocationGPS","Speed: " + this.speed + "km/h");
 
-        double coor_x = location.getLatitude();
-        double coor_y = location.getLongitude();
+        final double coor_x = location.getLatitude();
+        final double coor_y = location.getLongitude();
 
 /*        double coor_x = 10.762913;
         double coor_y = 106.6821717;*/
@@ -329,11 +371,28 @@ public class Activity_Home extends Activity implements LocationListener {
         //Kiểm tra xem có tới địa điểm nào trong StaticLocation hay không
         //Nếu có thì tiến hành đẩy history lên.
 
-        Calendar calendar_now = Calendar.getInstance();
-        for(String circle : listCircleName)
+        final Calendar calendar_now = Calendar.getInstance();
+
+        //Duyệt trong cơ sở dữ liệu để tìm ra các circle mà người này tham gia để kiểm tra có đến circle nào hay không?
+        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    String circle = data.getValue(JoinModel.class).getCirclename();
+                    checkInCheckOut(coor_x, coor_y, calendar_now, userName, circle);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+  /*      for(String circle : listCircleName)
         {
             checkInCheckOut(coor_x, coor_y, calendar_now, userName, circle);
-        }
+        }*/
     }
 
     @Override

@@ -10,12 +10,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.project.ModelDatabase.JoinModel;
 import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.R;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Activity_Chat extends AppCompatActivity {
 
@@ -50,11 +55,28 @@ public class Activity_Chat extends AppCompatActivity {
 
                 // Read the input field and push a new instance
                 // of ChatMessage to the Firebase database
+                final MessageModel newMess = new MessageModel(input.getText().toString(), userName);
+
                 FirebaseDatabase.getInstance()
                         .getReference().child("RoomChat").child(nameCircle)
                         .push()
-                        .setValue(new MessageModel(input.getText().toString(), userName)
-                        );
+                        .setValue(newMess);
+
+                FirebaseDatabase.getInstance().getReference().child("Joining").child(userName)
+                        .child(nameCircle).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        JoinModel joinModel = dataSnapshot.getValue(JoinModel.class);
+                        joinModel.setLastMessage(newMess);
+                        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName)
+                                .child(nameCircle).setValue(joinModel);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 // Clear the input
                 input.setText("");

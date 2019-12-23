@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.android.project.Bussiness;
 import com.android.project.Fragment.AddLocation_Fragment;
 import com.android.project.Fragment.History_Fragment;
-import com.android.project.Fragment.Invite_Fragment;
 import com.android.project.Fragment.Member_Fragment;
 import com.android.project.Fragment.SOS_Fragment;
 import com.android.project.R;
@@ -35,7 +34,6 @@ import java.util.Objects;
 public class Activity_MyCircle_Home extends AppCompatActivity{
     private AddLocation_Fragment addLocation_fragment;
     private SOS_Fragment sos_fragment;
-    private Invite_Fragment invite_fragment;
     private History_Fragment history_fragment;
 
     private Member_Fragment member_fragment;
@@ -118,7 +116,6 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
 
         sos_fragment = new SOS_Fragment(circleName, userName);
         addLocation_fragment = new AddLocation_Fragment(circleName);
-        invite_fragment = new Invite_Fragment(circleName, userName);
         member_fragment = new Member_Fragment(circleName);
         maps_fragment = new Activity_Maps();
         history_fragment = new History_Fragment(circleName, userName);

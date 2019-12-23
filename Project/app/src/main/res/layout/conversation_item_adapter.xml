@@ -10,11 +10,13 @@
         android:layout_marginVertical="10dp"
         android:orientation="vertical" >
         <TextView
+            android:text="aaaa"
             android:id="@+id/nameConversation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <TextView
+            android:text="aaaa"
             android:id="@+id/txtLastMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

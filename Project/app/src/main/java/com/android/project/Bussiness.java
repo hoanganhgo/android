@@ -173,7 +173,7 @@ public class Bussiness {
         }
     }
 
-    public static boolean insertJoiningTable(String username, String namecircle){
+    /*public static boolean insertJoiningTable(String username, String namecircle){
         try {
             //truy xuất cơ sở dữ liệu sql
             Statement statement = MainActivity.connection.createStatement();
@@ -190,7 +190,7 @@ public class Bussiness {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     public static String hash(String password)
     {
