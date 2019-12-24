@@ -140,6 +140,7 @@ public class Member_Fragment extends Fragment {
 
                 final Dialog customDialog = new Dialog(mainActivity);
                 customDialog.setContentView(R.layout.dialog_detail_member);
+                Button btnRemove = customDialog.findViewById(R.id.btnRemove);
 
                 ((TextView) customDialog.findViewById(R.id.detailUsername)).setText(String.format("                      Name:          %s", userModel.getUsername()));
                 ((TextView) customDialog.findViewById(R.id.detailBattery)).setText(String.format("                    Battery:          %d %%", userModel.getBattery()));
@@ -147,7 +148,6 @@ public class Member_Fragment extends Fragment {
                 ((TextView) customDialog.findViewById(R.id.detailCoordinates)).setText(String.format("(%s, %s)", Double.toString(userModel.getCoor_x()), Double.toString(userModel.getCoor_y())));
                 ((TextView) customDialog.findViewById(R.id.detailStatus)).setText(String.format("                      Status:          %s", status));
 
-                Button btnRemove = customDialog.findViewById(R.id.btnRemove);
 
                 if (isAdmin && !userModel.getUsername().contentEquals(admin)) {
                     btnRemove.setOnClickListener(new View.OnClickListener() {
