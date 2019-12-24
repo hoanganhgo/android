@@ -286,8 +286,8 @@ public class Activity_Home extends Activity implements LocationListener {
             // for Activity#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0,  this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0,  this);
     }
 
     @Override
