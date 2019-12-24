@@ -47,6 +47,10 @@ public class Activity_Home extends Activity implements LocationListener {
     ListView listView;
     ProgressBar progressBar;
 
+    //Ứng dụng đang hiện hành và cho phép cập nhật thông tin lên firebase
+    //Nếu bằng false thì có nghĩa là người dùng đã thoát ra màn hình đăng nhập, không cập nhật thông tin nữa
+    private boolean isUpdate = true;
+
     private String userName;
     private DataSnapshot dataUser = null;
     public static boolean isDisplay = true;
@@ -143,12 +147,14 @@ public class Activity_Home extends Activity implements LocationListener {
 
         //listCircleName = Bussiness.getCircleUserJoinning(userName);
 
-        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot data : dataSnapshot.getChildren()){
                     String circle = data.getValue(JoinModel.class).getCirclename();
                     Log.e("circle", circle);
+                    sosRef.child(circle).child("SOS").removeEventListener(sos_event);
+                    sosRef.child(circle).child("Members").removeEventListener(help_event);
                     sosRef.child(circle).child("SOS").addValueEventListener(sos_event);
                     sosRef.child(circle).child("Members").addValueEventListener(help_event);
                 }
@@ -160,29 +166,25 @@ public class Activity_Home extends Activity implements LocationListener {
             }
         });
 
-/*        for (String circle : listCircleName) {
-            Log.e("circle", circle);
-            sosRef.child(circle).child("SOS").addValueEventListener(sos_event);
-            sosRef.child(circle).child("Members").addValueEventListener(help_event);
-        }*/
-
         Log.e("AccountChange", userName + " change");
 
-
-
-        //Đồng bộ thông tin của user tới các nhánh của circle mà user đó tham gia
-        FirebaseDatabase.getInstance().getReference().child("Account").child(userName).addValueEventListener(new ValueEventListener() {
+        final ValueEventListener syncAccount = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.e("AccountChange", userName + " change");
                 final UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
-                FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                FirebaseDatabase.getInstance().getReference().child("Joining").child(userName)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot data : dataSnapshot.getChildren()){
-                            String circle = data.getValue(JoinModel.class).getCirclename();
-                            FirebaseDatabase.getInstance().getReference().child("Circles").child(circle).child("Members").child(userName).setValue(userModel);
+                        if(dataSnapshot.exists())
+                        {
+                            for(DataSnapshot data : dataSnapshot.getChildren()){
+                                String circle = data.getValue(JoinModel.class).getCirclename();
+                                FirebaseDatabase.getInstance().getReference().child("Circles").child(circle).child("Members").child(userName).setValue(userModel);
+                            }
                         }
                     }
 
@@ -196,7 +198,22 @@ public class Activity_Home extends Activity implements LocationListener {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        };
+
+        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FirebaseDatabase.getInstance().getReference().child("Account").child(userName).removeEventListener(syncAccount);
+                FirebaseDatabase.getInstance().getReference().child("Account").child(userName).addValueEventListener(syncAccount);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
         });
+        //Đồng bộ thông tin của user tới các nhánh của circle mà user đó tham gia
+
+
 
         //Mở danh sách các phòng chat
         imgbtnIbMenu = (ImageButton) findViewById(R.id.ib_menu);
@@ -240,7 +257,12 @@ public class Activity_Home extends Activity implements LocationListener {
                     {
                         long realTime=(long)(new Date().getTime());
                         //Log.e("test123","realtime: "+realTime);
-                        myRef.child("realtime").setValue(realTime);
+                        if(isUpdate)
+                        {
+                            myRef.child("realtime").setValue(realTime);
+                        }
+                        else
+                            break;
                         sleep(10000);
                     }
                 }catch (InterruptedException e){
@@ -298,6 +320,7 @@ public class Activity_Home extends Activity implements LocationListener {
                 Bundle bundle = new Bundle();
                 bundle.putString("nameCircle", circle_Selected);
                 bundle.putString("userName", userName);
+                bundle.putString("admin", adapter.getItem(position).getAdmin());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -353,11 +376,14 @@ public class Activity_Home extends Activity implements LocationListener {
 /*        double coor_x = 10.762913;
         double coor_y = 106.6821717;*/
 
-        //set firebase
+        if(isUpdate)
+        {
+            //set firebase
         myRef.child("coor_x").setValue(coor_x);
         myRef.child("coor_y").setValue(coor_y);
         myLocation=new LatLng(coor_x, coor_y);
         myRef.child("speed").setValue(speed);
+        }
 
         /*HistoryModel historyModel = new HistoryModel(userName, String.format("%s has arrived %s", userName, "KHTN"));
 
@@ -393,6 +419,12 @@ public class Activity_Home extends Activity implements LocationListener {
         {
             checkInCheckOut(coor_x, coor_y, calendar_now, userName, circle);
         }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isUpdate = false;
     }
 
     @Override

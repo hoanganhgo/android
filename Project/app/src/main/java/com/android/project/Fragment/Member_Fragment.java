@@ -1,12 +1,16 @@
 package com.android.project.Fragment;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.project.Activity.Activity_MyCircle_Home;
-import com.android.project.Bussiness;
 import com.android.project.ModelDatabase.JoinModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
@@ -36,9 +39,13 @@ public class Member_Fragment extends Fragment {
     Activity_MyCircle_Home mainActivity;
     Context context = null;
     String circleName;
+    boolean isAdmin;
+    String admin;
 
-    public Member_Fragment(String circleName){
+    public Member_Fragment(String circleName, boolean isAdmin, String admin){
+        this.isAdmin = isAdmin;
         this.circleName = circleName;
+        this.admin = admin;
     }
 
     @Override
@@ -64,7 +71,7 @@ public class Member_Fragment extends Fragment {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members");
 
-        FirebaseListAdapter<UserModel> adapter = new FirebaseListAdapter<UserModel>(mainActivity, UserModel.class,
+        final FirebaseListAdapter<UserModel> adapter = new FirebaseListAdapter<UserModel>(mainActivity, UserModel.class,
                 R.layout.member_item, databaseReference) {
             @Override
             protected void populateView(View v, UserModel model, int position) {
@@ -73,6 +80,7 @@ public class Member_Fragment extends Fragment {
                 TextView tvSpeed=(TextView)v.findViewById(R.id.tv_Speed);
                 ImageView imgStatus=(ImageView)v.findViewById(R.id.image_status);
                 TextView textStatus=(TextView)v.findViewById(R.id.text_status);
+
                 Log.e("MemberFragment", "FirebaseListAdapter");
 
                 long present=(long)(new Date().getTime());
@@ -120,12 +128,71 @@ public class Member_Fragment extends Fragment {
         };
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final UserModel userModel = adapter.getItem(position);
+                long present = (long) (new Date().getTime());
+                long time = (present - userModel.getRealtime()) / 1000;  //second
+                String status = "offline";
+                if (time < 60)
+                    status = "online";
+
+                final Dialog customDialog = new Dialog(mainActivity);
+                customDialog.setContentView(R.layout.dialog_detail_member);
+
+                ((TextView) customDialog.findViewById(R.id.detailUsername)).setText(String.format("                      Name:          %s", userModel.getUsername()));
+                ((TextView) customDialog.findViewById(R.id.detailBattery)).setText(String.format("                    Battery:          %d %%", userModel.getBattery()));
+                ((TextView) customDialog.findViewById(R.id.detailSpeed)).setText(String.format("                      Speed:          %d km", userModel.getSpeed()));
+                ((TextView) customDialog.findViewById(R.id.detailCoordinates)).setText(String.format("(%s, %s)", Double.toString(userModel.getCoor_x()), Double.toString(userModel.getCoor_y())));
+                ((TextView) customDialog.findViewById(R.id.detailStatus)).setText(String.format("                      Status:          %s", status));
+
+                Button btnRemove = customDialog.findViewById(R.id.btnRemove);
+
+                if (isAdmin && !userModel.getUsername().contentEquals(admin)) {
+                    btnRemove.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new AlertDialog.Builder(context)
+                                    .setTitle("Remove")
+                                    .setMessage("Are you sure you want to remove this user?")
+
+                                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                                    // The dialog is automatically dismissed when a dialog button is clicked.
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            FirebaseDatabase.getInstance().getReference().child("Joining").child(userModel.getUsername()).child(circleName).removeValue();
+                                            FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members").child(userModel.getUsername()).removeValue();
+                                        }
+                                    })
+
+                                    // A null listener allows the button to dismiss the dialog and take no further action.
+                                    .setNegativeButton(android.R.string.no, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+
+                            customDialog.dismiss();
+                        }
+                    });
+                } else {
+                    btnRemove.setVisibility(View.INVISIBLE);
+                }
+
+                customDialog.show();
+                Toast.makeText(mainActivity, "Hello", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         ImageButton addMember = view.findViewById(R.id.btnAddmember);
         addMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Dialog customDialog = new Dialog(view.getContext());
-                customDialog.setContentView(R.layout.activity_invite);
+                customDialog.setContentView(R.layout.dialog_input_username);
+
+                ((TextView)customDialog.findViewById(R.id.tvTitle)).setText("Add member");
 
                 customDialog.findViewById(R.id.btnInviteOK).setOnClickListener(new View.OnClickListener() {
                     @Override
