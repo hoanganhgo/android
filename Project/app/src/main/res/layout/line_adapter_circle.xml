@@ -14,12 +14,11 @@
         ></TextView>
 
     <TextView
-        android:textColor="@color/black"
-        android:text="haha"
         android:id="@+id/txNameAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20px"
-        ></TextView>
+        android:text="haha"
+        android:textColor="@color/black"
+        android:textSize="30px"></TextView>
 
 </LinearLayout>

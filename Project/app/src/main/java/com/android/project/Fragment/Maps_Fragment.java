@@ -1,4 +1,4 @@
-package com.android.project.Activity;
+package com.android.project.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.project.Activity.Activity_Home;
 import com.android.project.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
-public class Activity_Maps extends Fragment implements OnMapReadyCallback {
+public class Maps_Fragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap = null;
     private boolean begin = false;
@@ -33,7 +34,7 @@ public class Activity_Maps extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_maps, container, false);
+        final View view = inflater.inflate(R.layout.fragment_maps, container, false);
         return view;
     }
 

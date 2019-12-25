@@ -40,7 +40,6 @@ public class Activity_Chat extends AppCompatActivity {
         userName = myBundle.getString("userName");
         nameCircle = myBundle.getString("nameCircle", "Leak");
 
-        Toast.makeText(getApplicationContext(), "nameCircle" + nameCircle, Toast.LENGTH_SHORT).show();
 
         // hiển thị tin nhắn
         displayChatMessages();

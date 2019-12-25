@@ -8,7 +8,7 @@
     <TextView
         android:textColor="#000000"
         android:textSize="25dp"
-        android:text="Add Location"
+        android:text="Detail Location"
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

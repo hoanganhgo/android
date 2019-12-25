@@ -95,8 +95,8 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
 
                         if (address.contentEquals("") == false && nameLocaion.contentEquals("") == false) {
                             findLocation(nameLocaion, address, checkin, checkout);
+                            customDialog.dismiss();
                         }
-                        customDialog.dismiss();
                     }
                 });
                 customDialog.findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
@@ -178,6 +178,8 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
 
                         final Dialog detailDialog = new Dialog(mainActivity);
                         detailDialog.setContentView(R.layout.dialog_detail_location);
+
+
 
                         //Lấy item được chọn
                         final StaticLocationModel staticLocationModel = adapter.getItem(position);
@@ -468,7 +470,6 @@ public class AddLocation_Fragment extends Fragment implements OnMapReadyCallback
     }
 
     private void drawLocation(final LatLng location){
-        Toast.makeText(mainActivity, "drawLocation", Toast.LENGTH_SHORT).show();
         FirebaseDatabase.getInstance().getReference().child("Circles").child(nameCircle).child("StaticLocation")
                 .addValueEventListener(new ValueEventListener() {
                     @Override

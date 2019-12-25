@@ -2,7 +2,10 @@ package com.android.project.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,19 +15,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.project.Adapter.CircleAddapter;
 import com.android.project.Bussiness;
 import com.android.project.ModelDatabase.HistoryModel;
 import com.android.project.ModelDatabase.JoinModel;
-import com.android.project.ModelDatabase.MessageModel;
 import com.android.project.ModelDatabase.StaticLocationModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
@@ -306,7 +309,7 @@ public class Activity_Home extends Activity implements LocationListener {
                 txNameCircle.setText(Integer.toString(position + 1) + ". " + model.getCirclename());
                 txNameAdmin.setText("Admin: " + model.getAdmin());
             }
-        };
+    };
 
         listView.setAdapter(adapter);
 
@@ -354,11 +357,80 @@ public class Activity_Home extends Activity implements LocationListener {
     }
 
     public void create_Circle_Click(View view) {
-        Intent intent = new Intent(this, Activity_Create_Circle.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("userName", userName);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        final Dialog customDialog = new Dialog(view.getContext());
+        customDialog.setContentView(R.layout.dialog_input_username);
+
+        ((TextView)customDialog.findViewById(R.id.tvTitle)).setText("Create circle");
+
+        ((EditText) customDialog.findViewById(R.id.edInviteName)).setHint("Enter circle name");
+        customDialog.findViewById(R.id.btnInviteOK).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String circlename = ((EditText) customDialog.findViewById(R.id.edInviteName)).getText().toString();
+
+                if (circlename.contentEquals("") == false) {
+                    //Thêm bạn vào circle
+                    final DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("Circles").child(circlename);
+
+                    db.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists())
+                            {
+                                //Toast.makeText(Activity_Home.this, "Circle is exit!", Toast.LENGTH_SHORT).show();
+                                new AlertDialog.Builder(Activity_Home.this)
+                                        .setTitle("Circle existed")
+                                        .setMessage("This circle name existed, please use another name...")
+
+                                        //Specifying a listener allows you to take an action before dismissing the dialog.
+                                        // The dialog is automatically dismissed when a dialog button is clicked.
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                            }
+                                        })
+
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                            else
+                            {
+                                db.child("admin").setValue(userName);
+                                db.child("SOS").setValue("");
+
+                                //Cách mới: tạo một nhánh trong Joining, lấy tên là chính user này
+                                //Mỗi mẫu tin sẽ chứa thông tin về tên circle tham gia, ai làm admin, mẫu tin nhắn cuối cùng.
+
+                                FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(circlename).setValue(new JoinModel(circlename, userName));
+
+                                Toast.makeText(Activity_Home.this, "Create circle success!", Toast.LENGTH_SHORT).show();
+                                //Tạo một lịch sử
+                                HistoryModel historyModel = new HistoryModel(userName, String.format("%s created circle", userName));
+
+                                //Đẩy lịch sử lên firebase
+                                FirebaseDatabase.getInstance().getReference().child("Circles").child(circlename).child("History").push().setValue(historyModel);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+                customDialog.dismiss();
+            }
+        });
+
+        customDialog.findViewById(R.id.btnInviteCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+
+        customDialog.show();
     }
 
     @Override
@@ -452,7 +524,7 @@ public class Activity_Home extends Activity implements LocationListener {
     private void checkInCheckOut(final double coor_x, final double coor_y, final Calendar calendar, final String user, final String nameCircle){
         Log.e("checkInCheckOut", "checkInCheckOut " + nameCircle);
 
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
         calendar.set(0,0,0, hour, minute, 0);
@@ -465,6 +537,7 @@ public class Activity_Home extends Activity implements LocationListener {
 
                     Calendar checkin = StaticLocationModel.stringToCalendar(staticLocationModel.getCheckin());
                     Calendar checkout = StaticLocationModel.stringToCalendar(staticLocationModel.getCheckout());
+
                     String nameLocation = staticLocationModel.getName();
 
                     Log.e("checkInCheckOut", "checkInCheckOut " + staticLocationModel.getName());
@@ -473,7 +546,9 @@ public class Activity_Home extends Activity implements LocationListener {
                     if (checkin.compareTo(checkout) == -1) {
                         //Kiểm tra nếu thời điểm người dùng thay đổi vị trí có nằm trong thời gian checkin checkout thì tiến hành kiểm tra
                         //vị trí của người dùng so với vị trí của Địa điểm. Nếu bán kính dưới 50m thì tiến hành đẩy một thông báo lên.
-                        if ((checkin.compareTo(calendar) < 1) && (checkout.compareTo(calendar) > -1)) {
+
+                        if ((checkin.compareTo(calendar) < 1) && (checkout.compareTo(calendar) > -1))
+                        {
                             double locationCoor_x = staticLocationModel.getCoor_x();
                             double locationCoor_y = staticLocationModel.getCoor_y();
                             Log.e("HistoryCompare", "true");

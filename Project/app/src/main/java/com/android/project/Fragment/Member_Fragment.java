@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.project.Activity.Activity_MyCircle_Home;
+import com.android.project.ModelDatabase.HistoryModel;
 import com.android.project.ModelDatabase.JoinModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
@@ -36,16 +37,18 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Date;
 
 public class Member_Fragment extends Fragment {
-    Activity_MyCircle_Home mainActivity;
-    Context context = null;
-    String circleName;
-    boolean isAdmin;
-    String admin;
+    private Activity_MyCircle_Home mainActivity;
+    private Context context = null;
+    private String circleName;
+    private boolean isAdmin;
+    private String admin;
+    private String userName;
 
-    public Member_Fragment(String circleName, boolean isAdmin, String admin){
-        this.isAdmin = isAdmin;
+    public Member_Fragment(String circleName, String admin, String userName){
+        this.isAdmin = admin.contentEquals(userName);
         this.circleName = circleName;
         this.admin = admin;
+        this.userName = userName;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class Member_Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_member,container,false);
+        final View view = inflater.inflate(R.layout.fragment_member,container,false);
 
         ListView listView = (ListView) view.findViewById(R.id.list_member);
 
@@ -163,6 +166,12 @@ public class Member_Fragment extends Fragment {
                                         public void onClick(DialogInterface dialog, int which) {
                                             FirebaseDatabase.getInstance().getReference().child("Joining").child(userModel.getUsername()).child(circleName).removeValue();
                                             FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members").child(userModel.getUsername()).removeValue();
+
+                                            //Tạo một lịch sử
+                                            HistoryModel historyModel = new HistoryModel(userName, String.format("%s removed %s", userName, userModel.getUsername()));
+
+                                            //Đẩy lịch sử lên firebase
+                                            FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("History").push().setValue(historyModel);
                                         }
                                     })
 
@@ -180,7 +189,6 @@ public class Member_Fragment extends Fragment {
                 }
 
                 customDialog.show();
-                Toast.makeText(mainActivity, "Hello", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -197,23 +205,23 @@ public class Member_Fragment extends Fragment {
                 customDialog.findViewById(R.id.btnInviteOK).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final String userName = ((EditText) customDialog.findViewById(R.id.edInviteName)).getText().toString();
+                        final String newmember = ((EditText) customDialog.findViewById(R.id.edInviteName)).getText().toString();
 
-                        if (userName.contentEquals("") == false) {
+                        if (newmember.contentEquals("") == false) {
                             //Thêm bạn vào circle
-                            FirebaseDatabase.getInstance().getReference().child("Account").child(userName)
+                            FirebaseDatabase.getInstance().getReference().child("Account").child(newmember)
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             if(dataSnapshot.exists()){
                                                 //bus number exists in Database
                                                 FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members")
-                                                        .child(userName).setValue(dataSnapshot.getValue(UserModel.class));
+                                                        .child(newmember).setValue(dataSnapshot.getValue(UserModel.class));
 
                                                 FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(circleName)
+                                                        FirebaseDatabase.getInstance().getReference().child("Joining").child(newmember).child(circleName)
                                                                 .setValue(new JoinModel(circleName, dataSnapshot.getValue(String.class)));
                                                     }
 
@@ -223,7 +231,11 @@ public class Member_Fragment extends Fragment {
                                                     }
                                                 });
 
+                                                //Tạo một lịch sử
+                                                HistoryModel historyModel = new HistoryModel(userName, String.format("%s Invited %s", userName, newmember));
 
+                                                //Đẩy lịch sử lên firebase
+                                                FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("History").push().setValue(historyModel);
                                                 Toast.makeText(mainActivity,"Invite Success !!", Toast.LENGTH_LONG).show();
                                             } else {
                                                 //bus number doesn't exists.

@@ -37,7 +37,8 @@
         android:visibility="invisible"
         android:indeterminateTint="@color/colorPrimary"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/cv_Logo"/>
 
     <EditText
         android:id="@+id/inputUser"

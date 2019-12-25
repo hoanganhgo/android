@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/nav_History"
-        android:icon="@drawable/ic_people"
+        android:icon="@drawable/ring"
         android:title="History" />
 
     <item

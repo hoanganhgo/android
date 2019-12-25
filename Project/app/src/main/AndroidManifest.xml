@@ -35,7 +35,7 @@
             android:value="AIzaSyBtXkHfgQxnxw-6aYQ8QcojZ4LIUe5NXwo" />
 
         <activity
-            android:name=".Activity.Activity_Maps"
+            android:name=".Fragment.Maps_Fragment"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_maps" />
         <activity
@@ -56,10 +56,6 @@
             android:name=".Activity.Activity_Profile"
             android:screenOrientation="portrait"
             android:label="Profile" />
-        <activity
-            android:name=".Activity.Activity_Create_Circle"
-            android:screenOrientation="portrait"
-            android:label="Create Circle" />
         <activity
             android:name=".Activity.Activity_MyCircle_Home"
             android:screenOrientation="portrait"

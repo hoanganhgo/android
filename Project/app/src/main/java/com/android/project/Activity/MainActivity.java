@@ -22,7 +22,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.android.project.Bussiness;
-import com.android.project.ConnectionHelper;
 import com.android.project.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.firebase.database.DataSnapshot;
@@ -78,9 +77,6 @@ public class MainActivity extends Activity{
         //Cập nhật lại trạng thái trước đó của ứng dụng
         this.updateState();
 
-        //Kết nối cơ sở dữ liệu
-        ConnectionHelper connectionHelper = new ConnectionHelper();
-        connection = connectionHelper.connectToServer();
 
         //firebase - get list account in database
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();

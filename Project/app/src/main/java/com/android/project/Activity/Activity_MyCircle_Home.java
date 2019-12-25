@@ -2,7 +2,6 @@ package com.android.project.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,11 +22,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.project.Bussiness;
+import com.android.project.Fragment.Maps_Fragment;
 import com.android.project.Fragment.AddLocation_Fragment;
 import com.android.project.Fragment.History_Fragment;
 import com.android.project.Fragment.Member_Fragment;
 import com.android.project.Fragment.SOS_Fragment;
-import com.android.project.ModelDatabase.JoinModel;
+import com.android.project.ModelDatabase.HistoryModel;
 import com.android.project.ModelDatabase.UserModel;
 import com.android.project.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,7 +47,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
     private History_Fragment history_fragment;
 
     private Member_Fragment member_fragment;
-    private Activity_Maps maps_fragment;
+    private Maps_Fragment maps_fragment;
     private ImageButton btnChat;
     private ImageButton btnLeave;
 
@@ -61,7 +61,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mycircle);
+        setContentView(R.layout.activity_mycircle);
         context = this.getApplicationContext();
 
         BottomNavigationView bottomNav =  findViewById(R.id.bottomNavigationView);
@@ -131,13 +131,14 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
         sosRef.child(circleName).child("Members").addValueEventListener(help_event);
 
         final boolean isAdmin = admin.contentEquals(userName);
+
         sos_fragment = new SOS_Fragment(circleName, userName);
         addLocation_fragment = new AddLocation_Fragment(circleName);
-        member_fragment = new Member_Fragment(circleName, isAdmin, admin);
-        maps_fragment = new Activity_Maps();
+        member_fragment = new Member_Fragment(circleName, userName, admin);
+        maps_fragment = new Maps_Fragment();
         history_fragment = new History_Fragment(circleName, userName);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Activity_Maps()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Maps_Fragment()).commit();
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +160,7 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
                     //Nếu không phải admin thì có thể rời khỏi circle tự do
                     new AlertDialog.Builder(Activity_MyCircle_Home.this)
                             .setTitle("Leave")
-                            .setMessage("Are you sure you want to remove this user?")
+                            .setMessage("Leave this circle?")
 
                             //Specifying a listener allows you to take an action before dismissing the dialog.
                             // The dialog is automatically dismissed when a dialog button is clicked.
@@ -168,6 +169,12 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
                                     Toast.makeText(context, "Leave", Toast.LENGTH_SHORT).show();
                                     FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(circleName).removeValue();
                                     FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members").child(userName).removeValue();
+
+                                    //Tạo một lịch sử
+                                    HistoryModel historyModel = new HistoryModel(userName, String.format("%s left circle", userName));
+
+                                    //Đẩy lịch sử lên firebase
+                                    FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("History").push().setValue(historyModel);
                                     finish();
                                 }
                             })
@@ -205,6 +212,20 @@ public class Activity_MyCircle_Home extends AppCompatActivity{
 
                                                     //Nếu đã chỉ ra được admin mới thì tiến hành xóa thông tin
                                                     //Xóa thông tin của bảng Joining
+
+                                                    //Tạo một lịch sử
+                                                    HistoryModel historyModel = new HistoryModel(userName, String.format("%s left circle", userName));
+
+                                                    //Đẩy lịch sử lên firebase
+                                                    FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("History").push().setValue(historyModel);
+
+                                                    //Tạo một lịch sử
+                                                    historyModel = new HistoryModel(userName, String.format("%s is new admin", newadmin));
+
+                                                    //Đẩy lịch sử lên firebase
+                                                    FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("History").push().setValue(historyModel);
+
+
                                                     FirebaseDatabase.getInstance().getReference().child("Joining").child(userName).child(circleName).removeValue();
                                                     //Xóa khỏi Member
                                                     FirebaseDatabase.getInstance().getReference().child("Circles").child(circleName).child("Members").child(userName).removeValue();

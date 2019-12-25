@@ -116,16 +116,16 @@
             android:textColor="@android:color/white"
             android:text="@string/register"
             android:onClick="register_Click"/>
-        <TextView
-            android:id="@+id/tvLogin"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/have_account"
-            android:textSize="15sp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvLogin"-->
+<!--            android:clickable="true"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/have_account"-->
+<!--            android:textSize="15sp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginBottom="20dp" />-->
     </RelativeLayout>
 
 </LinearLayout>
