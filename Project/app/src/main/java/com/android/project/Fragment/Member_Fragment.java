@@ -141,14 +141,32 @@ public class Member_Fragment extends Fragment {
                 if (time < 60)
                     status = "online";
 
+                String battery = "none";
+                if(userModel.getShare_battery() == 1) {
+                    battery = Integer.toString(userModel.getBattery()) + "%";
+                }
+
+                String speed = "none";
+                if(userModel.getShare_speed() == 1) {
+                    speed = Integer.toString(userModel.getSpeed()) + "km/h";
+                }
+
+                double coor_x = 0;
+                double coor_y = 0;
+
+                if(userModel.getShare_location() == 1) {
+                    coor_x = userModel.getCoor_x();
+                    coor_y = userModel.getCoor_y();
+                }
+
                 final Dialog customDialog = new Dialog(mainActivity);
                 customDialog.setContentView(R.layout.dialog_detail_member);
                 Button btnRemove = customDialog.findViewById(R.id.btnRemove);
 
                 ((TextView) customDialog.findViewById(R.id.detailUsername)).setText(String.format("                      Name:          %s", userModel.getUsername()));
-                ((TextView) customDialog.findViewById(R.id.detailBattery)).setText(String.format("                    Battery:          %d %%", userModel.getBattery()));
-                ((TextView) customDialog.findViewById(R.id.detailSpeed)).setText(String.format("                      Speed:          %d km", userModel.getSpeed()));
-                ((TextView) customDialog.findViewById(R.id.detailCoordinates)).setText(String.format("(%s, %s)", Double.toString(userModel.getCoor_x()), Double.toString(userModel.getCoor_y())));
+                ((TextView) customDialog.findViewById(R.id.detailBattery)).setText(String.format("                    Battery:          %s", battery));
+                ((TextView) customDialog.findViewById(R.id.detailSpeed)).setText(String.format("                      Speed:          %s", speed));
+                ((TextView) customDialog.findViewById(R.id.detailCoordinates)).setText(String.format("(%s, %s)", Double.toString(coor_x), Double.toString(coor_y)));
                 ((TextView) customDialog.findViewById(R.id.detailStatus)).setText(String.format("                      Status:          %s", status));
 
 
