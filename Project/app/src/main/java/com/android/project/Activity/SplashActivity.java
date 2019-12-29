@@ -40,11 +40,11 @@ public class SplashActivity extends Activity {
                         textView.setText("Please check your connection!");
                     }else
                     {
-                        sleep(2000);
+                        sleep(2000);            //Nếu không sleep thì animation không hoạt động
                     }
                     while (!isNetworkConnected())
                     {
-                        sleep(500);
+                        sleep(500);            //Nếu chưa kết nối internet thì không vào được
                     }
                     //firebase - get list account in database
                     DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -65,7 +65,7 @@ public class SplashActivity extends Activity {
 
                 } catch (Exception e) {
 
-                } finally {
+                } finally {                     //Khối lệnh finally luôn được thực thi bất chấp ngoại lệ xảy ra
 
                     Intent i = new Intent(SplashActivity.this,
                             MainActivity.class);

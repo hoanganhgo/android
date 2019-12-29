@@ -94,7 +94,7 @@ public class MainActivity extends Activity{
             }
         };
 
-        //GPS ------------------------------------------------------
+        //GPS : Xin phép hệ điều hành cho sử dụng GPS
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -140,7 +140,7 @@ public class MainActivity extends Activity{
         }
         Log.e(TAG_CIRCLE, "onStart");
 
-        if (!theFirstLoad)
+        if (!theFirstLoad)     //Lần đầu tiên vào Main Activity thì List Account đã tồn tại
         {
             //Tải lại danh sách Account
             myRef.addListenerForSingleValueEvent(valueEventListener);
